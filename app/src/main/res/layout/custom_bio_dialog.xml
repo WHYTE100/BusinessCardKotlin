@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    android:background="?attr/colorPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/primaryColor"
+        android:padding="@dimen/_16sdp">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/myBio"
+            android:textSize="@dimen/_20sdp"
+            android:textColor="@color/darkPrimaryColor"/>
+
+        <TextView
+            android:id="@+id/bioTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginVertical="@dimen/_8sdp"
+            android:text="@string/emptyString"
+            android:textColor="@color/darkPrimaryColor"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/closeButton"
+            android:layout_width="@dimen/_170sdp"
+            android:layout_height="65dp"
+            app:strokeColor="@color/darkPrimaryColor"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            app:strokeWidth="@dimen/_2sdp"
+            app:cornerRadius="@dimen/_10sdp"
+            android:text="@string/closeButton"
+            android:textSize="@dimen/_15ssp"
+            android:textColor="@color/darkPrimaryColor"
+            android:backgroundTint="@color/primaryColor"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

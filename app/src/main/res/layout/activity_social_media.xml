@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorSecondary"
+    tools:context=".SocialMediaActivity">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:tint="?attr/colorOnPrimary"
+        android:background="?attr/colorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back_32"
+        android:contentDescription="@string/back_button" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:elevation="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/facebookBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/facebook_gold" />
+
+                    <TextView
+                        android:id="@+id/facebookTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        android:text=""
+                        android:textSize="@dimen/_14sdp"
+                        android:textColor="?attr/colorOnPrimary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/fbLinearLayout"
+                        app:layout_constraintStart_toEndOf="@+id/facebookBtn"
+                        app:layout_constraintTop_toTopOf="@+id/facebookBtn" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/fbLinearLayout"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        android:elevation="@dimen/_35sdp"
+                        android:orientation="horizontal"
+                        android:backgroundTint="?attr/colorOnPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/facebookBtn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/facebookBtn">
+
+                        <ImageButton
+                            android:id="@+id/addFbButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:backgroundTint="?attr/colorOnPrimary"
+                            android:src="@drawable/ic_round_add"
+                            app:tint="?attr/colorPrimary" />
+
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:elevation="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/linkedInBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/linkedin_gold" />
+
+                    <TextView
+                        android:id="@+id/linkedInTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_14sdp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/linkedInLinearLayout"
+                        app:layout_constraintStart_toEndOf="@+id/linkedInBtn"
+                        app:layout_constraintTop_toTopOf="@+id/linkedInBtn" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/linkedInLinearLayout"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        android:backgroundTint="?attr/colorOnPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/linkedInBtn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/linkedInBtn">
+
+                        <ImageButton
+                            android:id="@+id/addLinkedInButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:tint="?attr/colorPrimary"
+                            android:backgroundTint="?attr/colorOnPrimary"
+                            android:src="@drawable/ic_round_add" />
+
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:elevation="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/twitterBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/twitter_gold" />
+
+                    <TextView
+                        android:id="@+id/twitterTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_14sdp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/twitterLinearLayout"
+                        app:layout_constraintStart_toEndOf="@+id/twitterBtn"
+                        app:layout_constraintTop_toTopOf="@+id/twitterBtn" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/twitterLinearLayout"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        android:backgroundTint="?attr/colorOnPrimary"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@+id/twitterBtn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/twitterBtn">
+
+                        <ImageButton
+                            android:id="@+id/addTwitterButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:tint="?attr/colorPrimary"
+                            android:backgroundTint="?attr/colorOnPrimary"
+                            android:src="@drawable/ic_round_add" />
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:elevation="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/instagramBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/instagram_gold" />
+
+                    <TextView
+                        android:id="@+id/instagramTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_14sdp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/instagramLinearLayout"
+                        app:layout_constraintStart_toEndOf="@+id/instagramBtn"
+                        app:layout_constraintTop_toTopOf="@+id/instagramBtn" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/instagramLinearLayout"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        android:backgroundTint="?attr/colorOnPrimary"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@+id/instagramBtn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/instagramBtn">
+
+                        <ImageButton
+                            android:id="@+id/addInstagramButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:backgroundTint="?attr/colorOnPrimary"
+                            app:tint="?attr/colorPrimary"
+                            android:src="@drawable/ic_round_add" />
+
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:elevation="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/tiktokBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/tik_tok_gold" />
+
+                    <TextView
+                        android:id="@+id/tikTokTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_14sdp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tiktokLinearLayout"
+                        app:layout_constraintStart_toEndOf="@+id/tiktokBtn"
+                        app:layout_constraintTop_toTopOf="@+id/tiktokBtn" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/tiktokLinearLayout"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        android:backgroundTint="?attr/colorOnPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/tiktokBtn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tiktokBtn">
+
+                        <ImageButton
+                            android:id="@+id/addTiktokButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:backgroundTint="?attr/colorOnPrimary"
+                            app:tint="?attr/colorPrimary"
+                            android:src="@drawable/ic_round_add" />
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:elevation="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/youtubeBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/youtube_gold" />
+
+                    <TextView
+                        android:id="@+id/youtubeTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_14sdp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/youtubeLinearLayout"
+                        app:layout_constraintStart_toEndOf="@+id/youtubeBtn"
+                        app:layout_constraintTop_toTopOf="@+id/youtubeBtn" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/youtubeLinearLayout"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        android:backgroundTint="?attr/colorOnPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/youtubeBtn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/youtubeBtn">
+
+                        <ImageButton
+                            android:id="@+id/addYoutubeBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:backgroundTint="?attr/colorOnPrimary"
+                            app:tint="?attr/colorPrimary"
+                            android:src="@drawable/ic_round_add" />
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:elevation="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/whatsappBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/whatsapp_gold" />
+
+                    <TextView
+                        android:id="@+id/whatsappTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_14sdp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/whatsappLinearLayout"
+                        app:layout_constraintStart_toEndOf="@+id/whatsappBtn"
+                        app:layout_constraintTop_toTopOf="@+id/whatsappBtn" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/whatsappLinearLayout"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        android:backgroundTint="?attr/colorOnPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/whatsappBtn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/whatsappBtn">
+
+                        <ImageButton
+                            android:id="@+id/addWhatsappButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:backgroundTint="?attr/colorOnPrimary"
+                            app:tint="?attr/colorPrimary"
+                            android:src="@drawable/ic_round_add" />
+
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginVertical="@dimen/_15sdp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:elevation="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/wechatBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/wechat_gold" />
+
+                    <TextView
+                        android:id="@+id/wechatTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_14sdp"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                        app:layout_constraintStart_toEndOf="@+id/wechatBtn"
+                        app:layout_constraintTop_toTopOf="@+id/wechatBtn" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/linearLayout"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        android:backgroundTint="?attr/colorOnPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/wechatBtn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/wechatBtn">
+
+                        <ImageButton
+                            android:id="@+id/addWechatButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:backgroundTint="?attr/colorOnPrimary"
+                            app:tint="?attr/colorPrimary"
+                            android:src="@drawable/ic_round_add" />
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

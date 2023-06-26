@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="io.pridetechnologies.businesscard.fragments.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_addUserDetailsFragment"
+            app:destination="@id/addUserDetailsFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_addProfileImageFragment"
+            app:destination="@id/addProfileImageFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_addBioFragment"
+            app:destination="@id/addBioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="io.pridetechnologies.businesscard.fragments.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_addUserDetailsFragment"
+            app:destination="@id/addUserDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addUserDetailsFragment"
+        android:name="io.pridetechnologies.businesscard.fragments.AddUserDetailsFragment"
+        android:label="fragment_add_user_details"
+        tools:layout="@layout/fragment_add_user_details" >
+        <action
+            android:id="@+id/action_addUserDetailsFragment_to_addProfileImageFragment"
+            app:destination="@id/addProfileImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addProfileImageFragment"
+        android:name="io.pridetechnologies.businesscard.fragments.AddProfileImageFragment"
+        android:label="fragment_add_profile_image"
+        tools:layout="@layout/fragment_add_profile_image" >
+        <action
+            android:id="@+id/action_addProfileImageFragment_to_addBioFragment"
+            app:destination="@id/addBioFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="io.pridetechnologies.businesscard.HomeActivity"
+        android:label="activity_home"
+        tools:layout="@layout/activity_home" />
+    <fragment
+        android:id="@+id/addBioFragment"
+        android:name="io.pridetechnologies.businesscard.fragments.AddBioFragment"
+        android:label="fragment_add_bio"
+        tools:layout="@layout/fragment_add_bio" >
+        <action
+            android:id="@+id/action_addBioFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+    </fragment>
+</navigation>

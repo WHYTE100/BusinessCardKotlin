@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/primaryColor"
+    android:elevation="@dimen/_3sdp"
+    app:cardCornerRadius="@dimen/_15sdp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primaryColor"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="@dimen/_42sdp"
+            android:gravity="center_horizontal"
+            android:text="@string/add_request_note"
+            android:textStyle="bold"
+            android:textSize="@dimen/_18ssp"
+            android:textColor="@color/darkPrimaryColor"/>
+
+        <TextView
+            android:id="@+id/noteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginHorizontal="@dimen/_13sdp"
+            android:text=""
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/darkPrimaryColor"/>
+
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text=""
+            android:textStyle="bold"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/darkPrimaryColor"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_20sdp">
+
+            <ImageView
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_background_small"
+                android:src="@drawable/round_stop"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/recordButton"
+                app:layout_constraintEnd_toStartOf="@+id/recordButton"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/recordButton"
+                app:tint="@color/primaryColor"
+                android:contentDescription="@string/image_button" />
+
+            <com.devlomi.record_view.RecordButton
+                android:id="@+id/recordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_background_large"
+                android:scaleType="centerInside"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/playButton"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/stopButton"
+                app:layout_constraintTop_toTopOf="parent"
+                app:mic_icon="@drawable/baseline_mic" />
+
+            <ImageView
+                android:id="@+id/playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/round_background_small"
+                android:src="@drawable/round_play_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/recordButton"
+                app:layout_constraintTop_toTopOf="@+id/recordButton"
+                app:tint="@color/primaryColor"
+                android:contentDescription="@string/image_button" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendButton"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/darkPrimaryColor"
+            app:cornerRadius="@dimen/_10sdp"
+            android:visibility="gone"
+            android:backgroundTint="@color/primaryColor"
+            android:layout_marginHorizontal="@dimen/_24sdp"
+            android:layout_marginTop="@dimen/_13sdp"
+            android:text="@string/send_request"
+            android:textColor="@color/darkPrimaryColor"
+            android:textSize="@dimen/_16ssp"/>
+
+        <Button
+            android:id="@+id/skipButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:backgroundTint="@color/primaryColor"
+            android:text="@string/skip"
+            android:textColor="@color/darkPrimaryColor"
+            android:textSize="@dimen/_14ssp"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
