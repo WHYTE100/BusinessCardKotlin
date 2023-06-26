@@ -1,0 +1,78 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.BusinessCard" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="CustomDialogTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/text_input_dark</item>
+        <item name="hintTextColor">@color/text_input_dark</item>
+        <item name="startIconTint">@color/text_input_dark</item>
+        <item name="android:textColor">@color/darkPrimaryColor</item>
+        <item name="android:textColorHint">@color/darkPrimaryColor</item>
+        <item name="boxCornerRadiusTopStart">@dimen/_10sdp</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/_10sdp</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/_10sdp</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/_10sdp</item>
+        <item name="theme">@style/CustomThemeLight</item>
+        <item name="boxStrokeWidth">@dimen/_2sdp</item>
+    </style>
+
+    <style name="CustomThemeLight" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">@color/darkPrimaryColor</item>
+    </style>
+
+    <style name="OutlineButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/darkPrimaryColor</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="cornerRadius">@dimen/_10sdp</item>
+        <item name="rippleColor">@color/darkPrimaryColor</item>
+    </style>
+
+    <style name="OutlineButtonBlack" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/primaryColor</item>
+        <item name="strokeWidth">@dimen/_2sdp</item>
+        <item name="cornerRadius">@dimen/_10sdp</item>
+        <item name="rippleColor">@color/primaryColor</item>
+    </style>
+
+    <style name="TextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/darkPrimaryColor</item>
+        <item name="android:textSize">@dimen/_8sdp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ImageViewTint" parent="Widget.AppCompat.ImageButton">
+        <item name="tint">@color/darkPrimaryColor</item>
+        <item name="backgroundTint">@color/primaryColor</item>
+    </style>
+
+    <style name="Theme.BusinessCard.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
+        <!-- Radius of the outer bound of widgets to make the rounded corners -->
+        <item name="appWidgetRadius">10dp</item>
+        <!--
+        Radius of the inner view's bound of widgets to make the rounded corners.
+        It needs to be 8dp or less than the value of appWidgetRadius
+        -->
+        <item name="appWidgetInnerRadius">8dp</item>
+    </style>
+
+    <style name="Theme.BusinessCard.AppWidgetContainer" parent="Theme.BusinessCard.AppWidgetContainerParent">
+        <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
+        <item name="appWidgetPadding">16dp</item>
+    </style>
+</resources>
