@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSecondary"
+    tools:context=".BusinessDetailsActivity">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:tint="?attr/colorOnPrimary"
+        android:background="?attr/colorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back_32"
+        android:contentDescription="@string/back_button" />
+
+    <TextView
+        android:id="@+id/textView151"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/business_details"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/backButton"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="@+id/backButton" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_24sdp"
+            android:orientation="vertical" >
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="@dimen/_3sdp"
+                app:cardCornerRadius="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginVertical="@dimen/_8sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorPrimary"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/businessLogoView"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="@dimen/_12sdp"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/background_icon"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/businessNameView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:textSize="@dimen/_16sdp"
+                            android:text=""
+                            android:textColor="?attr/colorOnPrimary"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/businessLogoView"
+                            app:layout_constraintTop_toTopOf="@+id/businessLogoView" />
+
+                        <TextView
+                            android:id="@+id/businessAddressView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text=""
+                            android:textColor="?attr/colorOnPrimary"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/businessLogoView"
+                            app:layout_constraintTop_toBottomOf="@+id/businessNameView"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <TextView
+                            android:id="@+id/businessBioView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:text=""
+                            android:textColor="?attr/colorOnPrimary"
+                            android:gravity="center_horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/businessAddressView"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:orientation="horizontal"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="3dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/businessBioView"
+                            app:layout_constraintVertical_bias="1.0">
+
+                            <LinearLayout
+                                android:id="@+id/callBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/messageBtn"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="@dimen/_32sdp"
+                                    android:layout_height="@dimen/_32sdp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:backgroundTint="?attr/colorOnPrimary"
+                                    android:elevation="@dimen/_3sdp"
+                                    android:orientation="horizontal"
+                                    app:cardCornerRadius="@dimen/_10sdp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/facebookBtn"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/facebookBtn">
+
+                                    <ImageButton
+                                        android:id="@+id/callButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="?attr/colorOnPrimary"
+                                        android:src="@drawable/baseline_call_24"
+                                        app:tint="?attr/colorPrimary"
+                                        android:contentDescription="@string/image_button" />
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/textView9"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="2dp"
+                                    android:textSize="@dimen/_10ssp"
+                                    android:textStyle="bold"
+                                    android:text="Call"
+                                    android:textColor="?attr/colorOnPrimary" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/messageBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/emailBtn"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/callBtn"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="@dimen/_32sdp"
+                                    android:layout_height="@dimen/_32sdp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:backgroundTint="?attr/colorOnPrimary"
+                                    android:elevation="@dimen/_3sdp"
+                                    android:orientation="horizontal"
+                                    app:cardCornerRadius="@dimen/_10sdp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/facebookBtn"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/facebookBtn">
+
+                                    <ImageButton
+                                        android:id="@+id/whatsAppButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="?attr/colorOnPrimary"
+                                        android:src="@drawable/baseline_whatsapp_24"
+                                        app:tint="?attr/colorPrimary"
+                                        android:contentDescription="@string/image_button" />
+
+                                </com.google.android.material.card.MaterialCardView>
+
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/textView10"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/whatsapp"
+                                    android:textColor="?attr/colorOnPrimary"
+                                    android:textSize="@dimen/_10ssp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/emailBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/bioBtn"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/messageBtn"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="@dimen/_32sdp"
+                                    android:layout_height="@dimen/_32sdp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:backgroundTint="?attr/colorOnPrimary"
+                                    android:elevation="@dimen/_3sdp"
+                                    android:orientation="horizontal"
+                                    app:cardCornerRadius="@dimen/_10sdp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/facebookBtn"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/facebookBtn">
+
+                                    <ImageButton
+                                        android:id="@+id/emailButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="?attr/colorOnPrimary"
+                                        android:src="@drawable/round_mail_outline_24"
+                                        app:tint="?attr/colorPrimary"
+                                        android:contentDescription="@string/image_button" />
+
+                                </com.google.android.material.card.MaterialCardView>
+
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/textView11"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/email"
+                                    android:textColor="?attr/colorOnPrimary"
+                                    android:textSize="@dimen/_10ssp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/bioBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/shareBtn"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/emailBtn"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="@dimen/_32sdp"
+                                    android:layout_height="@dimen/_32sdp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:backgroundTint="?attr/colorOnPrimary"
+                                    android:elevation="@dimen/_3sdp"
+                                    android:orientation="horizontal"
+                                    app:cardCornerRadius="@dimen/_10sdp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/facebookBtn"
+                                    app:layout_constraintTop_toTopOf="@+id/facebookBtn">
+
+                                    <ImageButton
+                                        android:id="@+id/websiteButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="?attr/colorOnPrimary"
+                                        android:src="@drawable/baseline_language_24"
+                                        app:tint="?attr/colorPrimary"
+                                        android:contentDescription="@string/image_button" />
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/textView300"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/website"
+                                    android:textColor="?attr/colorOnPrimary"
+                                    android:textSize="@dimen/_10ssp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/shareBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/bioBtn"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="@dimen/_32sdp"
+                                    android:layout_height="@dimen/_32sdp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:backgroundTint="?attr/colorOnPrimary"
+                                    android:elevation="@dimen/_3sdp"
+                                    android:orientation="horizontal"
+                                    app:cardCornerRadius="@dimen/_10sdp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/facebookBtn"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/facebookBtn">
+
+                                    <ImageButton
+                                        android:id="@+id/shareButton"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="?attr/colorOnPrimary"
+                                        android:src="@drawable/round_share"
+                                        app:tint="?attr/colorPrimary"
+                                        android:contentDescription="@string/image_button" />
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/textView30"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/share"
+                                    android:textColor="?attr/colorOnPrimary"
+                                    android:textSize="@dimen/_10ssp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_24sdp"
+                android:textSize="@dimen/_20ssp"
+                android:text="@string/department_contacts"
+                android:textColor="?attr/colorOnPrimary"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/departmentalContactsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginStart="@dimen/_24sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:textSize="@dimen/_20ssp"
+                android:text="@string/our_team"
+                android:textColor="?attr/colorOnPrimary"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/teamRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginStart="@dimen/_24sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:textSize="@dimen/_20ssp"
+                android:textColor="?attr/colorOnPrimary"
+                android:text="@string/social_media" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="8dp"
+                android:elevation="3dp"
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialCardView">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimary">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout26"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/facebookBtn"
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="@dimen/_32sdp"
+                            android:layout_marginTop="8dp"
+                            android:contentDescription="@string/link_button"
+                            app:layout_constraintEnd_toStartOf="@+id/youtubeBtn"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/facebook_gold" />
+
+                        <ImageView
+                            android:id="@+id/youtubeBtn"
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="@dimen/_32sdp"
+                            android:contentDescription="@string/link_button"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="@+id/facebookBtn"
+                            app:layout_constraintEnd_toStartOf="@+id/twitterBtn"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/facebookBtn"
+                            app:layout_constraintTop_toTopOf="@+id/facebookBtn"
+                            app:srcCompat="@drawable/youtube_gold" />
+
+                        <ImageView
+                            android:id="@+id/twitterBtn"
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="@dimen/_32sdp"
+                            android:contentDescription="@string/link_button"
+                            app:layout_constraintBottom_toBottomOf="@+id/youtubeBtn"
+                            app:layout_constraintEnd_toStartOf="@+id/linkedInBtn"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/youtubeBtn"
+                            app:layout_constraintTop_toTopOf="@+id/youtubeBtn"
+                            app:srcCompat="@drawable/twitter_gold" />
+
+                        <ImageView
+                            android:id="@+id/linkedInBtn"
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="@dimen/_32sdp"
+                            android:contentDescription="@string/link_button"
+                            app:layout_constraintBottom_toBottomOf="@+id/twitterBtn"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/twitterBtn"
+                            app:layout_constraintTop_toTopOf="@+id/twitterBtn"
+                            app:srcCompat="@drawable/linkedin_gold" />
+
+                        <ImageView
+                            android:id="@+id/instagramBtn"
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="@dimen/_32sdp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/tiktokBtn"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/facebookBtn"
+                            app:srcCompat="@drawable/instagram_gold" />
+
+                        <ImageView
+                            android:id="@+id/tiktokBtn"
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="@dimen/_32sdp"
+                            app:layout_constraintBottom_toBottomOf="@+id/instagramBtn"
+                            app:layout_constraintEnd_toStartOf="@+id/wechatBtn"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/instagramBtn"
+                            app:layout_constraintTop_toTopOf="@+id/instagramBtn"
+                            app:srcCompat="@drawable/tik_tok_gold" />
+
+
+                        <ImageView
+                            android:id="@+id/wechatBtn"
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="@dimen/_32sdp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tiktokBtn"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/tiktokBtn"
+                            app:layout_constraintTop_toTopOf="@+id/tiktokBtn"
+                            app:srcCompat="@drawable/wechat_gold" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginStart="@dimen/_24sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:textSize="@dimen/_20ssp"
+                android:text="@string/physical_address"
+                android:textColor="?attr/colorOnPrimary"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:elevation="3dp"
+                app:cardCornerRadius="@dimen/_10sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimary">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textView52"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="N/A"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toEndOf="@+id/textView73"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textView53"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="N/A"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toEndOf="@+id/textView74"
+                        app:layout_constraintTop_toBottomOf="@+id/textView52" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textView54"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="N/A"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toEndOf="@+id/textView75"
+                        app:layout_constraintTop_toBottomOf="@+id/textView53" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textView55"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="N/A"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toEndOf="@+id/textView76"
+                        app:layout_constraintTop_toBottomOf="@+id/textView54" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textView56"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="N/A"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintBottom_toTopOf="@+id/directionsButton"
+                        app:layout_constraintStart_toEndOf="@+id/textView77"
+                        app:layout_constraintTop_toBottomOf="@+id/textView55" />
+
+                    <TextView
+                        android:id="@+id/textView73"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Building :"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView52"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView52" />
+
+                    <TextView
+                        android:id="@+id/textView74"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Street :"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView53"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView53" />
+
+                    <TextView
+                        android:id="@+id/textView75"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Area Located :"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView54"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView54" />
+
+                    <TextView
+                        android:id="@+id/textView76"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="District :"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView55"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView55" />
+
+                    <TextView
+                        android:id="@+id/textView77"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Country :"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView56"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView56" />
+
+                    <Button
+                        android:id="@+id/directionsButton"
+                        style="@style/OutlineButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="65dp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:text="Directions"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:layout_editor_absoluteX="74dp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

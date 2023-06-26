@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".BusinessCard"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/card_rect"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/card_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.BusinessCard"
+        tools:targetApi="31">
+        <activity
+            android:name=".BusinessSearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StartActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EditBusinessAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ScanIndividualActivity"
+            android:exported="false" />
+
+        <receiver
+            android:name=".BusinessCardWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/business_card_widget_info" />
+        </receiver>
+
+        <activity
+            android:name=".ScanBusinessActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".EditBusinessBasicsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyBusinessesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddSocialMediaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExistingBusinessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.EditDepartmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AddDepartmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.TeamMemberDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AdminBusinessProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.BusinessAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.NewBusinessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditUserDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BusinessDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserRequestDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SocialMediaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.NewBusinessCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.NewCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="businesscardmw.page.link"
+                    android:scheme="http" />
+                <data
+                    android:host="businesscardmw.page.link"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"></activity>
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:clearTaskOnLaunch="true"
+            android:icon="@drawable/ic_launcher_background"
+            android:label="Business Card"
+            android:logo="@drawable/ic_launcher_background"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            tools:replace="screenOrientation" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+    </application>
+
+</manifest>
