@@ -1,16 +1,23 @@
 package io.pridetechnologies.businesscard
 
+import android.animation.ValueAnimator
 import android.app.Dialog
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
+import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
@@ -20,10 +27,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.squareup.picasso.Picasso
-import io.pridetechnologies.businesscard.databinding.ActivityNewCardBinding
+import io.ktor.http.Url
 import io.pridetechnologies.businesscard.databinding.ActivityUserRequestDetailsBinding
 import io.pridetechnologies.businesscard.databinding.CustomDialogBoxBinding
 import io.pridetechnologies.businesscard.databinding.WorkCardBinding
+import nl.changer.audiowife.AudioWife
+import java.io.IOException
+import java.net.URL
+import kotlin.math.ceil
+
 
 class UserRequestDetailsActivity : AppCompatActivity() {
     private val progressDialog by lazy { CustomProgressDialog(this) }
@@ -35,6 +47,9 @@ class UserRequestDetailsActivity : AppCompatActivity() {
     private var userName: String? = ""
     private var userId: String? = ""
     private var userFirstName: String? = ""
+    private var mediaPlayer: MediaPlayer? = null
+    private lateinit var noteUrl:String
+    private var isPlaying = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +87,83 @@ class UserRequestDetailsActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e -> Log.w(ContentValues.TAG, "Error writing document", e)
             }
+
+        constants.db.collection("users").document(constants.currentUserId.toString())
+            .collection("card_requests").document(userId.toString())
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    noteUrl = snapshot.get("request_note").toString()
+                    if (noteUrl != ""){
+                        binding.noteLayout.visibility = View.VISIBLE
+                    }else {
+                        binding.noteLayout.visibility = View.GONE
+                    }
+                    binding.playPauseButton.setOnClickListener {
+                        if (!isPlaying){
+                            pause()
+                        }else {
+                            play(noteUrl)
+                            binding.playPauseButton.setImageResource(R.drawable.round_pause)
+                        }
+                    }
+                }
+            }
+
         getMultipleWorkPlace()
+    }
+
+    private fun play(url: String) {
+
+        try {
+            mediaPlayer = MediaPlayer().apply {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build()
+                )
+                setDataSource(url)
+                prepare() // might take long! (for buffering, etc)
+            }
+
+            //var updateSeekBar: Nothing? = null
+
+            mediaPlayer?.setOnPreparedListener { player ->
+                // Start playing the audio when it is prepared
+                player.start()
+            }
+            binding.seekBar.max = ceil(mediaPlayer!!.duration.toFloat() / 1000).toInt()
+            // Create a Runnable to update the SeekBar progress
+            val  updateSeekBar = object : Runnable {
+                override fun run() {
+                    val currentPosition = ceil(mediaPlayer!!.currentPosition.toFloat() / 1000).toInt()
+                    binding.seekBar.progress = currentPosition
+                    binding.seekBar.postDelayed(this, 1000)
+                }
+            }
+            // Start updating the SeekBar progress
+            binding.seekBar.postDelayed(updateSeekBar, 1000)
+            mediaPlayer?.setOnCompletionListener { player ->
+                binding.seekBar.removeCallbacks(updateSeekBar)
+                player.release()
+                isPlaying = true
+                binding.playPauseButton.setImageResource(R.drawable.round_play_arrow)
+            }
+        } catch (e: Exception){
+            Log.e(TAG, "Error", e)
+        }
+
+    }
+
+    private fun pause() {
+        isPlaying = true
+        binding.playPauseButton.setImageResource(R.drawable.round_play_arrow)
+        mediaPlayer?.pause()
+
     }
 
     private fun declineRequest() {
@@ -145,7 +236,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     progressDialog.hide()
                     dialog.dismiss()
-                    //Log.w(ContentValues.TAG, "Error writing document", e)
+                    Log.w(ContentValues.TAG, "Error writing document", e)
                 }
         }
         b.negativeTextView.setOnClickListener { dialog.dismiss() }
@@ -199,5 +290,25 @@ class UserRequestDetailsActivity : AppCompatActivity() {
     }
 
     class MyWorkPlaceViewHolder(val binding: WorkCardBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mediaPlayer != null) {
+            mediaPlayer?.apply {
+                release()
+                reset()
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mediaPlayer != null) {
+            mediaPlayer?.apply {
+                release()
+                reset()
+            }
+        }
+    }
 
 }

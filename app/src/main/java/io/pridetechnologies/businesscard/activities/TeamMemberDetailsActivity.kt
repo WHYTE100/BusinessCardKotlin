@@ -61,6 +61,79 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e -> Log.w(ContentValues.TAG, "Error writing document", e)
             }
+
+        constants.db.collection("social_media").document(memberId.toString())
+            .addSnapshotListener { snapshot, e ->
+
+                if (e != null) {
+                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    val whatsAppLink = snapshot.get("whatsapp_link").toString()
+                    val facebookLink = snapshot.get("facebook_link").toString()
+                    val linkedInLink = snapshot.get("linked_in_link").toString()
+                    val twitterLink = snapshot.get("twitter_link").toString()
+                    val youtubeLink = snapshot.get("youtube_link").toString()
+                    val instagramLink = snapshot.get("instagram_link").toString()
+                    val weChatLink = snapshot.get("wechat_link").toString()
+                    val tiktokLink = snapshot.get("tiktok_link").toString()
+
+                    if (facebookLink.equals("null") || facebookLink.isEmpty()){
+                        binding.facebookBtn.visibility =View.GONE
+                    }else binding.facebookBtn.visibility =View.VISIBLE
+                    if (whatsAppLink.equals("null") || whatsAppLink.isEmpty()){
+                        binding.whatsAppBtn.visibility =View.GONE
+                    }else binding.whatsAppBtn.visibility =View.VISIBLE
+                    if (linkedInLink.equals("null") || linkedInLink.isEmpty()){
+                        binding.linkedInBtn.visibility =View.GONE
+                    }else binding.linkedInBtn.visibility =View.VISIBLE
+                    if (twitterLink.equals("null") || twitterLink.isEmpty()){
+                        binding.twitterBtn.visibility =View.GONE
+                    }else binding.twitterBtn.visibility =View.VISIBLE
+                    if (youtubeLink.equals("null") || youtubeLink.isEmpty()){
+                        binding.youtubeBtn.visibility =View.GONE
+                    }else binding.youtubeBtn.visibility =View.VISIBLE
+                    if (instagramLink.equals("null") || instagramLink.isEmpty()){
+                        binding.instagramBtn.visibility =View.GONE
+                    }else binding.instagramBtn.visibility =View.VISIBLE
+                    if (weChatLink.equals("null") || weChatLink.isEmpty()){
+                        binding.wechatBtn.visibility =View.GONE
+                    }else binding.wechatBtn.visibility =View.VISIBLE
+                    if (tiktokLink.equals("null") || tiktokLink.isEmpty()){
+                        binding.tiktokBtn.visibility =View.GONE
+                    }else binding.tiktokBtn.visibility =View.VISIBLE
+
+                    binding.facebookBtn.setOnClickListener {
+                        constants.openProfileInApp(this, "com.facebook.katana",facebookLink)
+                    }
+                    binding.whatsAppBtn.setOnClickListener{
+                        constants.openNumberInWhatsApp(this,"com.whatsapp",whatsAppLink )
+                    }
+                    binding.linkedInBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.linkedin.android",linkedInLink )
+                    }
+                    binding.twitterBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.twitter.android",twitterLink )
+                    }
+                    binding.tiktokBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.zhiliaoapp.musically",tiktokLink )
+                    }
+                    binding.wechatBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.tencent.mm",weChatLink )
+                    }
+                    binding.instagramBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.whatsapp",instagramLink )
+                    }
+                    binding.youtubeBtn.setOnClickListener{
+                        constants.openProfileInApp(this, "com.google.android.youtube",youtubeLink )
+                    }
+                } else {
+                    Log.d(ContentValues.TAG, "Current data: null")
+                }
+
+            }
+
         constants.db.collection("users").document(memberId.toString())
             .collection("my_work_place").document(businessId.toString())
             .get()
@@ -85,7 +158,7 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
             b.descTextView.text = "Are you sure you want to approve this member?"
             b.positiveTextView.text = "Yes"
             b.positiveTextView.setOnClickListener {
-                removeMember()
+                approveMember()
                 dialog.dismiss()
             }
             b.negativeTextView.setOnClickListener { dialog.dismiss() }
@@ -125,6 +198,76 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.show()
         }
+
+        checkIfAdmin()
+    }
+
+    private fun checkIfAdmin() {
+        constants.db.collection("businesses")
+            .document(businessId.toString())
+            .collection("team")
+            .document(memberId.toString())
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    val isAdmin = snapshot.getBoolean("admin")
+                    val isSuperAdmin = snapshot.getBoolean("super_admin")
+
+                    if (isAdmin == true){
+                        if (isSuperAdmin == true){
+                            binding.approveButton.visibility = View.GONE
+                            binding.removeButton.visibility = View.GONE
+                            binding.removeAdminButton.visibility = View.GONE
+                            binding.makeAdminButton.visibility = View.GONE
+                        }else{
+                            binding.removeAdminButton.visibility = View.VISIBLE
+                            binding.makeAdminButton.visibility = View.GONE
+                        }
+                    }else {
+                        binding.makeAdminButton.visibility = View.VISIBLE
+                        binding.removeAdminButton.visibility = View.GONE
+                    }
+                }
+                binding.removeAdminButton.setOnClickListener {
+                    updatedAdminStatus(false)
+                }
+                binding.makeAdminButton.setOnClickListener {
+                    updatedAdminStatus(true)
+                }
+            }
+    }
+
+    private fun updatedAdminStatus(isAdmin: Boolean) {
+        progressDialog.show("Adding Member as Admin")
+        val teamMemberDetails = hashMapOf(
+            "admin" to isAdmin
+        )
+        constants.db.collection("businesses").document(businessId.toString())
+            .collection("team").document(constants.currentUserId.toString())
+            .set(teamMemberDetails, SetOptions.merge())
+            .addOnCompleteListener {task ->
+                if (task.isSuccessful){
+                    progressDialog.hide()
+                    if (isAdmin == true){
+                        binding.removeAdminButton.visibility = View.GONE
+                        binding.makeAdminButton.visibility = View.VISIBLE
+                    }else {
+                        binding.makeAdminButton.visibility = View.GONE
+                        binding.removeAdminButton.visibility = View.VISIBLE
+                    }
+                }else{
+                    progressDialog.hide()
+                    if (isAdmin == true){
+                        constants.showToast(this,"Couldn't make member as admin.")
+                    }else {
+                        constants.showToast(this,"Couldn't remove member as admin.")
+                    }
+                }
+            }
+
     }
 
     private fun approveMember() {

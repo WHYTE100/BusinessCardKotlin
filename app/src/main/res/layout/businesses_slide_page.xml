@@ -89,7 +89,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView50" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <io.github.glailton.expandabletextview.ExpandableTextView
                     android:id="@+id/textView71"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

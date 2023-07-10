@@ -72,6 +72,13 @@
     <string name="my_card">My Card</string>
     <string name="search_button">Search Button</string>
     <string name="add_request_note">Add Request Note</string>
-    <string name="send_request">Send Request</string>
+    <string name="send_request">Send with Note</string>
     <string name="skip">Skip</string>
+    <string name="start_adding_business_cards">Start Adding Business Cards</string>
+    <string name="no_businesses_message">All your saved cards for businesses will be displayed here. You will swipe right and left to see them.</string>
+    <string name="no_individuals_message">All your shared cards for other individuals will be displayed here. You will swipe right and left to see them.</string>
+    <string name="start_adding_individuals_cards">Start Adding Individuals Cards</string>
+    <string name="make_member_admin">Make Admin</string>
+    <string name="remove_member_admin">Remove as Admin</string>
+    <string name="work_place">Work Place</string>
 </resources>

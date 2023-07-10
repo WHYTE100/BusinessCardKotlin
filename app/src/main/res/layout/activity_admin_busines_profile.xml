@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="?attr/colorSecondary"
+        android:backgroundTint="?attr/colorSecondary"
         app:tint="?attr/colorOnPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -617,12 +617,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="65dp"
                         android:layout_marginHorizontal="@dimen/_15sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_marginBottom="24dp"
                         android:text="Edit Physical Address"
                         android:textColor="?attr/colorOnPrimary"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        tools:layout_editor_absoluteX="74dp" />
+                        tools:layout_editor_absoluteX="-189dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>

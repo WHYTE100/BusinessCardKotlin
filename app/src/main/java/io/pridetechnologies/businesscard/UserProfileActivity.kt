@@ -46,6 +46,7 @@ import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.squareup.picasso.Picasso
+import io.pridetechnologies.businesscard.activities.AddAnotherBusinessActivity
 import io.pridetechnologies.businesscard.activities.AdminBusinessProfileActivity
 import io.pridetechnologies.businesscard.activities.NewBusinessActivity
 import io.pridetechnologies.businesscard.databinding.ActivityUserProfileBinding
@@ -123,6 +124,11 @@ class UserProfileActivity : AppCompatActivity() {
         }
         binding.linkButton.setOnClickListener {
             linkBusiness()
+        }
+        binding.imageButton.setOnClickListener {
+            val intent = Intent(this, AddAnotherBusinessActivity::class.java)
+            startActivity(intent)
+            Animatoo.animateFade(this)
         }
         binding.socialMediaButton.setOnClickListener {
             val intent = Intent(this, SocialMediaActivity::class.java)
@@ -388,7 +394,11 @@ class UserProfileActivity : AppCompatActivity() {
             override fun getItemCount(): Int {
                 if(snapshots.size == 0){
                     binding.noWorkProfileCardView.visibility = View.VISIBLE
-                }else {binding.noWorkProfileCardView.visibility = View.GONE}
+                    binding.imageButton.visibility = View.GONE
+                }else {
+                    binding.noWorkProfileCardView.visibility = View.GONE
+                    binding.imageButton.visibility = View.VISIBLE
+                }
                 return snapshots.size
             }
 

@@ -14,7 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:tint="?attr/colorOnPrimary"
-        android:background="?attr/colorSecondary"
+        android:backgroundTint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_back_32"
@@ -104,7 +104,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/businessNameView"
                             app:layout_constraintVertical_bias="0.0" />
 
-                        <TextView
+                        <io.github.glailton.expandabletextview.ExpandableTextView
                             android:id="@+id/businessBioView"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -414,7 +414,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginStart="@dimen/_24sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
                 android:textSize="@dimen/_20ssp"
                 android:textColor="?attr/colorOnPrimary"
                 android:text="@string/social_media" />
@@ -424,7 +423,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16sdp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:elevation="3dp"
                 app:cardCornerRadius="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"

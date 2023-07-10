@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -111,6 +112,17 @@ class BusinessesHomeFragment : Fragment() {
                 return BusinessesViewHolder(binding)
             }
 
+            override fun getItemCount(): Int {
+                if(snapshots.size == 0){
+                    binding.noBusinessView.visibility = View.VISIBLE
+                    binding.cardListRecycler.visibility = View.GONE
+                }else {
+                    binding.noBusinessView.visibility = View.GONE
+                    binding.cardListRecycler.visibility = View.VISIBLE
+                }
+                return snapshots.size
+            }
+
             override fun onBindViewHolder(holder: BusinessesViewHolder, position: Int, model: Businesses) {
                 Picasso.get().load(model.business_logo).fit().centerCrop().placeholder(R.drawable.background_icon).into(holder.binding.circleImageView7)
                 holder.binding.textView50.text = model.business_name
@@ -124,6 +136,7 @@ class BusinessesHomeFragment : Fragment() {
                     b.descTextView.text = "Are you sure you want to delete this card?"
                     b.positiveTextView.text = "Delete"
                     b.positiveTextView.setOnClickListener {
+                        dialog.dismiss()
                         constants.db.collection("users").document(constants.currentUserId.toString())
                             .collection("businesses_cards").document(model.business_id.toString()).delete()
                             .addOnCompleteListener { dialog.dismiss() }
@@ -148,6 +161,18 @@ class BusinessesHomeFragment : Fragment() {
                         val businessLink = snapshot?.get("business_link").toString()
 
                         holder.binding.textView71.text = businessBio
+                        holder.binding.textView71
+                            .setAnimationDuration(500)
+                            .setReadMoreText("More")
+                            .setReadLessText("Less")
+                            .setCollapsedLines(3)
+                            .setIsExpanded(false)
+                            .setIsUnderlined(true)
+                            .setEllipsizedTextColor(ContextCompat.getColor(requireContext(), R.color.darkSecondaryDarkColor))
+
+                        holder.binding.textView71.setOnClickListener {
+                            holder.binding.textView71.toggle()
+                        }
 
                         if (businessMobile.equals("null") || businessMobile.isEmpty()){
                             holder.binding.callBtn.visibility = View.GONE

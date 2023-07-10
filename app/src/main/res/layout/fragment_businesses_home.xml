@@ -35,16 +35,19 @@
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginEnd="@dimen/_26sdp"
+            android:padding="@dimen/_1sdp"
             app:layout_constraintBottom_toBottomOf="@+id/textView103"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView103"
-            android:src="@drawable/store_profile" />
+            android:src="@drawable/store_profile"
+            android:contentDescription="@string/image_view" />
 
         <ImageButton
             android:id="@+id/searchButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:padding="@dimen/_3sdp"
             android:background="@null"
             android:src="@drawable/search_36"
             app:layout_constraintBottom_toBottomOf="@+id/imageView27"
@@ -52,6 +55,44 @@
             app:layout_constraintTop_toTopOf="@+id/imageView27"
             android:contentDescription="@string/search_button" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/noBusinessView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_adding_business_cards"
+            android:textSize="@dimen/_18ssp"
+            android:textColor="@color/darkPrimaryColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.26999998" />
+
+        <TextView
+            android:id="@+id/textView33"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_24sdp"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/darkPrimaryColor"
+            android:gravity="center_horizontal"
+            android:text="@string/no_businesses_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView32" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.viewpager2.widget.ViewPager2
@@ -66,6 +107,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

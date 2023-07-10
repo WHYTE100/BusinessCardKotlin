@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
@@ -116,6 +117,18 @@ class BusinessDetailsActivity : AppCompatActivity() {
                 Picasso.get().load(businessLogo).fit().centerCrop().placeholder(R.drawable.background_icon).into(binding.businessLogoView)
                 binding.businessNameView.text = businessName
                 binding.businessBioView.text = businessBio
+                binding.businessBioView
+                    .setAnimationDuration(500)
+                    .setReadMoreText("More")
+                    .setReadLessText("Less")
+                    .setCollapsedLines(3)
+                    .setIsExpanded(false)
+                    .setIsUnderlined(true)
+                    .setEllipsizedTextColor(ContextCompat.getColor(this, R.color.darkSecondaryDarkColor))
+
+                binding.businessBioView.setOnClickListener {
+                    binding.businessBioView.toggle()
+                }
 
                 binding.callButton.setOnClickListener {
                     if (!businessMobile.equals("null") || businessMobile.isNotEmpty()) {

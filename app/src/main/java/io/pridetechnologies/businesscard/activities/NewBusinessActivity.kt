@@ -267,6 +267,7 @@ class NewBusinessActivity : AppCompatActivity() {
             "user_name" to userName,
             "user_image" to photoUrl,
             "admin" to true,
+            "super_admin" to true,
             "is_accepted" to true,
             "user_position" to myPosition,
             "added_on" to FieldValue.serverTimestamp(),

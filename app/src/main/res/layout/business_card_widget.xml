@@ -46,10 +46,10 @@
 
             <ImageView
                 android:id="@+id/openScanIndividualButton"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:src="@drawable/scanner"
+                android:src="@drawable/scan"
                 android:contentDescription="@string/image_button"
                 app:tint="@color/darkPrimaryColor" />
 
@@ -79,10 +79,10 @@
 
             <ImageView
                 android:id="@+id/openScanBusinessButton"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:src="@drawable/scanner"
+                android:src="@drawable/scan"
                 android:contentDescription="@string/image_button"
                 app:tint="@color/darkPrimaryColor" />
 

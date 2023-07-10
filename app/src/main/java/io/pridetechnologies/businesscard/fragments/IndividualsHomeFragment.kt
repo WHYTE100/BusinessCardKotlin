@@ -122,6 +122,17 @@ class IndividualsHomeFragment : Fragment() {
                 return IndividualsViewHolder(binding)
             }
 
+            override fun getItemCount(): Int {
+                if(snapshots.size == 0){
+                    binding.noIndividualsView.visibility = View.VISIBLE
+                    binding.cardListRecycler.visibility = View.GONE
+                }else {
+                    binding.noIndividualsView.visibility = View.GONE
+                    binding.cardListRecycler.visibility = View.VISIBLE
+                }
+                return snapshots.size
+            }
+
             override fun onBindViewHolder(holder: IndividualsViewHolder, position: Int, model: Individuals) {
                 Picasso.get().load(model.user_image).fit().centerCrop().placeholder(R.mipmap.user_gold).into(holder.binding.circleImageView)
                 holder.binding.textView.text = model.user_name
@@ -135,6 +146,7 @@ class IndividualsHomeFragment : Fragment() {
                     b.descTextView.text = "Are you sure you want to delete this card?"
                     b.positiveTextView.text = "Delete"
                     b.positiveTextView.setOnClickListener {
+                        dialog.dismiss()
                         constants.db.collection("users").document(constants.currentUserId.toString())
                             .collection("individuals_cards").document(model.user_id.toString()).delete()
                             .addOnCompleteListener { dialog.dismiss() }

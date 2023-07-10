@@ -43,6 +43,7 @@
                 android:layout_marginStart="@dimen/_4sdp"
                 android:layout_marginEnd="@dimen/_30sdp"
                 android:layout_marginVertical="@dimen/_3sdp"
+                app:defaultQueryHint="Search Business"
                 android:background="@drawable/search_background"
                 app:searchIcon="@drawable/baseline_search"
                 android:focusable="false"

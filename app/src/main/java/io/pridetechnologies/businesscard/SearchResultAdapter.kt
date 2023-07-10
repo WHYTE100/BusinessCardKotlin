@@ -15,6 +15,7 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import io.pridetechnologies.businesscard.activities.NewBusinessCardActivity
 import kotlinx.serialization.json.JsonObject
 import org.json.JSONObject
 
@@ -51,7 +52,7 @@ class SearchResultAdapter(val context: Context) : PagingDataAdapter<BusinessSear
             businessLocation.text = "${businessSearch.area_located}, ${businessSearch.district_name}, ${businessSearch.country}"
 
             cardView.setOnClickListener {
-                val intent = Intent(context, BusinessDetailsActivity::class.java)
+                val intent = Intent(context, NewBusinessCardActivity::class.java)
                 intent.putExtra("business_id", businessSearch.objectID)
                 context.startActivity(intent)
                 Animatoo.animateFade(context)

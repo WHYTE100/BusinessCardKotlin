@@ -85,6 +85,7 @@ class ExistingBusinessActivity : AppCompatActivity() {
                 "user_name" to userName,
                 "user_image" to userImage,
                 "admin" to false,
+                "super_admin" to false,
                 "is_accepted" to false,
                 "user_position" to memberPosition,
                 "approve_on" to FieldValue.serverTimestamp(),

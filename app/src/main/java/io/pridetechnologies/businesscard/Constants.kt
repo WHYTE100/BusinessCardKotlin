@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -25,6 +26,11 @@ import com.google.firebase.storage.ktx.storage
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
+import io.pridetechnologies.businesscard.notifications.PushNotification
+import io.pridetechnologies.businesscard.notifications.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -156,7 +162,7 @@ class Constants {
 
     // Function to write data to SharedPreferences
     fun writeToSharedPreferences(context: Context, key: String, value: String) {
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyQRCode", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("BusinessCard", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putString(key, value)
         editor.apply()
@@ -164,7 +170,7 @@ class Constants {
 
     // Function to read data from SharedPreferences
     fun readFromSharedPreferences(context: Context, key: String, defaultValue: String): String {
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyQRCode", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("BusinessCard", Context.MODE_PRIVATE)
         return sharedPreferences.getString(key, defaultValue) ?: defaultValue
     }
 
@@ -237,6 +243,18 @@ class Constants {
         } else {
             // Handle the case when Google Maps app is not installed
             // You can open a web-based map instead, or display an error message
+        }
+    }
+    fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if (response.isSuccessful){
+                //Log.d(TAG, "Response: ${response}")
+            }else{
+                //Log.e(TAG, response.errorBody().toString())
+            }
+        }catch (e: Exception){
+            //Log.e(TAG, e.toString())
         }
     }
 }

@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="ADD PROFILE IMAGE"
+        android:text="PROFILE IMAGE"
         android:textColor="?attr/colorOnPrimary"
         android:textSize="24sp"
         android:textStyle="bold"

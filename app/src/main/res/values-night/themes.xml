@@ -48,14 +48,24 @@
         <item name="cornerRadius">@dimen/_10sdp</item>
         <item name="rippleColor">@color/darkPrimaryColor</item>
     </style>
-    <style name="TextViewStyle" parent="Widget.MaterialComponents.TextView">
+    <style name="TextViewStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/primaryColor</item>
         <item name="android:textSize">@dimen/_8sdp</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="ImageViewTint" parent="Widget.AppCompat.ImageButton">
-        <item name="tint">@color/primaryColor</item>
-        <item name="backgroundTint">@color/darkPrimaryColor</item>
+        <item name="android:tint">@color/darkPrimaryColor</item>
+        <item name="android:background">@drawable/image_view_background</item>
+        <item name="android:backgroundTint">@color/primaryColor</item>
+        <item name="android:paddingHorizontal">@dimen/_6sdp</item>
+        <item name="android:paddingVertical">@dimen/_3sdp</item>
+    </style>
+
+    <style name="ImageViewTintClear" parent="Widget.AppCompat.ImageButton">
+        <item name="android:tint">@color/primaryColor</item>
+        <item name="android:backgroundTint">@color/darkPrimaryColor</item>
+        <item name="android:paddingHorizontal">@dimen/_6sdp</item>
+        <item name="android:paddingVertical">@dimen/_3sdp</item>
     </style>
 
     <style name="Theme.BusinessCard.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">

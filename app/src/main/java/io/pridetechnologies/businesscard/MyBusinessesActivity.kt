@@ -14,6 +14,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.squareup.picasso.Picasso
+import io.pridetechnologies.businesscard.activities.AddAnotherBusinessActivity
 import io.pridetechnologies.businesscard.activities.AdminBusinessProfileActivity
 import io.pridetechnologies.businesscard.activities.NewBusinessActivity
 import io.pridetechnologies.businesscard.databinding.ActivityBusinessDetailsBinding
@@ -36,9 +37,10 @@ class MyBusinessesActivity : AppCompatActivity() {
             Animatoo.animateFade(this)
         }
         binding.addButton.setOnClickListener {
-            val intent = Intent(this, NewBusinessActivity::class.java)
-            startActivity(intent)
-            Animatoo.animateFade(this)
+            addBusiness()
+        }
+        binding.addButton2.setOnClickListener {
+            addBusiness()
         }
         val verticalLayoutManager = LinearLayoutManager(this)
         workPlaceRecycler = binding.workPlaceRecycler
@@ -46,6 +48,13 @@ class MyBusinessesActivity : AppCompatActivity() {
 
         getMultipleWorkPlace()
     }
+
+    private fun addBusiness() {
+        val intent = Intent(this, AddAnotherBusinessActivity::class.java)
+        startActivity(intent)
+        Animatoo.animateFade(this)
+    }
+
     private fun getMultipleWorkPlace() {
         val workPlaceQuery: Query = FirebaseFirestore.getInstance()
             .collection("users").document(constants.currentUserId.toString())
@@ -63,12 +72,12 @@ class MyBusinessesActivity : AppCompatActivity() {
                 return MyWorkPlaceViewHolder(binding)
             }
 
-//            override fun getItemCount(): Int {
-//                if(snapshots.size == 0){
-//                    binding.noWorkProfileCardView.visibility = View.VISIBLE
-//                }else {binding.noWorkProfileCardView.visibility = View.GONE}
-//                return snapshots.size
-//            }
+            override fun getItemCount(): Int {
+                if(snapshots.size == 0){
+                    binding.addButton2.visibility = View.GONE
+                }else {binding.addButton2.visibility = View.VISIBLE}
+                return snapshots.size
+            }
 
             override fun onBindViewHolder(holder: MyWorkPlaceViewHolder, position: Int, model: WorkCard) {
                 Picasso.get().load(model.business_logo).fit().centerCrop().placeholder(R.drawable.background_icon).into(holder.binding.logoImageView)
