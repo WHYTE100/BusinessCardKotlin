@@ -15,8 +15,8 @@ import com.algolia.search.model.IndexName
 class SearchViewModel : ViewModel(){
 
     val searcher = HitsSearcher(
-        applicationID = ApplicationID("IKHMA0Z125"),
-        apiKey = APIKey("ca743676215813cce0a373a6a16b9db8"),
+        applicationID = ApplicationID("0MC7C7BCYB"),
+        apiKey = APIKey("cc7d37100800f423b90379937359e58f"),
         indexName = IndexName("businesses")
     )
 

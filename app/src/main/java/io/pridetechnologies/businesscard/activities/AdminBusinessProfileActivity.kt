@@ -35,6 +35,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.squareup.picasso.Picasso
 import io.pridetechnologies.businesscard.Constants
+import io.pridetechnologies.businesscard.CustomProgressDialog
 import io.pridetechnologies.businesscard.Department
 import io.pridetechnologies.businesscard.EditBusinessAddressActivity
 import io.pridetechnologies.businesscard.EditBusinessBasicsActivity
@@ -55,6 +56,7 @@ import java.util.concurrent.Executors
 
 
 class AdminBusinessProfileActivity : AppCompatActivity() {
+    private val progressDialog by lazy { CustomProgressDialog(this) }
     private lateinit var binding: ActivityAdminBusinesProfileBinding
     private val constants = Constants()
     private lateinit var departmentalContactsRecycler: RecyclerView
@@ -155,7 +157,9 @@ class AdminBusinessProfileActivity : AppCompatActivity() {
                 val businessDistrict = value?.get("district_name").toString()
                 val businessCountry = value?.get("country").toString()
 
-                Picasso.get().load(businessLogo).fit().centerCrop().placeholder(R.drawable.background_icon).into(binding.businessLogoView)
+                if (!businessLogo.equals(null)){
+                    Picasso.get().load(businessLogo).fit().centerCrop().placeholder(R.drawable.background_icon).into(binding.businessLogoView)
+                }
                 binding.businessNameView.text = businessName
 
                 binding.textView52.text = buildingNumber
@@ -198,6 +202,7 @@ class AdminBusinessProfileActivity : AppCompatActivity() {
                         constants.copyText(this, businessLink)
                     }
                     b.resetButton.setOnClickListener {
+                        progressDialog.show("Resetting code...")
                         val multiFormatWriter = MultiFormatWriter()
                         try {
                             val bitMatrix: BitMatrix = multiFormatWriter.encode(businessId.toString(), BarcodeFormat.QR_CODE, 300, 300)
@@ -221,25 +226,30 @@ class AdminBusinessProfileActivity : AppCompatActivity() {
                                             .set(myBusinessDetails, SetOptions.merge())
                                             .addOnSuccessListener {
                                                 dialog.dismiss()
-                                                //constants.setSnackBar(this, "Reset Successful")
+                                                progressDialog.hide()
+                                                constants.showToast(this, "Code Reset Successful")
                                             }
                                             .addOnFailureListener { e ->
                                                 dialog.dismiss()
-                                                //constants.setSnackBar(this, "Reset Unsuccessful")
+                                                progressDialog.hide()
+                                                constants.showToast(this, "Code Reset Unsuccessful")
                                             }
 
                                     }.addOnFailureListener {
+                                        progressDialog.hide()
                                         // Handle any error that occurs while getting the download URL
-                                        //constants.setSnackBar(this, "Failed to get the url")
+                                        constants.showToast(this, "Failed to get the url")
                                     }
                                 } else {
+                                    progressDialog.hide()
                                     // Handle any error that occurs during upload
-                                    //constants.setSnackBar(this, "Failed to upload qr code")
+                                    constants.showToast(this, "Failed to upload qr code")
                                 }
                             }
                         } catch (_: Exception) {
                             dialog.dismiss()
-                            //constants.setSnackBar(this, "Failed to create qr code")
+                            progressDialog.hide()
+                            constants.showToast(this, "Failed to create qr code")
                         }
                     }
                     b.button10.setOnClickListener { dialog.dismiss() }

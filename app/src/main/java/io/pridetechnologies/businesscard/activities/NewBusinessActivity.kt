@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -29,14 +28,10 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.squareup.picasso.Picasso
 import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.CustomProgressDialog
-import io.pridetechnologies.businesscard.R
 import io.pridetechnologies.businesscard.databinding.ActivityNewBusinessBinding
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
 
 class NewBusinessActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewBusinessBinding
@@ -128,7 +123,7 @@ class NewBusinessActivity : AppCompatActivity() {
             if (imageUri != null){
                 saveImage(businessName, businessEmail, businessWebsite, businessBio, mobile, myPosition, businessId)
             }else saveBusinessDetails(
-                "",
+                null,
                 businessName,
                 businessEmail,
                 businessWebsite,
@@ -169,7 +164,7 @@ class NewBusinessActivity : AppCompatActivity() {
     }
 
     private fun saveBusinessDetails(
-        logoUrl: String,
+        logoUrl: String?,
         businessName: String,
         businessEmail: String,
         businessWebsite: String,
@@ -212,7 +207,7 @@ class NewBusinessActivity : AppCompatActivity() {
                         // Get the download URL of the uploaded image
                         qrcodeRef.downloadUrl.addOnSuccessListener { uri: Uri? ->
                             val qrCodeDownloadUrl = uri?.toString()
-                            updateUI(logoUrl, businessName, businessEmail, businessWebsite, businessBio, mobile, myPosition, businessId, qrCodeDownloadUrl, shortLink)
+                            updateUI(logoUrl!!, businessName, businessEmail, businessWebsite, businessBio, mobile, myPosition, businessId, qrCodeDownloadUrl, shortLink)
 
                         }.addOnFailureListener {
                             // Handle any error that occurs while getting the download URL
@@ -267,6 +262,7 @@ class NewBusinessActivity : AppCompatActivity() {
             "user_name" to userName,
             "user_image" to photoUrl,
             "admin" to true,
+            "super_admin" to true,
             "is_accepted" to true,
             "user_position" to myPosition,
             "added_on" to FieldValue.serverTimestamp(),

@@ -69,34 +69,34 @@ class EditBusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         businessId = intent.getStringExtra("business_id")
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    // Got last known location. In some rare situations, this can be null.
+                    if (location != null) {
+                        // Use the location object to get latitude and longitude
+                        latitude = location.latitude
+                        longitude = location.longitude
+
+                        // Now you can use the latitude and longitude to update the map or perform other tasks
+                    }
+                }
+                .addOnFailureListener { e ->
+                    // Handle any errors that occurred while trying to get location
+                }
+        } else {
+            // Location permission not granted, request again
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
+        }
         binding.addImageButton.setOnClickListener {
 
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED) {
-                fusedLocationClient.lastLocation
-                    .addOnSuccessListener { location ->
-                        // Got last known location. In some rare situations, this can be null.
-                        if (location != null) {
-                            // Use the location object to get latitude and longitude
-                            latitude = location.latitude
-                            longitude = location.longitude
+            binding.mapsLayout.visibility = View.VISIBLE
+            binding.detailsLayout.visibility = View.GONE
+            val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+            mapFragment.getMapAsync(this)
 
-                            val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-                            mapFragment.getMapAsync(this)
-                            binding.mapsLayout.visibility = View.VISIBLE
-                            binding.detailsLayout.visibility = View.GONE
-
-                            // Now you can use the latitude and longitude to update the map or perform other tasks
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        // Handle any errors that occurred while trying to get location
-                    }
-            } else {
-                // Location permission not granted, request again
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
-            }
         }
         binding.saveLocationButton.setOnClickListener {
             binding.mapsLayout.visibility = View.GONE
@@ -259,7 +259,7 @@ class EditBusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.detailsLayout.visibility = View.VISIBLE
     }
     override fun onDestroy() {
-        gMap.clear()
         super.onDestroy()
+        gMap.clear()
     }
 }

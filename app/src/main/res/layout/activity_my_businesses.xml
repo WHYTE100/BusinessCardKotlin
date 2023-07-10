@@ -11,13 +11,13 @@
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/_24sdp"
         android:background="?attr/colorSecondary"
         android:contentDescription="@string/back_button"
+        app:layout_constraintBottom_toBottomOf="@+id/textView151"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_round_add"
+        app:layout_constraintTop_toTopOf="@+id/textView151"
+        app:srcCompat="@drawable/round_add_business_24"
         app:tint="?attr/colorOnPrimary" />
 
     <ImageButton
@@ -27,7 +27,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:tint="?attr/colorOnPrimary"
-        android:background="?attr/colorSecondary"
+        android:backgroundTint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_back_32"
@@ -49,11 +49,25 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/workPlaceRecycler"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
+    <Button
+        android:id="@+id/addButton2"
+        style="@style/OutlineButton"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:text="Add Another Business"
+        android:textColor="?attr/colorPrimary"
+        android:backgroundTint="?attr/colorOnPrimary"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/workPlaceRecycler" />
 </androidx.constraintlayout.widget.ConstraintLayout>

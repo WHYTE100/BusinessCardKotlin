@@ -122,8 +122,21 @@ class IndividualsHomeFragment : Fragment() {
                 return IndividualsViewHolder(binding)
             }
 
+            override fun getItemCount(): Int {
+                if(snapshots.size == 0){
+                    binding.noIndividualsView.visibility = View.VISIBLE
+                    binding.cardListRecycler.visibility = View.GONE
+                }else {
+                    binding.noIndividualsView.visibility = View.GONE
+                    binding.cardListRecycler.visibility = View.VISIBLE
+                }
+                return snapshots.size
+            }
+
             override fun onBindViewHolder(holder: IndividualsViewHolder, position: Int, model: Individuals) {
-                Picasso.get().load(model.user_image).fit().centerCrop().placeholder(R.mipmap.user_gold).into(holder.binding.circleImageView)
+                if (!model.user_image.equals(null)){
+                    Picasso.get().load(model.user_image).fit().centerCrop().placeholder(R.mipmap.user_gold).into(holder.binding.circleImageView)
+                }
                 holder.binding.textView.text = model.user_name
 
                 holder.binding.deleteImageButton.setOnClickListener {
@@ -135,6 +148,7 @@ class IndividualsHomeFragment : Fragment() {
                     b.descTextView.text = "Are you sure you want to delete this card?"
                     b.positiveTextView.text = "Delete"
                     b.positiveTextView.setOnClickListener {
+                        dialog.dismiss()
                         constants.db.collection("users").document(constants.currentUserId.toString())
                             .collection("individuals_cards").document(model.user_id.toString()).delete()
                             .addOnCompleteListener { dialog.dismiss() }
@@ -180,7 +194,7 @@ class IndividualsHomeFragment : Fragment() {
                             }
 
                             holder.binding.callButton.setOnClickListener {
-                                if (!userMobile.equals("null")) {
+                                if (!userMobile.equals("")) {
                                     val number = String.format("tel: %s", userMobile)
                                     val callIntent = Intent(Intent.ACTION_CALL)
                                     callIntent.setData(Uri.parse(number))
@@ -213,10 +227,14 @@ class IndividualsHomeFragment : Fragment() {
                             }
                             holder.binding.messageButton.setOnClickListener {
 
-                                val number = String.format("smsto:$userMobile")
-                                val smsIntent = Intent(Intent.ACTION_SENDTO)
-                                smsIntent.setData(Uri.parse(number))
-                                startActivity(smsIntent)
+                                if (!userMobile.equals("")) {
+                                    val number = String.format("smsto:$userMobile")
+                                    val smsIntent = Intent(Intent.ACTION_SENDTO)
+                                    smsIntent.setData(Uri.parse(number))
+                                    startActivity(smsIntent)
+                                } else {
+                                    Toast.makeText(context, "No Mobile Number", Toast.LENGTH_LONG).show()
+                                }
                             }
                             holder.binding.emailButton.setOnClickListener {
                                 val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$userEmail"))
@@ -356,7 +374,9 @@ class IndividualsHomeFragment : Fragment() {
                     }
 
                     override fun onBindViewHolder(holder: UserProfileActivity.MyWorkPlaceViewHolder, position: Int, model: WorkCard) {
-                        Picasso.get().load(model.business_logo).fit().centerCrop().placeholder(io.pridetechnologies.businesscard.R.drawable.background_icon).into(holder.binding.logoImageView)
+                        if (!model.business_logo.equals(null)){
+                            Picasso.get().load(model.business_logo).fit().centerCrop().placeholder(R.drawable.background_icon).into(holder.binding.logoImageView)
+                        }
                         holder.binding.positionTextView.text = model.user_position
                         holder.binding.businessNameTextView.text = model.business_name
                         constants.db.collection("businesses").document(model.business_id.toString())

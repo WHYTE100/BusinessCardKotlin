@@ -51,33 +51,28 @@ class BusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         businessId = intent.getStringExtra("business_id")
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    // Got last known location. In some rare situations, this can be null.
+                    if (location != null) {
+                        // Use the location object to get latitude and longitude
+                        latitude = location.latitude
+                        longitude = location.longitude
+                    }
+                }
+                .addOnFailureListener { e ->
+                    // Handle any errors that occurred while trying to get location
+                }
+        } else {
+            // Location permission not granted, request again
+            ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
+        }
         binding.addImageButton.setOnClickListener {
-
-
-            if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                fusedLocationClient.lastLocation
-                    .addOnSuccessListener { location ->
-                        // Got last known location. In some rare situations, this can be null.
-                        if (location != null) {
-                            // Use the location object to get latitude and longitude
-                            latitude = location.latitude
-                            longitude = location.longitude
-
-                            val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-                            mapFragment.getMapAsync(this)
-                            binding.mapsLayout.visibility = View.VISIBLE
-                            binding.detailsLayout.visibility = View.GONE
-
-                            // Now you can use the latitude and longitude to update the map or perform other tasks
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        // Handle any errors that occurred while trying to get location
-                    }
-            } else {
-                // Location permission not granted, request again
-                ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
-            }
+            binding.mapsLayout.visibility = View.VISIBLE
+            binding.detailsLayout.visibility = View.GONE
+            val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+            mapFragment.getMapAsync(this)
         }
         binding.saveLocationButton.setOnClickListener {
             binding.mapsLayout.visibility = View.GONE
@@ -172,30 +167,6 @@ class BusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                 override fun onMarkerDragStart(marker: Marker) {}
             })
         }
-
-//        gMap.addMarker(
-//            MarkerOptions()
-//                .draggable(true)
-//                .position(currentPosition)
-//                .flat(true)
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-//                .title("My Business Location"))
-//        moveToCurrentPosition(currentPosition)
-//        gMap.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener{
-//            override fun onMarkerDrag(marker: Marker) {
-//            }
-//
-//            override fun onMarkerDragEnd(marker: Marker) {
-//                val lat = marker.position.latitude
-//                val long = marker.position.longitude
-//                finalPosition = LatLng(lat,long)
-//                //Log.w(ContentValues.TAG, "Marker Position: $finalPosition ")
-//            }
-//
-//            override fun onMarkerDragStart(marker: Marker) {
-//            }
-//
-//        })
     }
     private fun moveToCurrentPosition(position:LatLng){
         val cameraPosition = CameraPosition.builder()

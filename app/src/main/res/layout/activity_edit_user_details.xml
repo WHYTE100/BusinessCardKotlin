@@ -14,7 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:tint ="?attr/colorOnPrimary"
-        android:background="?attr/colorPrimary"
+        android:backgroundTint="?attr/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_back_32" />
@@ -23,6 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +128,11 @@
                     android:id="@+id/bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
+                    android:minHeight="@dimen/_110sdp"
+                    android:minLines="4"
+                    android:maxLines="7"
+                    android:gravity="top"
+                    android:inputType="textImeMultiLine"
                     android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
 

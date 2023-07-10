@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_loginFragment_to_addBioFragment"
             app:destination="@id/addBioFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -69,5 +72,14 @@
         <action
             android:id="@+id/action_addBioFragment_to_homeActivity"
             app:destination="@id/homeActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="io.pridetechnologies.businesscard.fragments.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" >
+        <action
+            android:id="@+id/action_resetPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

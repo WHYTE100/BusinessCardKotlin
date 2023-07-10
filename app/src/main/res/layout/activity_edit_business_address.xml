@@ -24,7 +24,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:tint ="?attr/colorOnPrimary"
-            android:background="?attr/colorPrimary"
+            android:backgroundTint="?attr/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/arrow_back_32" />
@@ -33,12 +33,11 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:text="Business Address Details"
+            android:text="Business Address"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/_20ssp"
             app:layout_constraintBottom_toBottomOf="@+id/backButton"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/backButton"
             app:layout_constraintTop_toTopOf="@+id/backButton" />
 
         <ScrollView
@@ -168,15 +167,17 @@
                         <ImageView
                             android:id="@+id/imageView"
                             android:layout_width="@dimen/_70sdp"
-                            android:layout_height="@dimen/_70sdp"
+                            android:layout_height="0dp"
                             android:layout_margin="@dimen/_8sdp"
                             android:contentDescription="@string/maps_image"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/linearLayout7"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/map" />
 
                         <LinearLayout
+                            android:id="@+id/linearLayout7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -188,29 +189,30 @@
                                 android:id="@+id/latTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Latitute : 0.0"
                                 android:gravity="center_horizontal"
+                                android:text="Latitute : 0.0"
                                 android:textColor="?attr/colorPrimary"
-                                android:textSize="@dimen/_10ssp"/>
+                                android:textSize="@dimen/_10ssp" />
 
                             <TextView
                                 android:id="@+id/longTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Longitude : 0.0"
                                 android:gravity="center_horizontal"
+                                android:text="Longitude : 0.0"
                                 android:textColor="?attr/colorPrimary"
-                                android:textSize="@dimen/_10ssp"/>
+                                android:textSize="@dimen/_10ssp" />
 
                             <Button
                                 android:id="@+id/addImageButton"
+                                style="@style/OutlineButtonBlack"
                                 android:layout_width="wrap_content"
                                 android:layout_height="60dp"
-                                android:backgroundTint="?attr/colorPrimary"
-                                style="@style/OutlineButtonBlack"
                                 android:layout_marginEnd="@dimen/_8sdp"
+                                android:backgroundTint="?attr/colorPrimary"
                                 android:text="@string/add_location_button"
-                                android:textColor="?attr/colorOnPrimary" />
+                                android:textColor="?attr/colorOnPrimary"
+                                android:textSize="@dimen/_10ssp" />
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@
     <string name="closeButton">Close</string>
     <string name="myBio">My Bio</string>
     <string name="add_location_button">Pin Business Location</string>
-    <string name="proceed">Continue</string>
+    <string name="proceed">Proceed</string>
     <string name="maps_image">Maps placeholder\n</string>
     <string name="departmental_contacts">Departments Contacts</string>
     <string name="add_button">Add Button\n</string>
@@ -72,6 +72,23 @@
     <string name="my_card">My Card</string>
     <string name="search_button">Search Button</string>
     <string name="add_request_note">Add Request Note</string>
-    <string name="send_request">Send Request</string>
+    <string name="send_request">Send with Note</string>
     <string name="skip">Skip</string>
+    <string name="start_adding_business_cards">Start Adding Business Cards</string>
+    <string name="no_businesses_message">All your saved cards for businesses will be displayed here. You will swipe right and left to see them.</string>
+    <string name="no_individuals_message">All your shared cards for other individuals will be displayed here. You will swipe right and left to see them.</string>
+    <string name="start_adding_individuals_cards">Start Adding Individuals Cards</string>
+    <string name="make_member_admin">Make Admin</string>
+    <string name="remove_member_admin">Remove as Admin</string>
+    <string name="work_place">Work Place</string>
+    <string name="default_web_client_id">155854465270-gb5lkcofmn5n99fucj21tchq3fp70i3c.apps.googleusercontent.com</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="submit">Submit</string>
+    <string name="please_type_your_email">Please type your email</string>
+    <string name="new_user">New User?</string>
+    <string name="create_account">Create account</string>
+    <string name="welcome">Welcome</string>
+    <string name="please_login">Please Login</string>
+    <string name="or">OR</string>
 </resources>

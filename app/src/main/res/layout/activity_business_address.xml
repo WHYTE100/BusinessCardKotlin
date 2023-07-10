@@ -22,11 +22,11 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
+            android:layout_marginStart="45dp"
             android:layout_marginTop="64dp"
-            android:text="Business Address Details"
+            android:text="Business Address"
             android:textColor="?attr/colorOnPrimary"
-            android:textSize="24sp"
+            android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -112,7 +112,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="24dp"
-                    android:hint="District"
+                    android:hint="District/State"
                     app:endIconMode="clear_text"
                     app:startIconContentDescription="@string/content_description_start_icon">
 
@@ -158,7 +158,7 @@
                             android:id="@+id/imageView"
                             android:layout_width="@dimen/_70sdp"
                             android:layout_height="@dimen/_70sdp"
-                            android:layout_margin="@dimen/_8sdp"
+                            android:layout_margin="@dimen/_10sdp"
                             android:contentDescription="@string/maps_image"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -169,6 +169,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/_6sdp"
                             app:layout_constraintBottom_toBottomOf="@+id/imageView"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/imageView">

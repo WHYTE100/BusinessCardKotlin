@@ -67,9 +67,11 @@ class AddSocialMediaActivity : AppCompatActivity() {
                     .set(linkDetails, SetOptions.merge())
                     .addOnSuccessListener {
                         progressDialog.hide()
+                        constants.showToast(this, "Link saved successfully ")
                         finish()
                     }.addOnFailureListener { e ->
                         progressDialog.hide()
+                        constants.showToast(this, "Error saving link ")
                         Log.w(ContentValues.TAG, "Error writing document", e) }
             }
             b.negativeTextView.setOnClickListener { dialog.dismiss() }

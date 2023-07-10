@@ -82,7 +82,10 @@ class EditUserDetailsActivity : AppCompatActivity() {
                 val mobile = value?.get("mobile").toString()
                 val userProfession = value?.get("profession").toString()
 
-                Picasso.get().load(userImage).fit().centerCrop().placeholder(R.mipmap.user_gold).into(binding.userImageView)
+                if (!userImage.equals(null)){
+                    Picasso.get().load(userImage).fit().centerCrop().placeholder(R.mipmap.user_gold).into(binding.userImageView)
+                }
+
                 binding.firstName.setText(firstName)
                 binding.surname.setText(surname)
                 binding.mobile.setText(mobile)

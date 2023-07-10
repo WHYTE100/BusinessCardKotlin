@@ -1,7 +1,11 @@
 package io.pridetechnologies.businesscard.fragments
 
+import android.app.Dialog
 import android.content.ContentValues
+import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
@@ -12,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.dynamiclinks.ktx.androidParameters
@@ -27,6 +32,8 @@ import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.CustomProgressDialog
+import io.pridetechnologies.businesscard.MainActivity
+import io.pridetechnologies.businesscard.databinding.CustomDialogBoxBinding
 import io.pridetechnologies.businesscard.databinding.FragmentRegisterBinding
 import java.io.ByteArrayOutputStream
 
@@ -75,100 +82,37 @@ class RegisterFragment : Fragment() {
             progressDialog.show("Signing Up...")
             auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
                 val user = constants.auth.currentUser
-//                user!!.sendEmailVerification()
-//                    .addOnCompleteListener { task ->
-//                        if (task.isSuccessful) {
-//                            //Log.d(TAG, "Email sent.")
-//
-//                        }
-//                    }
-                user!!.updateEmail(email)
-                createDynamicLink(user)
+                user?.let {
+                    it.updateEmail(email)
+                    it.sendEmailVerification()
+                        .addOnSuccessListener {
+                            progressDialog.hide()
+                            constants.auth.signOut()
+                            val dialog = Dialog(requireContext())
+                            val b = CustomDialogBoxBinding.inflate(layoutInflater)
+                            dialog.setContentView(b.root)
+                            b.titleTextView.text = "Verify your email"
+                            b.descTextView.text = "A verification link has been sent to your email. Please open your email to verify your account and then login"
+                            b.positiveTextView.text = "Ok"
+                            b.positiveTextView.setOnClickListener {
+                                val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                                findNavController().navigate(action)
+                            }
+                            b.negativeTextView.visibility = View.GONE
+                            dialog.setCancelable(false)
+                            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            dialog.show()
+
+                        }.addOnFailureListener {
+                            progressDialog.hide()
+                            constants.showToast(requireContext(), "Error sending verification email ")
+                        }
+                }
 
             }.addOnFailureListener {
                 progressDialog.hide()
-                Log.w(ContentValues.TAG, "Error creating user", it)
+                constants.showToast(requireContext(), it.message.toString())
             }
-        }
-    }
-
-    private fun createDynamicLink(user: FirebaseUser?) {
-
-        val deepLink = Uri.parse("https://businesscardmw.page.link/individuals")
-            .buildUpon()
-            .appendQueryParameter("key", user?.uid.toString())
-            .build()
-        val dynamicLink = Firebase.dynamicLinks.dynamicLink {
-            link = deepLink
-            domainUriPrefix = "https://businesscardmw.page.link"
-            androidParameters {}
-        }
-        val shortLinkTask = Firebase.dynamicLinks
-            .shortLinkAsync {
-                longLink = dynamicLink.uri
-                domainUriPrefix = "https://businesscardmw.page.link"
-                androidParameters {}
-            }
-        shortLinkTask.addOnSuccessListener { result ->
-            val shortLink = result.shortLink
-            //val shortLinkUrl = result.previewLink
-            saveDataAndUpdateUI(shortLink.toString(), user)
-        }.addOnFailureListener { exception ->
-            Log.d(ContentValues.TAG, "Error creating short url", exception)
-        }
-    }
-
-    private fun saveDataAndUpdateUI(link: String, user: FirebaseUser?) {
-        val multiFormatWriter = MultiFormatWriter()
-        try {
-            val bitMatrix: BitMatrix = multiFormatWriter.encode(user?.uid.toString(), BarcodeFormat.QR_CODE, 300, 300)
-            val barcodeEncoder = BarcodeEncoder()
-            val bitmap = barcodeEncoder.createBitmap(bitMatrix)
-            val bytes = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, bytes)
-            val data = bytes.toByteArray()
-            val encodedCode = Base64.encodeToString(data, Base64.DEFAULT)
-            constants.writeToSharedPreferences(requireContext(),"user_qr_code", encodedCode)
-
-            val qrcodeRef = constants.storageRef.child("user_qr_code/${user?.uid.toString()}.jpg")
-            val uploadTask = qrcodeRef.putBytes(data)
-            uploadTask.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Get the download URL of the uploaded image
-                    qrcodeRef.downloadUrl.addOnSuccessListener { uri: Uri? ->
-                        val downloadUrl = uri?.toString()
-                        val userId = user?.uid.toString()
-                        val userEmail = user?.email.toString()
-                        val userDetails = hashMapOf(
-                            "user_qr_code" to downloadUrl,
-                            "email" to userEmail,
-                            "encode_qr_code" to encodedCode,
-                            "user_link" to link,
-                            "timestamp" to FieldValue.serverTimestamp(),
-                            "uid" to userId
-                        )
-                        constants.db.collection("users").document(userId)
-                            .set(userDetails, SetOptions.merge())
-                            .addOnSuccessListener {
-                                progressDialog.hide()
-                                val action = RegisterFragmentDirections.actionRegisterFragmentToAddUserDetailsFragment()
-                                findNavController().navigate(action)
-                                Log.d(ContentValues.TAG, "DocumentSnapshot successfully written!")
-                            }
-                            .addOnFailureListener { e ->
-                                progressDialog.hide()
-                                Log.w(ContentValues.TAG, "Error writing document", e) }
-
-                    }.addOnFailureListener {
-                        // Handle any error that occurs while getting the download URL
-                        Log.d(ContentValues.TAG, "Failed to get the url")
-                    }
-                } else {
-                    // Handle any error that occurs during upload
-                    Log.d(ContentValues.TAG, "Failed to upload the code")
-                }
-            }
-        } catch (_: Exception) {
         }
     }
 }

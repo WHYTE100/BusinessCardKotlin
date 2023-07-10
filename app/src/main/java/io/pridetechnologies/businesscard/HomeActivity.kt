@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,8 +24,11 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.airbnb.paris.Paris
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -104,12 +108,10 @@ class HomeActivity : AppCompatActivity() {
         bizText = findViewById<View>(R.id.textView105) as TextView?
         indiImage = findViewById<View>(R.id.imageView29) as ImageView?
         bizImage = findViewById<View>(R.id.imageView32) as ImageView?
-        //mMyApplication = BusinessCard.getInstance()
         if (savedInstanceState == null) {
             openFragment(IndividualsHomeFragment())
-            bizImage?.setColorFilter(this@HomeActivity.resources.getColor(R.color.lightPrimary))
-            bizText?.setTextColor(Color.parseColor("#1C1C1C"))
-            indiText?.setTextAppearance(R.style.TextViewStyle)
+            Paris.style(indiImage).apply(R.style.ImageViewTint)
+            Paris.style(bizImage).apply(R.style.ImageViewTintClear)
         }
         progressDialog = ProgressDialog(this)
 
@@ -136,10 +138,8 @@ class HomeActivity : AppCompatActivity() {
 
     fun openBusinessesFrag(view: View?) {
         openBizFragment(BusinessesHomeFragment())
-        indiImage?.setColorFilter(this@HomeActivity.resources.getColor(R.color.lightPrimary))
-        bizImage?.colorFilter = null
-        indiText?.setTextColor(Color.parseColor("#1C1C1C"))
-        bizText?.setTextAppearance(R.style.TextViewStyle)
+        Paris.style(indiImage).apply(R.style.ImageViewTintClear)
+        Paris.style(bizImage).apply(R.style.ImageViewTint)
     }
 
     private fun openBizFragment(businessesHomeFragment: BusinessesHomeFragment) {
@@ -151,10 +151,8 @@ class HomeActivity : AppCompatActivity() {
 
     fun openIndividualsFrag(view: View?) {
         openIndiFrag(IndividualsHomeFragment())
-        indiImage?.colorFilter = null
-        bizImage?.setColorFilter(this@HomeActivity.resources.getColor(R.color.lightPrimary))
-        indiText?.setTextAppearance(R.style.TextViewStyle)
-        bizText?.setTextColor(Color.parseColor("#1C1C1C"))
+        Paris.style(indiImage).apply(R.style.ImageViewTint)
+        Paris.style(bizImage).apply(R.style.ImageViewTintClear)
     }
 
     private fun openIndiFrag(individualHomeFragment: IndividualsHomeFragment) {
@@ -190,7 +188,6 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this@HomeActivity, ScanBusinessActivity::class.java)
             startActivity(intent)
             Animatoo.animateFade(this)
-            Animatoo.animateZoom(this@HomeActivity)
         }
         dialogBinding.galleyBusinessButton.setOnClickListener {
             val pickIntent = Intent(Intent.ACTION_PICK)
@@ -247,7 +244,7 @@ class HomeActivity : AppCompatActivity() {
                     val intent = Intent(this@HomeActivity, NewCardActivity::class.java)
                     intent.putExtra("deepLink", cardKey)
                     startActivity(intent)
-                    //Animatoo.animateZoom(this@HomeActivity2)
+                    Animatoo.animateFade(this@HomeActivity)
                 } catch (e: NotFoundException) {
                     // Toast.makeText(this, "This Code is NOT VALID", Toast.LENGTH_SHORT).show();
                     Log.e("TAG", "decode exception", e)
@@ -283,7 +280,7 @@ class HomeActivity : AppCompatActivity() {
                     val intent = Intent(this@HomeActivity, NewBusinessCardActivity::class.java)
                     intent.putExtra("business_id", cardKey2)
                     startActivity(intent)
-                    //Animatoo.animateFade(this@HomeActivity2)
+                    Animatoo.animateFade(this@HomeActivity)
                 } catch (e: NotFoundException) {
                     // Toast.makeText(this, "This Code is NOT VALID", Toast.LENGTH_SHORT).show();
                     Log.e("TAG", "decode exception", e)

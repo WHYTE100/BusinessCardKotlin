@@ -74,10 +74,14 @@ class AddDepartmentActivity : AppCompatActivity() {
                     progressDialog.hide()
                     finish()
                     Animatoo.animateFade(this)
+                    Toast.makeText(this, "Department added successfully.", Toast.LENGTH_SHORT)
+                        .show()
                 }
                 .addOnFailureListener { e ->
                     progressDialog.hide()
-                    Log.w(ContentValues.TAG, "Error writing document", e) }
+                    Toast.makeText(this, "Failed to add department: ${e}.", Toast.LENGTH_SHORT)
+                        .show()
+                }
         }
     }
 }

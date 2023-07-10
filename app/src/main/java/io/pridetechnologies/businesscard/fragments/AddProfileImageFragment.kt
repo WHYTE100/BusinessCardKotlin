@@ -49,6 +49,7 @@ class AddProfileImageFragment : Fragment() {
             binding.imageView5.setImageURI(uri)
             if (uri != null) {
                 imageUri = uri
+                binding.button7.visibility = View.VISIBLE
             }
         }
     }
@@ -130,15 +131,14 @@ class AddProfileImageFragment : Fragment() {
                         }
                         .addOnFailureListener { e ->
                             progressDialog.hide()
-                            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-                            //Log.w(ContentValues.TAG, "Error writing document", e)
+                            constants.showToast(requireContext(), e.message.toString())
                         }
                 }
 
 
             } else {
                 progressDialog.hide()
-                Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show()
+                constants.showToast(requireContext(), "Failed to upload image")
             }
         }
     }

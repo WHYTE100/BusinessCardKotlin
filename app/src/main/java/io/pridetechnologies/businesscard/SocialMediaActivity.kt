@@ -72,35 +72,35 @@ class SocialMediaActivity : AppCompatActivity() {
             }
 
         binding.addFbButton.setOnClickListener {
-            val message = "Type of paste your Facebook link below."
+            val message = "Type or paste your Facebook link below."
             addLink("facebook_link", message)
         }
         binding.addWhatsappButton.setOnClickListener{
-            val message = "Type of paste your WhatsApp number below."
+            val message = "Type or paste your WhatsApp number below."
             addLink("whatsapp_link", message)
         }
         binding.addLinkedInButton.setOnClickListener{
-            val message = "Type of paste your LinkedIn link below."
+            val message = "Type or paste your LinkedIn link below."
             addLink("linked_in_link", message)
         }
         binding.addTwitterButton.setOnClickListener{
-            val message = "Type of paste your Twitter link below."
+            val message = "Type or paste your Twitter link below."
             addLink("twitter_link", message)
         }
         binding.addTiktokButton.setOnClickListener{
-            val message = "Type of paste your TikTok link below."
+            val message = "Type or paste your TikTok link below."
             addLink("tiktok_link", message)
         }
         binding.addWechatButton.setOnClickListener{
-            val message = "Type of paste your WeChat link below."
+            val message = "Type or paste your WeChat link below."
             addLink("wechat_link", message)
         }
         binding.addInstagramButton.setOnClickListener{
-            val message = "Type of paste your Instagram link below."
+            val message = "Type or paste your Instagram link below."
             addLink("instagram_link", message)
         }
         binding.addYoutubeBtn.setOnClickListener{
-            val message = "Type of paste your Youtube link below."
+            val message = "Type or paste your Youtube link below."
             addLink("youtube_link", message)
         }
     }

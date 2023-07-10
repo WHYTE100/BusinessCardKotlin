@@ -14,10 +14,57 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:tint="?attr/colorOnPrimary"
-        android:background="?attr/colorSecondary"
+        android:backgroundTint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_back_32" />
+
+    <TextView
+        android:id="@+id/textView151"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Member Profile"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/backButton"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="@+id/backButton" />
+
+    <LinearLayout
+        android:id="@+id/isAdminLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/makeAdminButton"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:textColor="?attr/colorPrimary"
+            style="@style/OutlineButton"
+            android:visibility="gone"
+            android:text="@string/make_member_admin" />
+
+        <Button
+            android:id="@+id/removeAdminButton"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
+            style="@style/OutlineButtonBlack"
+            android:visibility="gone"
+            android:text="@string/remove_member_admin" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/bottomLayout"
@@ -68,6 +115,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@+id/bottomLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +143,7 @@
                         android:id="@+id/imageView2"
                         android:layout_width="@dimen/_60sdp"
                         android:layout_height="@dimen/_60sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_gravity="center_horizontal"
                         android:src="@mipmap/user_gold" />
 
@@ -119,6 +168,115 @@
                         android:textSize="@dimen/_12ssp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout26"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/facebookBtn"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginTop="8dp"
+                    android:contentDescription="@string/link_button"
+                    app:layout_constraintEnd_toStartOf="@+id/whatsAppBtn"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/facebook_gold" />
+
+                <ImageView
+                    android:id="@+id/whatsAppBtn"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:contentDescription="@string/link_button"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/facebookBtn"
+                    app:layout_constraintEnd_toStartOf="@+id/twitterBtn"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/facebookBtn"
+                    app:layout_constraintTop_toTopOf="@+id/facebookBtn"
+                    app:srcCompat="@drawable/whatsapp_gold" />
+
+                <ImageView
+                    android:id="@+id/twitterBtn"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:contentDescription="@string/link_button"
+                    app:layout_constraintBottom_toBottomOf="@+id/whatsAppBtn"
+                    app:layout_constraintEnd_toStartOf="@+id/linkedInBtn"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/whatsAppBtn"
+                    app:layout_constraintTop_toTopOf="@+id/whatsAppBtn"
+                    app:srcCompat="@drawable/twitter_gold" />
+
+                <ImageView
+                    android:id="@+id/linkedInBtn"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:contentDescription="@string/link_button"
+                    app:layout_constraintBottom_toBottomOf="@+id/twitterBtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/twitterBtn"
+                    app:layout_constraintTop_toTopOf="@+id/twitterBtn"
+                    app:srcCompat="@drawable/linkedin_gold" />
+
+                <ImageView
+                    android:id="@+id/youtubeBtn"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tiktokBtn"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/facebookBtn"
+                    app:srcCompat="@drawable/youtube_gold" />
+
+                <ImageView
+                    android:id="@+id/tiktokBtn"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/youtubeBtn"
+                    app:layout_constraintEnd_toStartOf="@+id/instagramBtn"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/youtubeBtn"
+                    app:layout_constraintTop_toBottomOf="@+id/whatsAppBtn"
+                    app:srcCompat="@drawable/tik_tok_gold" />
+
+                <ImageView
+                    android:id="@+id/instagramBtn"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tiktokBtn"
+                    app:layout_constraintEnd_toStartOf="@+id/wechatBtn"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tiktokBtn"
+                    app:layout_constraintTop_toBottomOf="@+id/twitterBtn"
+                    app:srcCompat="@drawable/instagram_gold" />
+
+                <ImageView
+                    android:id="@+id/wechatBtn"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/instagramBtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/instagramBtn"
+                    app:layout_constraintTop_toBottomOf="@+id/linkedInBtn"
+                    app:srcCompat="@drawable/wechat_gold" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorSecondary"
+        android:backgroundTint="?attr/colorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,6 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_6sdp"
             android:background="?attr/colorSecondary"
             android:clipChildren="false"
             android:clipToPadding="false">
@@ -27,7 +28,7 @@
                 android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorSecondary"
+                android:backgroundTint="?attr/colorSecondary"
                 android:contentDescription="@string/back_button"
                 app:layout_constraintBottom_toBottomOf="@+id/searchView"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +44,7 @@
                 android:layout_marginStart="@dimen/_4sdp"
                 android:layout_marginEnd="@dimen/_30sdp"
                 android:layout_marginVertical="@dimen/_3sdp"
+                app:defaultQueryHint="Search Business"
                 android:background="@drawable/search_background"
                 app:searchIcon="@drawable/baseline_search"
                 android:focusable="false"

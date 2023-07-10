@@ -112,7 +112,7 @@
             android:layout_marginBottom="32dp"
             android:backgroundTint="?attr/colorOnPrimary"
             style="@style/OutlineButton"
-            android:text="Proceed"
+            android:text="@string/proceed"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

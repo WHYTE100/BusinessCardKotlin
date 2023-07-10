@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -18,6 +19,7 @@ import io.pridetechnologies.businesscard.CustomProgressDialog
 import io.pridetechnologies.businesscard.R
 import io.pridetechnologies.businesscard.databinding.FragmentAddBioBinding
 import io.pridetechnologies.businesscard.databinding.FragmentAddProfileImageBinding
+import java.lang.Exception
 
 
 class AddBioFragment : Fragment() {
@@ -45,11 +47,9 @@ class AddBioFragment : Fragment() {
 
     private fun saveUserDetails() {
         val bio = binding.userBio1.text.toString().trim()
-        //Log.d(ContentValues.TAG, "User: $email \n $password")
 
         if (bio.isEmpty()){
-            Toast.makeText(requireContext(), "Enter first name.", Toast.LENGTH_SHORT)
-                .show()
+            constants.showToast(requireContext(), "Enter bio.")
         }else{
             progressDialog.show("Saving bio...")
             updateUI(bio)
@@ -68,11 +68,10 @@ class AddBioFragment : Fragment() {
                 progressDialog.hide()
                 val action = AddBioFragmentDirections.actionAddBioFragmentToHomeActivity()
                 findNavController().navigate(action)
-                Log.d(ContentValues.TAG, "DocumentSnapshot successfully written!")
             }
-            .addOnFailureListener { e ->
+            .addOnFailureListener { e: Exception ->
                 progressDialog.hide()
-                Log.w(ContentValues.TAG, "Error writing document", e) }
+                constants.showToast(requireContext(), e.message.toString())}
 
 
     }

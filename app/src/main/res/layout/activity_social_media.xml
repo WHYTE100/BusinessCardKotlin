@@ -15,16 +15,30 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:tint="?attr/colorOnPrimary"
-        android:background="?attr/colorSecondary"
+        android:backgroundTint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_back_32"
         android:contentDescription="@string/back_button" />
 
+    <TextView
+        android:id="@+id/textView151"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Social Media"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/backButton"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="@+id/backButton" />
+
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,12 +80,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         android:text=""
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_10sdp"
                         android:textColor="?attr/colorOnPrimary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/fbLinearLayout"
                         app:layout_constraintStart_toEndOf="@+id/facebookBtn"
-                        app:layout_constraintTop_toTopOf="@+id/facebookBtn" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/fbLinearLayout"
@@ -128,13 +142,13 @@
                         android:id="@+id/linkedInTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_10sdp"
                         android:textColor="?attr/colorOnPrimary"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/linkedInLinearLayout"
                         app:layout_constraintStart_toEndOf="@+id/linkedInBtn"
-                        app:layout_constraintTop_toTopOf="@+id/linkedInBtn" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/linkedInLinearLayout"
@@ -190,13 +204,13 @@
                         android:id="@+id/twitterTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_10sdp"
                         android:textColor="?attr/colorOnPrimary"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/twitterLinearLayout"
                         app:layout_constraintStart_toEndOf="@+id/twitterBtn"
-                        app:layout_constraintTop_toTopOf="@+id/twitterBtn" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/twitterLinearLayout"
@@ -251,13 +265,13 @@
                         android:id="@+id/instagramTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_10sdp"
                         android:textColor="?attr/colorOnPrimary"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/instagramLinearLayout"
                         app:layout_constraintStart_toEndOf="@+id/instagramBtn"
-                        app:layout_constraintTop_toTopOf="@+id/instagramBtn" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/instagramLinearLayout"
@@ -313,13 +327,13 @@
                         android:id="@+id/tikTokTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_10sdp"
                         android:textColor="?attr/colorOnPrimary"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tiktokLinearLayout"
                         app:layout_constraintStart_toEndOf="@+id/tiktokBtn"
-                        app:layout_constraintTop_toTopOf="@+id/tiktokBtn" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/tiktokLinearLayout"
@@ -374,13 +388,13 @@
                         android:id="@+id/youtubeTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_10sdp"
                         android:textColor="?attr/colorOnPrimary"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/youtubeLinearLayout"
                         app:layout_constraintStart_toEndOf="@+id/youtubeBtn"
-                        app:layout_constraintTop_toTopOf="@+id/youtubeBtn" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/youtubeLinearLayout"
@@ -435,13 +449,13 @@
                         android:id="@+id/whatsappTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_10sdp"
                         android:textColor="?attr/colorOnPrimary"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/whatsappLinearLayout"
                         app:layout_constraintStart_toEndOf="@+id/whatsappBtn"
-                        app:layout_constraintTop_toTopOf="@+id/whatsappBtn" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/whatsappLinearLayout"
@@ -497,13 +511,13 @@
                         android:id="@+id/wechatTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_10sdp"
                         android:textColor="?attr/colorOnPrimary"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                         app:layout_constraintStart_toEndOf="@+id/wechatBtn"
-                        app:layout_constraintTop_toTopOf="@+id/wechatBtn" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/linearLayout"

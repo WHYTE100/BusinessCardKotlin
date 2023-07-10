@@ -155,23 +155,23 @@ class EditBusinessBasicsActivity : AppCompatActivity() {
                 .show()
         }else{
             progressDialog.show("Saving Business Details...")
-            val businessId = constants.db.collection("businesses").document().id
             if (imageUri != null){
-                saveImage(businessName, businessEmail, businessWebsite, businessBio, mobile, businessId)
-            }else saveBusinessDetails("", businessName, businessEmail, businessWebsite, businessBio, mobile, businessId)
+                saveImage(businessName, businessEmail, businessWebsite, businessBio, mobile,
+                    businessId.toString())
+            }else saveBusinessDetailsWithoutLogo( businessName, businessEmail, businessWebsite, businessBio, mobile, businessId.toString())
         }
 
     }
 
-    private fun saveImage(businessName: String, businessEmail: String, businessWebsite: String, businessBio: String, mobile: String, businessId: String) {
-        val imageRef = constants.storageRef.child("business_logo/${businessId}.jpg")
+    private fun saveImage(businessName: String, businessEmail: String, businessWebsite: String, businessBio: String, mobile: String, business_id: String) {
+        val imageRef = constants.storageRef.child("business_logo/${business_id}.jpg")
 
         val uploadTask = imageRef.putFile(imageUri!!)
         uploadTask.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 imageRef.downloadUrl.addOnSuccessListener { uri: Uri? ->
                     val downloadUri = uri?.toString()
-                    saveBusinessDetails(downloadUri!!, businessName, businessEmail, businessWebsite, businessBio, mobile, businessId)
+                    saveBusinessDetailsWithLogo(downloadUri!!, businessName, businessEmail, businessWebsite, businessBio, mobile, business_id)
                 }
             } else {
                 progressDialog.hide()
@@ -180,12 +180,29 @@ class EditBusinessBasicsActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveBusinessDetails(logoUrl: String, businessName: String, businessEmail: String, businessWebsite: String, businessBio: String, mobile: String, businessId: String) {
-        updateUI(logoUrl, businessName, businessEmail, businessWebsite, businessBio, mobile, businessId)
+    private fun saveBusinessDetailsWithoutLogo(businessName: String, businessEmail: String, businessWebsite: String, businessBio: String, mobile: String, business_id: String) {
+        val businessDetails = hashMapOf(
+            "business_name" to businessName,
+            "business_email" to businessEmail,
+            "business_website" to businessWebsite,
+            "business_bio" to businessBio,
+            "business_mobile" to mobile,
+            "business_id" to business_id
+        )
+
+        constants.db.collection("businesses").document(business_id)
+            .set(businessDetails, SetOptions.merge())
+            .addOnSuccessListener {
+                progressDialog.hide()
+                Toast.makeText(this, "Changes save successfully.", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                progressDialog.hide()
+                Toast.makeText(this, "Failed to save Changed: $e.", Toast.LENGTH_SHORT)
+                    .show()
+            }
     }
-
-    private fun updateUI(logoUrl: String, businessName: String, businessEmail: String, businessWebsite: String, businessBio: String, mobile: String, businessId: String, ) {
-
+    private fun saveBusinessDetailsWithLogo(logoUrl: String, businessName: String, businessEmail: String, businessWebsite: String, businessBio: String, mobile: String, business_id: String) {
         val businessDetails = hashMapOf(
             "business_name" to businessName,
             "business_email" to businessEmail,
@@ -193,11 +210,10 @@ class EditBusinessBasicsActivity : AppCompatActivity() {
             "business_bio" to businessBio,
             "business_mobile" to mobile,
             "business_logo" to logoUrl,
-            "create_on" to FieldValue.serverTimestamp(),
-            "business_id" to businessId
+            "business_id" to business_id
         )
 
-        constants.db.collection("businesses").document(businessId)
+        constants.db.collection("businesses").document(business_id)
             .set(businessDetails, SetOptions.merge())
             .addOnSuccessListener {
                 progressDialog.hide()

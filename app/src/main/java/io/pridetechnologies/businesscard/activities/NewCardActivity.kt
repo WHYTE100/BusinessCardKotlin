@@ -42,6 +42,8 @@ import io.pridetechnologies.businesscard.WorkCard
 import io.pridetechnologies.businesscard.databinding.ActivityNewCardBinding
 import io.pridetechnologies.businesscard.databinding.CustomRequestDialogBinding
 import io.pridetechnologies.businesscard.databinding.WorkCardBinding
+import io.pridetechnologies.businesscard.notifications.NotificationData
+import io.pridetechnologies.businesscard.notifications.PushNotification
 import java.io.File
 import java.io.IOException
 
@@ -55,6 +57,7 @@ class NewCardActivity : AppCompatActivity() {
     private var userFirstName: String? = ""
     private var userProfession: String? = ""
     private var deepLink: String? = ""
+    private var token: String? = ""
 
     private lateinit var mediaRecorder: MediaRecorder
     private lateinit var mediaPlayer: MediaPlayer
@@ -178,19 +181,103 @@ class NewCardActivity : AppCompatActivity() {
 
         deepLink = intent.getStringExtra("deepLink")
         constants.db.collection("users").document(deepLink.toString())
-            .get()
-            .addOnSuccessListener { document ->
-                userFirstName = document.getString("first_name")
-                val otherName = document.getString("other_names")
-                val userLastName = document.getString("surname")
-                userProfession = document.getString("profession")
-                val userImage = document.getString("profile_image_url")
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    binding.userDetailsView.visibility = View.VISIBLE
+                    userFirstName = snapshot.getString("first_name")
+                    //val otherName = snapshot.getString("other_names")
+                    token = snapshot.getString("token")
+                    val userLastName = snapshot.getString("surname")
+                    userProfession = snapshot.getString("profession")
+                    val userImage = snapshot.getString("profile_image_url")
 
-                Picasso.get().load(userImage).fit().centerCrop().placeholder(R.mipmap.user_gold).into(binding.imageView2)
-                binding.textView6.text = "$userFirstName $userLastName"
-                binding.textView7.text = userProfession
+                    if (!userImage.equals("")){
+                        Picasso.get().load(userImage).fit().centerCrop().placeholder(R.mipmap.user_gold).into(binding.imageView2)
+                    }
+
+                    binding.textView6.text = "$userFirstName $userLastName"
+                    binding.textView7.text = userProfession
+                }else{
+                    binding.userDetailsView.visibility = View.GONE
+                    checkIfBusinessCode()
+                }
             }
-            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+
+        constants.db.collection("social_media").document(deepLink.toString())
+            .addSnapshotListener { snapshot, e ->
+
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    val whatsAppLink = snapshot.get("whatsapp_link").toString()
+                    val facebookLink = snapshot.get("facebook_link").toString()
+                    val linkedInLink = snapshot.get("linked_in_link").toString()
+                    val twitterLink = snapshot.get("twitter_link").toString()
+                    val youtubeLink = snapshot.get("youtube_link").toString()
+                    val instagramLink = snapshot.get("instagram_link").toString()
+                    val weChatLink = snapshot.get("wechat_link").toString()
+                    val tiktokLink = snapshot.get("tiktok_link").toString()
+
+                    if (facebookLink.equals("null") || facebookLink.isEmpty()){
+                        binding.facebookBtn.visibility =View.GONE
+                    }else binding.facebookBtn.visibility =View.VISIBLE
+                    if (whatsAppLink.equals("null") || whatsAppLink.isEmpty()){
+                        binding.whatsAppBtn.visibility =View.GONE
+                    }else binding.whatsAppBtn.visibility =View.VISIBLE
+                    if (linkedInLink.equals("null") || linkedInLink.isEmpty()){
+                        binding.linkedInBtn.visibility =View.GONE
+                    }else binding.linkedInBtn.visibility =View.VISIBLE
+                    if (twitterLink.equals("null") || twitterLink.isEmpty()){
+                        binding.twitterBtn.visibility =View.GONE
+                    }else binding.twitterBtn.visibility =View.VISIBLE
+                    if (youtubeLink.equals("null") || youtubeLink.isEmpty()){
+                        binding.youtubeBtn.visibility =View.GONE
+                    }else binding.youtubeBtn.visibility =View.VISIBLE
+                    if (instagramLink.equals("null") || instagramLink.isEmpty()){
+                        binding.instagramBtn.visibility =View.GONE
+                    }else binding.instagramBtn.visibility =View.VISIBLE
+                    if (weChatLink.equals("null") || weChatLink.isEmpty()){
+                        binding.wechatBtn.visibility =View.GONE
+                    }else binding.wechatBtn.visibility =View.VISIBLE
+                    if (tiktokLink.equals("null") || tiktokLink.isEmpty()){
+                        binding.tiktokBtn.visibility =View.GONE
+                    }else binding.tiktokBtn.visibility =View.VISIBLE
+
+                    binding.facebookBtn.setOnClickListener {
+                        constants.openProfileInApp(this, "com.facebook.katana",facebookLink)
+                    }
+                    binding.whatsAppBtn.setOnClickListener{
+                        constants.openNumberInWhatsApp(this,"com.whatsapp",whatsAppLink )
+                    }
+                    binding.linkedInBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.linkedin.android",linkedInLink )
+                    }
+                    binding.twitterBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.twitter.android",twitterLink )
+                    }
+                    binding.tiktokBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.zhiliaoapp.musically",tiktokLink )
+                    }
+                    binding.wechatBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.tencent.mm",weChatLink )
+                    }
+                    binding.instagramBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.whatsapp",instagramLink )
+                    }
+                    binding.youtubeBtn.setOnClickListener{
+                        constants.openProfileInApp(this, "com.google.android.youtube",youtubeLink )
+                    }
+                } else {
+                    Log.d(TAG, "Current data: null")
+                }
+
+            }
         getMultipleWorkPlace()
     }
 
@@ -268,7 +355,9 @@ class NewCardActivity : AppCompatActivity() {
             }
 
             override fun onBindViewHolder(holder: MyWorkPlaceViewHolder, position: Int, model: WorkCard) {
-                Picasso.get().load(model.business_logo).fit().centerCrop().into(holder.binding.logoImageView)
+                if (!model.business_logo.equals(null)){
+                    Picasso.get().load(model.business_logo).fit().centerCrop().placeholder(R.drawable.background_icon).into(holder.binding.logoImageView)
+                }
                 holder.binding.positionTextView.text = model.user_position
                 holder.binding.businessNameTextView.text = model.business_name
                 constants.db.collection("businesses").document(model.business_id.toString())
@@ -315,6 +404,9 @@ class NewCardActivity : AppCompatActivity() {
             .collection("card_requests").document(constants.currentUserId.toString())
             .set(requestDetails, SetOptions.merge())
             .addOnSuccessListener {
+                PushNotification(NotificationData("Card Request", "Share your contacts with $userName.",constants.currentUserId.toString()), token.toString()).also { notification ->
+                    constants.sendNotification(notification)
+                }
                 progressDialog.hide()
                 binding.requestButton.isEnabled = false
                 binding.requestButton.text = "Request Sent"
@@ -377,5 +469,25 @@ class NewCardActivity : AppCompatActivity() {
         val counterText = String.format("%02d:%02d", minutes, seconds)
         counterTextView.text = counterText
         //Log.d(ContentValues.TAG, "Time : $counterText")
+    }
+
+    private fun checkIfBusinessCode() {
+        constants.db.collection("businesses").document(deepLink.toString())
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    val intent = Intent(this@NewCardActivity, NewBusinessCardActivity::class.java)
+                    intent.putExtra("business_id", deepLink)
+                    startActivity(intent)
+                    finish()
+                    Animatoo.animateFade(this@NewCardActivity)
+                }else{
+                    binding.invalidCodeView.visibility = View.VISIBLE
+                    constants.showToast(this,"Invalid code")
+                }
+            }
     }
 }

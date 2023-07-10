@@ -44,7 +44,7 @@
 
                     <ImageView
                         android:id="@+id/imageView29"
-                        android:layout_width="@dimen/_25sdp"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/_25sdp"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="4dp"
@@ -53,7 +53,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        style="@style/ImageViewTint" />
+                        android:contentDescription="@string/image_button" />
 
                     <TextView
                         android:id="@+id/textView104"
@@ -84,16 +84,16 @@
 
                     <ImageView
                         android:id="@+id/imageView32"
-                        android:layout_width="@dimen/_25sdp"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/_25sdp"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="4dp"
-                        style="@style/ImageViewTint"
                         android:onClick="openBusinessesFrag"
                         android:src="@drawable/storefront_32"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:contentDescription="@string/image_button" />
 
                     <TextView
                         android:id="@+id/textView105"

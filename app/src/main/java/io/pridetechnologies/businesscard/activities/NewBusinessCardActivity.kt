@@ -14,6 +14,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.firebase.firestore.FieldValue
@@ -62,6 +63,20 @@ class NewBusinessCardActivity : AppCompatActivity() {
             Animatoo.animateFade(this)
         }
         businessId = intent.getStringExtra("business_id")
+
+        binding.businessBioView
+            .setAnimationDuration(500)
+            .setReadMoreText("More")
+            .setReadLessText("Less")
+            .setCollapsedLines(3)
+            .setIsExpanded(false)
+            .setIsUnderlined(true)
+            .setEllipsizedTextColor(ContextCompat.getColor(this, R.color.darkSecondaryDarkColor))
+
+        binding.businessBioView.setOnClickListener {
+                binding.businessBioView.toggle()
+        }
+
         binding.seeMoreButton.setOnClickListener {
             val intent = Intent(this, BusinessDetailsActivity::class.java)
             intent.putExtra("business_id", businessId)
@@ -119,110 +134,115 @@ class NewBusinessCardActivity : AppCompatActivity() {
                     Log.w(ContentValues.TAG, "Listen failed.", e)
                     return@addSnapshotListener
                 }
-                businessLogo = snapshot?.get("business_logo").toString()
-                businessName = snapshot?.get("business_name").toString()
-                val businessBio = snapshot?.get("business_bio").toString()
-                val businessMobile = snapshot?.get("business_mobile").toString()
-                val businessWebsite = snapshot?.get("business_website").toString()
-                val businessEmail = snapshot?.get("business_email").toString()
-                val businessCode = snapshot?.get("business_qr_code").toString()
-                val businessLink = snapshot?.get("business_link").toString()
-
-                if (businessMobile.equals("null") || businessMobile.isEmpty()){
-                    binding.callBtn.visibility = View.GONE
-                }
-                if (businessWebsite.equals("null") || businessWebsite.isEmpty()){
-                    binding.bioBtn.visibility = View.GONE
-                }
-                if (businessEmail.equals("null") || businessEmail.isEmpty()){
-                    binding.emailBtn.visibility = View.GONE
-                }
-                if (businessBio.equals("null") || businessBio.isEmpty()){
-                    binding.businessBioView.visibility = View.GONE
-                }
-
-                Picasso.get().load(businessLogo).fit().centerCrop().placeholder(R.drawable.background_icon).into(binding.businessLogoView)
-                binding.businessNameView.text = businessName
-                binding.businessBioView.text = businessBio
-
-                binding.callButton.setOnClickListener {
-                    if (!businessMobile.equals("null")) {
-                        val number = String.format("tel: %s", businessMobile)
-                        val callIntent = Intent(Intent.ACTION_CALL)
-                        callIntent.setData(Uri.parse(number))
-                        Dexter.withContext(this)
-                            .withPermissions(android.Manifest.permission.CALL_PHONE)
-                            .withListener(object : MultiplePermissionsListener {
-                                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
-                                    // check if all permissions are granted
-                                    if (report.areAllPermissionsGranted()) {
-                                        startActivity(callIntent)
-                                    }
-                                }
-
-                                override fun onPermissionRationaleShouldBeShown(
-                                    permissions: List<PermissionRequest?>?,
-                                    token: PermissionToken
-                                ) {
-                                    token.continuePermissionRequest()
-                                }
-                            })
-                            .withErrorListener {
-                                Toast.makeText(this, "Error occurred! ", Toast.LENGTH_SHORT).show()
-                            }
-                            .onSameThread()
-                            .check()
-                    } else {
-                        Toast.makeText(this, "No Mobile Number", Toast.LENGTH_LONG).show()
-                    }
-                }
-                binding.whatsAppButton.setOnClickListener {
-                    if (!businessMobile.equals("null")) {
-                        constants.openNumberInWhatsApp(this, "com.whatsapp", businessMobile)
-                    }
-                }
-                binding.emailButton.setOnClickListener {
-                    val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$businessEmail"))
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "")
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, "")
-                    startActivity(Intent.createChooser(emailIntent, "SEND_MAIL"))
-                }
-                binding.websiteButton.setOnClickListener {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(businessWebsite))
-                    startActivity(intent)
-                }
-                binding.shareButton.setOnClickListener {
-
-                    val dialog = Dialog(this)
-                    val b = CustomQrCodeDialogBinding.inflate(layoutInflater)
-                    dialog.setContentView(b.root)
-                    b.textView29.text = "Business Card"
-                    Picasso.get().load(businessCode).fit().centerCrop().placeholder(R.drawable.qr_code_black).into(b.imageView9)
-                    b.downloadButton.setOnClickListener {
-                        myExecutor?.execute {
-                            myCodeBitmap = constants.downloadCode(this, businessCode)
-                            myHandler?.post {
-                                if(myCodeBitmap!=null){
-                                    constants.saveMediaToStorage(this, myCodeBitmap, businessName.toString())
-                                }
-                            }
-                        }
-                    }
-                    b.copyLinkButton.setOnClickListener {
-                        constants.copyText(this, businessLink)
-                    }
-                    b.button10.setOnClickListener { dialog.dismiss() }
-                    dialog.setCancelable(true)
-                    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                    dialog.show()
-                }
 
                 if (snapshot != null && snapshot.exists()) {
+                    binding.businessDetailsView.visibility = View.VISIBLE
+                    businessLogo = snapshot.get("business_logo").toString()
+                    businessName = snapshot.get("business_name").toString()
+                    val businessBio = snapshot.get("business_bio").toString()
+                    val businessMobile = snapshot.get("business_mobile").toString()
+                    val businessWebsite = snapshot.get("business_website").toString()
+                    val businessEmail = snapshot.get("business_email").toString()
+                    val businessCode = snapshot.get("business_qr_code").toString()
+                    val businessLink = snapshot.get("business_link").toString()
                     val areaLocated = snapshot.get("area_located").toString()
                     val districtName = snapshot.get("district_name").toString()
                     val country = snapshot.get("country").toString()
 
-                    binding.businessAddressView.text = "${areaLocated}, ${districtName}, ${country} "
+                    if (!businessLogo.equals(null)){
+                        Picasso.get().load(businessLogo).fit().centerCrop().placeholder(R.drawable.background_icon).into(binding.businessLogoView)
+                    }
+                    binding.businessNameView.text = businessName
+                    binding.businessBioView.text = businessBio
+                    binding.businessAddressView.text = "${areaLocated}, ${districtName}, ${country}"
+
+                    if (businessMobile.equals("null") || businessMobile.isEmpty()){
+                        binding.callBtn.visibility = View.GONE
+                    }
+                    if (businessWebsite.equals("null") || businessWebsite.isEmpty()){
+                        binding.bioBtn.visibility = View.GONE
+                    }
+                    if (businessEmail.equals("null") || businessEmail.isEmpty()){
+                        binding.emailBtn.visibility = View.GONE
+                    }
+                    if (businessBio.equals("null") || businessBio.isEmpty()){
+                        binding.businessBioView.visibility = View.GONE
+                    }
+
+                    binding.callButton.setOnClickListener {
+                        if (!businessMobile.equals("null")) {
+                            val number = String.format("tel: %s", businessMobile)
+                            val callIntent = Intent(Intent.ACTION_CALL)
+                            callIntent.setData(Uri.parse(number))
+                            Dexter.withContext(this)
+                                .withPermissions(android.Manifest.permission.CALL_PHONE)
+                                .withListener(object : MultiplePermissionsListener {
+                                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                                        // check if all permissions are granted
+                                        if (report.areAllPermissionsGranted()) {
+                                            startActivity(callIntent)
+                                        }
+                                    }
+
+                                    override fun onPermissionRationaleShouldBeShown(
+                                        permissions: List<PermissionRequest?>?,
+                                        token: PermissionToken
+                                    ) {
+                                        token.continuePermissionRequest()
+                                    }
+                                })
+                                .withErrorListener {
+                                    Toast.makeText(this, "Error occurred! ", Toast.LENGTH_SHORT).show()
+                                }
+                                .onSameThread()
+                                .check()
+                        } else {
+                            Toast.makeText(this, "No Mobile Number", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    binding.whatsAppButton.setOnClickListener {
+                        if (!businessMobile.equals("null")) {
+                            constants.openNumberInWhatsApp(this, "com.whatsapp", businessMobile)
+                        }
+                    }
+                    binding.emailButton.setOnClickListener {
+                        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$businessEmail"))
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "")
+                        emailIntent.putExtra(Intent.EXTRA_TEXT, "")
+                        startActivity(Intent.createChooser(emailIntent, "SEND_MAIL"))
+                    }
+                    binding.websiteButton.setOnClickListener {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(businessWebsite))
+                        startActivity(intent)
+                    }
+                    binding.shareButton.setOnClickListener {
+
+                        val dialog = Dialog(this)
+                        val b = CustomQrCodeDialogBinding.inflate(layoutInflater)
+                        dialog.setContentView(b.root)
+                        b.textView29.text = "Business Card"
+                        Picasso.get().load(businessCode).fit().centerCrop().placeholder(R.drawable.qr_code_black).into(b.imageView9)
+                        b.downloadButton.setOnClickListener {
+                            myExecutor?.execute {
+                                myCodeBitmap = constants.downloadCode(this, businessCode)
+                                myHandler?.post {
+                                    if(myCodeBitmap!=null){
+                                        constants.saveMediaToStorage(this, myCodeBitmap, businessName.toString())
+                                    }
+                                }
+                            }
+                        }
+                        b.copyLinkButton.setOnClickListener {
+                            constants.copyText(this, businessLink)
+                        }
+                        b.button10.setOnClickListener { dialog.dismiss() }
+                        dialog.setCancelable(true)
+                        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dialog.show()
+                    }
+                }else {
+                    binding.businessDetailsView.visibility = View.GONE
+                    checkIfIndividualCode()
                 }
             }
         constants.db.collection("social_media").document(businessId.toString())
@@ -290,6 +310,26 @@ class NewBusinessCardActivity : AppCompatActivity() {
                     constants.openProfileInApp(this, "com.google.android.youtube",youtubeLink )
                 }
 
+            }
+    }
+
+    private fun checkIfIndividualCode() {
+        constants.db.collection("users").document(businessId.toString())
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    val intent = Intent(this@NewBusinessCardActivity, NewCardActivity::class.java)
+                    intent.putExtra("deepLink", businessId)
+                    startActivity(intent)
+                    finish()
+                    Animatoo.animateFade(this@NewBusinessCardActivity)
+                }else{
+                    binding.invalidCodeView.visibility = View.VISIBLE
+                    constants.showToast(this,"Invalid code")
+                }
             }
     }
 }

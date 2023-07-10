@@ -50,10 +50,10 @@
 
                 <ImageView
                     android:id="@+id/scanIndividualButton"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/camera"
+                    android:src="@drawable/scan"
                     app:tint="?attr/colorPrimary"
                     android:contentDescription="@string/image_button" />
 
@@ -129,10 +129,10 @@
 
                 <ImageView
                     android:id="@+id/scanBusinessButton"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/camera"
+                    android:src="@drawable/scan"
                     app:tint="?attr/colorPrimary"
                     android:contentDescription="@string/image_button" />
 
