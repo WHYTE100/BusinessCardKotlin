@@ -13,11 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        app:tint="?attr/colorOnPrimary"
         android:backgroundTint="?attr/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_back_32"
-        app:tint="?attr/colorOnPrimary" />
+        app:srcCompat="@drawable/arrow_back_32"/>
 
     <TextView
         android:id="@+id/textView151"

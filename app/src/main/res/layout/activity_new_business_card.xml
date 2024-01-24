@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="?attr/colorSecondary"
+    android:background="?attr/colorSecondary"
     tools:context=".activities.NewBusinessCardActivity">
 
     <ImageButton
@@ -13,11 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        app:tint="?attr/colorOnPrimary"
         android:backgroundTint="?attr/colorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_back_32"
-        app:tint="?attr/colorOnPrimary"
         android:contentDescription="@string/back_button" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

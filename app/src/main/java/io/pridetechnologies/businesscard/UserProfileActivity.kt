@@ -425,18 +425,16 @@ class UserProfileActivity : AppCompatActivity() {
                     startActivity(intent)
                     Animatoo.animateFade(it.context)
                 }
-                holder.binding.root.setOnClickListener {
-                    if (isAdmin == true){
-                        val intent = Intent(it.context, AdminBusinessProfileActivity::class.java)
-                        intent.putExtra("business_id", model.business_id)
-                        startActivity(intent)
-                        Animatoo.animateFade(it.context)
-                    }else{
-                        val intent = Intent(it.context, BusinessDetailsActivity::class.java)
-                        intent.putExtra("business_id", model.business_id)
-                        startActivity(intent)
-                        Animatoo.animateFade(it.context)
-                    }
+                if (isAdmin){
+                    holder.binding.button2.visibility = View.VISIBLE
+                }else{
+                    holder.binding.button2.visibility = View.GONE
+                }
+                holder.binding.button2.setOnClickListener {
+                    val intent = Intent(it.context, AdminBusinessProfileActivity::class.java)
+                    intent.putExtra("business_id", model.business_id)
+                    startActivity(intent)
+                    Animatoo.animateFade(it.context)
                 }
             }
 

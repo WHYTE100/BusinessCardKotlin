@@ -147,7 +147,7 @@
         style="@style/OutlineButton"
         android:backgroundTint="?attr/colorOnPrimary"
         android:textColor="?attr/colorPrimary"
-        android:text="@string/save"
+        android:text="@string/proceed"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

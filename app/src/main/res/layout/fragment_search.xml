@@ -28,13 +28,13 @@
                 android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:tint="?attr/colorOnPrimary"
                 android:backgroundTint="?attr/colorSecondary"
                 android:contentDescription="@string/back_button"
                 app:layout_constraintBottom_toBottomOf="@+id/searchView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/searchView"
-                app:srcCompat="@drawable/arrow_back_32"
-                app:tint="?attr/colorOnPrimary" />
+                app:srcCompat="@drawable/arrow_back_32"/>
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchView"
