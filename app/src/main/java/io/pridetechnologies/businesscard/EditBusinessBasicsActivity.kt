@@ -153,6 +153,8 @@ class EditBusinessBasicsActivity : AppCompatActivity() {
         }else if (mobile.isEmpty()){
             Toast.makeText(this, "Enter business number.", Toast.LENGTH_SHORT)
                 .show()
+        }else if (mobile.isNotEmpty() && !constants.isValidPhoneNumber(mobile)){
+            constants.showToast(this, "Your Mobile number should be in this format +1XXXXXXXXXXX.")
         }else{
             progressDialog.show("Saving Business Details...")
             if (imageUri != null){

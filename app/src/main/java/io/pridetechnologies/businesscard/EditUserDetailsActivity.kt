@@ -114,21 +114,22 @@ class EditUserDetailsActivity : AppCompatActivity() {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         report?.let {
                             if(report.areAllPermissionsGranted()){
-                                val options: Array<String> = arrayOf("Camera","Gallery","Cancel")
-                                val builder= AlertDialog.Builder(this@EditUserDetailsActivity)
-                                builder.setTitle("Add Image").setItems(options) { dialog, position ->
-                                    when (position) {
-                                        0 -> {
-                                            openCamera()
-                                        }
-                                        1 -> {
-                                            selectImage()
-                                        }
-                                        else -> {
-                                            dialog.dismiss()
-                                        }
-                                    }
-                                }.show()
+                                selectImage()
+//                                val options: Array<String> = arrayOf("Camera","Gallery","Cancel")
+//                                val builder= AlertDialog.Builder(this@EditUserDetailsActivity)
+//                                builder.setTitle("Add Image").setItems(options) { dialog, position ->
+//                                    when (position) {
+//                                        0 -> {
+//                                            openCamera()
+//                                        }
+//                                        1 -> {
+//                                            selectImage()
+//                                        }
+//                                        else -> {
+//                                            dialog.dismiss()
+//                                        }
+//                                    }
+//                                }.show()
                             }
                         }
                     }
@@ -222,6 +223,8 @@ class EditUserDetailsActivity : AppCompatActivity() {
         }else if (mobile.isEmpty()){
             Toast.makeText(this, "Enter mobile.", Toast.LENGTH_SHORT)
                 .show()
+        }else if (mobile.isNotEmpty() && !constants.isValidPhoneNumber(mobile)){
+            constants.showToast(this, "Your Mobile number should be in this format +1XXXXXXXXXXX.")
         }else{
             val dialog = Dialog(this)
             val b = CustomDialogBoxBinding.inflate(layoutInflater)

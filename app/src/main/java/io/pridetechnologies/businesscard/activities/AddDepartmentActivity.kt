@@ -56,6 +56,8 @@ class AddDepartmentActivity : AppCompatActivity() {
         }else if (departmentMobile.isEmpty()){
             Toast.makeText(this, "Enter Department Number.", Toast.LENGTH_SHORT)
                 .show()
+        }else if (departmentMobile.isNotEmpty() && !constants.isValidPhoneNumber(departmentMobile)){
+            constants.showToast(this, "The Mobile number should be in this format +1XXXXXXXXXXX.")
         }else{
             progressDialog.show("Saving Details...")
             val departmentId = constants.db.collection("businesses").document(businessId.toString()).collection("departments").document().id

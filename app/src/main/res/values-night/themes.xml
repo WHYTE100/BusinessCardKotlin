@@ -88,4 +88,8 @@
         <item name="android:textColorHint">@color/darkPrimaryLightColor</item>
 
     </style>
+
+    <style name="Widget.App.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/checkbox_button_tint</item>
+    </style>
 </resources>

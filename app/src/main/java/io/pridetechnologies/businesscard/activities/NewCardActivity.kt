@@ -75,6 +75,31 @@ class NewCardActivity : AppCompatActivity() {
         binding = ActivityNewCardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Dexter.withContext(this)
+            .withPermissions(
+                Manifest.permission.RECORD_AUDIO
+            )
+            .withListener(object: MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                    report?.let {
+                        if(report.areAllPermissionsGranted()){
+
+                        }
+                    }
+                }
+                override fun onPermissionRationaleShouldBeShown(
+                    permissions: MutableList<PermissionRequest>?,
+                    token: PermissionToken?
+                ) {
+                    // Remember to invoke this method when the custom rationale is closed
+                    // or just by default if you don't want to use any custom rationale.
+                    token?.continuePermissionRequest()
+                }
+            })
+            .withErrorListener {
+            }
+            .check()
+
         binding.backButton.setOnClickListener {
             finish()
         }
@@ -88,48 +113,25 @@ class NewCardActivity : AppCompatActivity() {
             b.recordButton.setOnTouchListener { _, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        // Handle the "down" motion event
                         b.recordButton.scaleX = 1.4f
                         b.recordButton.scaleY = 1.4f
 
-                        Dexter.withContext(this)
-                            .withPermissions(
-                                Manifest.permission.RECORD_AUDIO
-                            )
-                            .withListener(object: MultiplePermissionsListener {
-                                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                                    report?.let {
-                                        if(report.areAllPermissionsGranted()){
-                                            startRecording()
-                                            b.playButton.visibility = View.GONE
-                                            b.stopButton.visibility = View.GONE
-                                        }
-                                    }
-                                }
-                                override fun onPermissionRationaleShouldBeShown(
-                                    permissions: MutableList<PermissionRequest>?,
-                                    token: PermissionToken?
-                                ) {
-                                    // Remember to invoke this method when the custom rationale is closed
-                                    // or just by default if you don't want to use any custom rationale.
-                                    token?.continuePermissionRequest()
-                                }
-                            })
-                            .withErrorListener {
-                            }
-                            .check()
-                        // Handle the "down" motion event
-                        //println("Button pressed")
+                        startRecording()
+                        b.playButton.visibility = View.GONE
+                        b.stopButton.visibility = View.GONE
+
                         true
                     }
                     MotionEvent.ACTION_UP -> {
+                        // Handle the "up" motion event
                         b.recordButton.scaleX = 1.0f
                         b.recordButton.scaleY = 1.0f
                         stopRecording()
                         b.playButton.visibility = View.VISIBLE
                         b.stopButton.visibility = View.VISIBLE
                         b.sendButton.visibility = View.VISIBLE
-                        // Handle the "up" motion event
-                        //println("Button released")
+
                         true
                     }
                     MotionEvent.ACTION_MOVE -> {
@@ -151,7 +153,7 @@ class NewCardActivity : AppCompatActivity() {
             b.sendButton.setOnClickListener {
                 dialog.dismiss()
                 progressDialog.show("Sending Request...")
-                val audioRef = constants.storageRef.child("request_note_audios/${constants.currentUserId}/${outputFile?.name}")
+                val audioRef = constants.storageRef.child("request_note_audios/${constants.currentUserId}/$deepLink/${outputFile?.name}")
                 val uploadTask = audioRef.putFile(outputUri!!)
 
                 uploadTask.addOnSuccessListener {

@@ -105,6 +105,8 @@ class AddUserDetailsFragment : Fragment() {
             constants.showToast(requireContext(), "Enter profession.")
         }else if (mobile.isEmpty()){
             constants.showToast(requireContext(), "Enter mobile.")
+        }else if (!constants.isValidPhoneNumber(mobile)){
+            constants.showToast(requireContext(), "Your Mobile number should be in this format +1XXXXXXXXXXX.")
         }else{
             progressDialog.show("Saving Details...")
             updateUI(firstName, otherName, surname, profession, mobile)

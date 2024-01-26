@@ -41,7 +41,7 @@
         android:textColor="?attr/colorOnPrimary"
         android:textSize="@dimen/_20ssp"
         android:textStyle="bold"
-        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="@+id/backButton"
         app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="@+id/backButton" />

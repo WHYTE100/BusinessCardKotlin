@@ -91,4 +91,16 @@
     <string name="welcome">Welcome</string>
     <string name="please_login">Please Login</string>
     <string name="or">OR</string>
+    <string name="pride_technologies">PRIDE TECHNOLOGIES</string>
+    <string name="from">FROM</string>
+    <string name="card">Card</string>
+    <string name="add_personal_details_title">Personal Details</string>
+    <string name="personal_bio">Personal Bio</string>
+    <string name="app_permissions">App Permissions</string>
+    <string name="add_permissions_desc">This app requires some device permissions to work better. Please allow access to these permissions</string>
+    <string name="storage_permissions">Storage Permissions</string>
+    <string name="camera_permissions">Camera Permissions</string>
+    <string name="audio_permissions">Audio Permissions</string>
+    <string name="phone_permissions">Phone Permissions</string>
+    <string name="location_permissions">Location Permissions</string>
 </resources>

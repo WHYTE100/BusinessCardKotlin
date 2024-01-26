@@ -39,12 +39,15 @@
         android:theme="@style/Theme.BusinessCard"
         tools:targetApi="31">
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.AddAnotherBusinessActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".BusinessSearchActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".StartActivity"
             android:exported="true">
             <intent-filter>
@@ -54,9 +57,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".EditBusinessAddressActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ScanIndividualActivity"
             android:exported="false" />
 
@@ -73,58 +78,76 @@
         </receiver>
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".ScanBusinessActivity"
             android:exported="false"
             android:launchMode="singleTop" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".EditBusinessBasicsActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".MyBusinessesActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".AddSocialMediaActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ExistingBusinessActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.EditDepartmentActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.AddDepartmentActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.TeamMemberDetailsActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.AdminBusinessProfileActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.BusinessAddressActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.NewBusinessActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".EditUserDetailsActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".BusinessDetailsActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".UserRequestDetailsActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".SocialMediaActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".UserProfileActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.NewBusinessCardActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".activities.NewCardActivity"
             android:exported="false" />
         <service
@@ -137,6 +160,7 @@
             </intent-filter>
         </service>
         <activity
+            android:screenOrientation="portrait"
             android:name=".HomeActivity"
             android:exported="true">
             <intent-filter android:autoVerify="true">
@@ -154,6 +178,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask"/>

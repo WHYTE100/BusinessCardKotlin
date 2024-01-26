@@ -199,8 +199,7 @@ class Constants {
     }
 
     fun showToast(context: Context, message: String) {
-
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
     fun saveMediaToStorage(context: Context, bitmap: Bitmap?, fileName: String) {
         val filename = "${fileName}.jpg"
@@ -242,8 +241,6 @@ class Constants {
             context.startActivity(intent)
         } else {
             showToast(context, "Can't open maps now.")
-            // Handle the case when Google Maps app is not installed
-            // You can open a web-based map instead, or display an error message
         }
     }
     fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
@@ -257,5 +254,10 @@ class Constants {
         }catch (e: Exception){
             //Log.e(TAG, e.toString())
         }
+    }
+
+    fun isValidPhoneNumber(phoneNumber: String): Boolean {
+        val regex = "^\\+[1-9]\\d{1,14}$"
+        return phoneNumber.matches(regex.toRegex())
     }
 }

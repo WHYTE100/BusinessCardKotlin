@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_loginFragment_to_resetPasswordFragment"
             app:destination="@id/resetPasswordFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_permissionsFragment"
+            app:destination="@id/permissionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -40,6 +43,9 @@
         <action
             android:id="@+id/action_registerFragment_to_addUserDetailsFragment"
             app:destination="@id/addUserDetailsFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_permissionsFragment"
+            app:destination="@id/permissionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addUserDetailsFragment"
@@ -81,5 +87,17 @@
         <action
             android:id="@+id/action_resetPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/permissionsFragment"
+        android:name="io.pridetechnologies.businesscard.fragments.PermissionsFragment"
+        android:label="fragment_permissions"
+        tools:layout="@layout/fragment_permissions" >
+        <action
+            android:id="@+id/action_permissionsFragment_to_addUserDetailsFragment"
+            app:destination="@id/addUserDetailsFragment" />
+        <action
+            android:id="@+id/action_permissionsFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
     </fragment>
 </navigation>

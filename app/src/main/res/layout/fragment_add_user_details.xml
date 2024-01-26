@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Personal Details"
+            android:text="@string/add_personal_details_title"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,11 +27,11 @@
             android:id="@+id/textInputLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/_24sdp"
             android:hint="First Name"
             style="@style/TextInputLayoutStyle"
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/_24sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView27">
@@ -47,9 +47,9 @@
             android:id="@+id/textInputLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/_24sdp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/_24sdp"
             style="@style/TextInputLayoutStyle"
             android:hint="Profession"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,24 +63,37 @@
                 android:inputType="textCapSentences"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.hbb20.CountryCodePicker
-            android:id="@+id/ccp3"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
+            android:layout_height="62dp"
+            android:layout_marginStart="@dimen/_24sdp"
             android:layout_marginTop="6dp"
-            style="@style/TextInputLayoutStyle"
             android:gravity="center"
             android:padding="5dp"
-            app:ccp_areaCodeDetectedCountry="true"
-            app:ccp_autoDetectCountry="true"
-            app:ccp_defaultNameCode="MW"
-            app:ccp_showNameCode="false"
-            app:ccp_showPhoneCode="false"
-            app:ccp_textSize="20sp"
+            android:backgroundTint="?attr/colorPrimary"
+            style="@style/OutlineButton"
             app:layout_constraintBottom_toBottomOf="@+id/textInputLayout9"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textInputLayout9" />
+            app:layout_constraintTop_toTopOf="@+id/textInputLayout9">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/ccp3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:ccp_areaCodeDetectedCountry="true"
+                app:ccp_arrowColor="?attr/colorOnPrimary"
+                android:layout_gravity="center"
+                app:ccp_arrowSize="@dimen/_26sdp"
+                app:ccp_showArrow="true"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_defaultNameCode="MW"
+                app:ccp_showNameCode="false"
+                app:ccp_showPhoneCode="false"
+                app:ccp_textSize="20sp"
+                />
+        </androidx.cardview.widget.CardView>
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout9"
@@ -88,11 +101,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="21dp"
+            android:layout_marginEnd="@dimen/_24sdp"
             android:hint="Mobile"
             style="@style/TextInputLayoutStyle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ccp3"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -106,9 +119,9 @@
             android:id="@+id/nextButton"
             android:layout_width="0dp"
             android:layout_height="65dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/_24sdp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/_24sdp"
             android:layout_marginBottom="32dp"
             android:backgroundTint="?attr/colorOnPrimary"
             style="@style/OutlineButton"
@@ -126,9 +139,9 @@
             android:layout_height="wrap_content"
             android:hint="Other Names (Optional)"
             style="@style/TextInputLayoutStyle"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/_24sdp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/_24sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
@@ -146,9 +159,9 @@
             android:layout_height="wrap_content"
             android:hint="Surname"
             style="@style/TextInputLayoutStyle"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/_24sdp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/_24sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">

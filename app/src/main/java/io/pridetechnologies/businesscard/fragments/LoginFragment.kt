@@ -176,7 +176,7 @@ class LoginFragment : Fragment() {
                     constants.writeToSharedPreferences(requireContext(),"user_qr_code", encodedCode)
                     if (firstName.isEmpty() && surname.isEmpty()){
                         progressDialog.hide()
-                        val action = LoginFragmentDirections.actionLoginFragmentToAddUserDetailsFragment()
+                        val action = LoginFragmentDirections.actionLoginFragmentToPermissionsFragment()
                         findNavController().navigate(action)
                     }else if (profileImage.isEmpty()){
                         progressDialog.hide()
@@ -193,7 +193,7 @@ class LoginFragment : Fragment() {
                     }
                 }else{
                     progressDialog.hide()
-                    val action = LoginFragmentDirections.actionLoginFragmentToAddUserDetailsFragment()
+                    val action = LoginFragmentDirections.actionLoginFragmentToPermissionsFragment()
                     findNavController().navigate(action)
                 }
             }

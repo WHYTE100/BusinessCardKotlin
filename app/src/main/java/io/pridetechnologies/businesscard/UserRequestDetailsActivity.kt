@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
@@ -135,23 +136,28 @@ class UserRequestDetailsActivity : AppCompatActivity() {
             mediaPlayer?.setOnPreparedListener { player ->
                 // Start playing the audio when it is prepared
                 player.start()
+                binding.visualizer.visualizer.enabled = true
+                binding.visualizer.setPlayer(mediaPlayer!!.audioSessionId)
+                binding.visualizer.visibility = View.VISIBLE
             }
-            binding.seekBar.max = ceil(mediaPlayer!!.duration.toFloat() / 1000).toInt()
-            // Create a Runnable to update the SeekBar progress
-            val  updateSeekBar = object : Runnable {
-                override fun run() {
-                    val currentPosition = ceil(mediaPlayer!!.currentPosition.toFloat() / 1000).toInt()
-                    binding.seekBar.progress = currentPosition
-                    binding.seekBar.postDelayed(this, 1000)
-                }
-            }
-            // Start updating the SeekBar progress
-            binding.seekBar.postDelayed(updateSeekBar, 1000)
+//            binding.seekBar.max = ceil(mediaPlayer!!.duration.toFloat() / 1000).toInt()
+//            // Create a Runnable to update the SeekBar progress
+//            val  updateSeekBar = object : Runnable {
+//                override fun run() {
+//                    val currentPosition = ceil(mediaPlayer!!.currentPosition.toFloat() / 1000).toInt()
+//                    binding.seekBar.progress = currentPosition
+//                    binding.seekBar.postDelayed(this, 1000)
+//                }
+//            }
+//            // Start updating the SeekBar progress
+//            binding.seekBar.postDelayed(updateSeekBar, 1000)
             mediaPlayer?.setOnCompletionListener { player ->
-                binding.seekBar.removeCallbacks(updateSeekBar)
+                //binding.seekBar.removeCallbacks(updateSeekBar)
                 player.release()
                 isPlaying = true
                 binding.playPauseButton.setImageResource(R.drawable.round_play_arrow)
+                binding.visualizer.visualizer.enabled = false
+                binding.visualizer.visibility = View.GONE
             }
         } catch (e: Exception){
             Log.e(TAG, "Error", e)
@@ -163,6 +169,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
         isPlaying = true
         binding.playPauseButton.setImageResource(R.drawable.round_play_arrow)
         mediaPlayer?.pause()
+        binding.visualizer.visualizer.enabled = false
 
     }
 
