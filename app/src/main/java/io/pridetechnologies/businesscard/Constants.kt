@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.*
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -202,26 +203,34 @@ class Constants {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
     fun saveMediaToStorage(context: Context, bitmap: Bitmap?, fileName: String) {
-        val filename = "${fileName}.jpg"
+        if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
+            // Handle the case where external storage is not available
+            return
+        }
+        val filename = "${fileName}'s Business Card QR-code.jpg"
         var fos: OutputStream? = null
+        var image: File? = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             context.contentResolver?.also { resolver ->
                 val contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
                     put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
                 }
                 val imageUri: Uri? = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
                 fos = imageUri?.let { resolver.openOutputStream(it) }
             }
         } else {
-            val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            val image = File(imagesDir, filename)
+            val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            image = File(imagesDir, filename)
             fos = FileOutputStream(image)
         }
         fos?.use {
             bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            it.flush()
+            it.close()
             showToast(context, "Saved to Gallery")
+            MediaScannerConnection.scanFile(context, arrayOf(image.toString()), null, null)
         }
     }
 
@@ -229,7 +238,7 @@ class Constants {
         val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = ClipData.newPlainText("Copied Link", textString)
         clipboardManager.setPrimaryClip(clipData)
-        Toast.makeText(context, "Link copied", Toast.LENGTH_SHORT).show()
+        showToast(context, "Link copied.")
     }
 
     fun openGoogleMapsAndDirections(context: Context, latitude: Double, longitude: Double) {
@@ -240,7 +249,8 @@ class Constants {
         if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)
         } else {
-            showToast(context, "Can't open maps now.")
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$latitude,$longitude"))
+            context.startActivity(browserIntent)
         }
     }
     fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {

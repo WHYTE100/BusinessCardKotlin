@@ -48,9 +48,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
     private var userName: String? = ""
     private var userId: String? = ""
     private var userFirstName: String? = ""
-    private var mediaPlayer: MediaPlayer? = null
     private lateinit var noteUrl:String
-    private var isPlaying = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +73,6 @@ class UserRequestDetailsActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { document ->
                 userFirstName = document.getString("first_name")
-                val otherName = document.getString("other_names")
                 val userLastName = document.getString("surname")
                 val profession = document.getString("profession")
                 photoUrl  = document.getString("profile_image_url")
@@ -100,77 +97,92 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                     noteUrl = snapshot.get("request_note").toString()
                     if (noteUrl != ""){
                         binding.noteLayout.visibility = View.VISIBLE
+                        AudioWife.getInstance()
+                            .init(this, Uri.parse(noteUrl))
+                            .setPlayView(binding.play)
+                            .setPauseView(binding.pause)
+                            .setSeekBar(binding.mediaSeekbar)
+                            .setRuntimeView(binding.runTime)
+                            .setTotalTimeView(binding.totalTime)
                     }else {
                         binding.noteLayout.visibility = View.GONE
-                    }
-                    binding.playPauseButton.setOnClickListener {
-                        if (!isPlaying){
-                            pause()
-                        }else {
-                            play(noteUrl)
-                            binding.playPauseButton.setImageResource(R.drawable.round_pause)
-                        }
                     }
                 }
             }
 
+        constants.db.collection("social_media").document(userId.toString())
+            .addSnapshotListener { snapshot, e ->
+
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    val whatsAppLink = snapshot.get("whatsapp_link").toString()
+                    val facebookLink = snapshot.get("facebook_link").toString()
+                    val linkedInLink = snapshot.get("linked_in_link").toString()
+                    val twitterLink = snapshot.get("twitter_link").toString()
+                    val youtubeLink = snapshot.get("youtube_link").toString()
+                    val instagramLink = snapshot.get("instagram_link").toString()
+                    val weChatLink = snapshot.get("wechat_link").toString()
+                    val tiktokLink = snapshot.get("tiktok_link").toString()
+
+                    if (facebookLink.equals("") || facebookLink.isEmpty()){
+                        binding.facebookBtn.visibility =View.GONE
+                    }else binding.facebookBtn.visibility =View.VISIBLE
+                    if (whatsAppLink.equals("") || whatsAppLink.isEmpty()){
+                        binding.whatsAppBtn.visibility =View.GONE
+                    }else binding.whatsAppBtn.visibility =View.VISIBLE
+                    if (linkedInLink.equals("") || linkedInLink.isEmpty()){
+                        binding.linkedInBtn.visibility =View.GONE
+                    }else binding.linkedInBtn.visibility =View.VISIBLE
+                    if (twitterLink.equals("") || twitterLink.isEmpty()){
+                        binding.twitterBtn.visibility =View.GONE
+                    }else binding.twitterBtn.visibility =View.VISIBLE
+                    if (youtubeLink.equals("") || youtubeLink.isEmpty()){
+                        binding.youtubeBtn.visibility =View.GONE
+                    }else binding.youtubeBtn.visibility =View.VISIBLE
+                    if (instagramLink.equals("") || instagramLink.isEmpty()){
+                        binding.instagramBtn.visibility =View.GONE
+                    }else binding.instagramBtn.visibility =View.VISIBLE
+                    if (weChatLink.equals("") || weChatLink.isEmpty()){
+                        binding.wechatBtn.visibility =View.GONE
+                    }else binding.wechatBtn.visibility =View.VISIBLE
+                    if (tiktokLink.equals("") || tiktokLink.isEmpty()){
+                        binding.tiktokBtn.visibility =View.GONE
+                    }else binding.tiktokBtn.visibility =View.VISIBLE
+
+                    binding.facebookBtn.setOnClickListener {
+                        constants.openProfileInApp(this, "com.facebook.katana",facebookLink)
+                    }
+                    binding.whatsAppBtn.setOnClickListener{
+                        constants.openNumberInWhatsApp(this,"com.whatsapp",whatsAppLink )
+                    }
+                    binding.linkedInBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.linkedin.android",linkedInLink )
+                    }
+                    binding.twitterBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.twitter.android",twitterLink )
+                    }
+                    binding.tiktokBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.zhiliaoapp.musically",tiktokLink )
+                    }
+                    binding.wechatBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.tencent.mm",weChatLink )
+                    }
+                    binding.instagramBtn.setOnClickListener{
+                        constants.openProfileInApp(this,"com.whatsapp",instagramLink )
+                    }
+                    binding.youtubeBtn.setOnClickListener{
+                        constants.openProfileInApp(this, "com.google.android.youtube",youtubeLink )
+                    }
+                } else {
+                    Log.d(TAG, "Current data: null")
+                }
+
+            }
+
         getMultipleWorkPlace()
-    }
-
-    private fun play(url: String) {
-
-        try {
-            mediaPlayer = MediaPlayer().apply {
-                setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .build()
-                )
-                setDataSource(url)
-                prepare() // might take long! (for buffering, etc)
-            }
-
-            //var updateSeekBar: Nothing? = null
-
-            mediaPlayer?.setOnPreparedListener { player ->
-                // Start playing the audio when it is prepared
-                player.start()
-                binding.visualizer.visualizer.enabled = true
-                binding.visualizer.setPlayer(mediaPlayer!!.audioSessionId)
-                binding.visualizer.visibility = View.VISIBLE
-            }
-//            binding.seekBar.max = ceil(mediaPlayer!!.duration.toFloat() / 1000).toInt()
-//            // Create a Runnable to update the SeekBar progress
-//            val  updateSeekBar = object : Runnable {
-//                override fun run() {
-//                    val currentPosition = ceil(mediaPlayer!!.currentPosition.toFloat() / 1000).toInt()
-//                    binding.seekBar.progress = currentPosition
-//                    binding.seekBar.postDelayed(this, 1000)
-//                }
-//            }
-//            // Start updating the SeekBar progress
-//            binding.seekBar.postDelayed(updateSeekBar, 1000)
-            mediaPlayer?.setOnCompletionListener { player ->
-                //binding.seekBar.removeCallbacks(updateSeekBar)
-                player.release()
-                isPlaying = true
-                binding.playPauseButton.setImageResource(R.drawable.round_play_arrow)
-                binding.visualizer.visualizer.enabled = false
-                binding.visualizer.visibility = View.GONE
-            }
-        } catch (e: Exception){
-            Log.e(TAG, "Error", e)
-        }
-
-    }
-
-    private fun pause() {
-        isPlaying = true
-        binding.playPauseButton.setImageResource(R.drawable.round_play_arrow)
-        mediaPlayer?.pause()
-        binding.visualizer.visualizer.enabled = false
-
     }
 
     private fun declineRequest() {
@@ -238,7 +250,6 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                     progressDialog.hide()
                     dialog.dismiss()
                     finish()
-                    //Log.d(ContentValues.TAG, "DocumentSnapshot successfully written!")
                 }
                 .addOnFailureListener { e ->
                     progressDialog.hide()
@@ -298,24 +309,9 @@ class UserRequestDetailsActivity : AppCompatActivity() {
 
     class MyWorkPlaceViewHolder(val binding: WorkCardBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (mediaPlayer != null) {
-            mediaPlayer?.apply {
-                release()
-                reset()
-            }
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (mediaPlayer != null) {
-            mediaPlayer?.apply {
-                release()
-                reset()
-            }
-        }
+    override fun onPause() {
+        super.onPause()
+        AudioWife.getInstance().release()
     }
 
 }

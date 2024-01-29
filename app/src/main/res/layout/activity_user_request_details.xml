@@ -141,57 +141,109 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/colorPrimary">
 
-
-                    <TextView
-                        android:id="@+id/textView35"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="24dp"
-                        android:textSize="@dimen/_8ssp"
-                        android:textColor="?attr/colorOnPrimary"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView34"
-                        app:layout_constraintEnd_toStartOf="@+id/playPauseButton" />
-
                     <TextView
                         android:id="@+id/textView34"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="8dp"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="?attr/colorOnPrimary"
                         android:text="Request Note"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="@dimen/_12ssp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageButton
-                        android:id="@+id/playPauseButton"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:background="@drawable/round_background_small"
-                        android:src="@drawable/round_play_arrow"
-                        app:tint="?attr/colorPrimary"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="24dp"
-                        android:layout_marginBottom="16dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|top"
+                        android:orientation="horizontal"
+                        android:paddingTop="5dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="5dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView34"
+                        app:layout_constraintEnd_toEndOf="@+id/media_seekbar"
+                        app:layout_constraintTop_toTopOf="@+id/textView34">
+
+                        <TextView
+                            android:id="@+id/run_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:inputType="text"
+                            android:text="00:00"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:inputType="text"
+                            android:text=" / "
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/total_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:inputType="text"
+                            android:text="00:00"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/play_pause_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_15sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <com.chibde.visualizer.LineBarVisualizer
-                        android:id="@+id/visualizer"
+                        <ImageView
+                            android:id="@+id/play"
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:background="@drawable/round_background_small"
+                            android:src="@drawable/round_play_arrow"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="?attr/colorPrimary" />
+
+                        <ImageView
+                            android:id="@+id/pause"
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:background="@drawable/round_background_small"
+                            android:src="@drawable/round_pause"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="?attr/colorPrimary" />
+                    </FrameLayout>
+
+                    <SeekBar
+                        android:id="@+id/media_seekbar"
                         android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/playPauseButton"
-                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintEnd_toStartOf="@+id/play_pause_layout"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView34"
-                        app:layout_constraintVertical_bias="0.38" />
-
+                        app:layout_constraintTop_toBottomOf="@+id/textView34" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -211,7 +263,137 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"/>
+                android:layout_marginTop="@dimen/_5sdp" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_24sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/social_media"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="@dimen/_18ssp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorPrimary"
+                android:layout_marginHorizontal="@dimen/_13sdp"
+                android:layout_marginBottom="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:elevation="3dp"
+                app:cardCornerRadius="@dimen/_10sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout26"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_80sdp"
+                    android:background="?attr/colorPrimary"
+                    android:layout_marginVertical="@dimen/_8sdp">
+
+                    <ImageView
+                        android:id="@+id/facebookBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginTop="8dp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintEnd_toStartOf="@+id/whatsAppBtn"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/facebook_gold" />
+
+                    <ImageView
+                        android:id="@+id/whatsAppBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:contentDescription="@string/link_button"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/facebookBtn"
+                        app:layout_constraintEnd_toStartOf="@+id/twitterBtn"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/facebookBtn"
+                        app:layout_constraintTop_toTopOf="@+id/facebookBtn"
+                        app:srcCompat="@drawable/whatsapp_gold" />
+
+                    <ImageView
+                        android:id="@+id/twitterBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintBottom_toBottomOf="@+id/whatsAppBtn"
+                        app:layout_constraintEnd_toStartOf="@+id/linkedInBtn"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/whatsAppBtn"
+                        app:layout_constraintTop_toTopOf="@+id/whatsAppBtn"
+                        app:srcCompat="@drawable/twitter_gold" />
+
+                    <ImageView
+                        android:id="@+id/linkedInBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:contentDescription="@string/link_button"
+                        app:layout_constraintBottom_toBottomOf="@+id/twitterBtn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/twitterBtn"
+                        app:layout_constraintTop_toTopOf="@+id/twitterBtn"
+                        app:srcCompat="@drawable/linkedin_gold" />
+
+                    <ImageView
+                        android:id="@+id/youtubeBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_columnWeight="1"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tiktokBtn"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/facebookBtn"
+                        app:srcCompat="@drawable/youtube_gold" />
+
+                    <ImageView
+                        android:id="@+id/tiktokBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/instagramBtn"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/youtubeBtn"
+                        app:layout_constraintTop_toBottomOf="@+id/whatsAppBtn"
+                        app:srcCompat="@drawable/tik_tok_gold" />
+
+                    <ImageView
+                        android:id="@+id/instagramBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/wechatBtn"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/tiktokBtn"
+                        app:layout_constraintTop_toBottomOf="@+id/twitterBtn"
+                        app:srcCompat="@drawable/instagram_gold" />
+
+                    <ImageView
+                        android:id="@+id/wechatBtn"
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/instagramBtn"
+                        app:layout_constraintTop_toBottomOf="@+id/linkedInBtn"
+                        app:srcCompat="@drawable/wechat_gold" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
 
         </LinearLayout>

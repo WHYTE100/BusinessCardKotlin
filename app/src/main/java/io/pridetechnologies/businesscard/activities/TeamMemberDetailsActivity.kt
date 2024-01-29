@@ -143,10 +143,11 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                 if (isApproved == true){
                     binding.approveButton.visibility = View.GONE
                     binding.declineButton.visibility = View.GONE
-                    binding.removeButton.visibility = View.GONE
+                    binding.removeButton.visibility = View.VISIBLE
                     binding.makeAdminButton.visibility = View.VISIBLE
                 }
                 if (isAdmin == true){
+                    binding.removeAdminButton.visibility = View.VISIBLE
                     binding.removeButton.visibility = View.VISIBLE
                     binding.makeAdminButton.visibility = View.GONE
                 }
@@ -203,6 +204,39 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.show()
         }
+        binding.removeAdminButton.setOnClickListener {
+            val dialog = Dialog(this)
+            val b = CustomDialogBoxBinding.inflate(layoutInflater)
+            dialog.setContentView(b.root)
+            b.titleTextView.text = "Remove as Admin"
+            b.descTextView.text = "Are you sure you want to remove this member as an admin?"
+            b.positiveTextView.text = "Yes"
+            b.positiveTextView.setOnClickListener {
+                updatedAdminStatus(false)
+                dialog.dismiss()
+            }
+            b.negativeTextView.setOnClickListener { dialog.dismiss() }
+            dialog.setCancelable(false)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.show()
+        }
+
+        binding.makeAdminButton.setOnClickListener {
+            val dialog = Dialog(this)
+            val b = CustomDialogBoxBinding.inflate(layoutInflater)
+            dialog.setContentView(b.root)
+            b.titleTextView.text = "Make Admin"
+            b.descTextView.text = "Are you sure you want to make this member as an admin?"
+            b.positiveTextView.text = "Yes"
+            b.positiveTextView.setOnClickListener {
+                updatedAdminStatus(true)
+                dialog.dismiss()
+            }
+            b.negativeTextView.setOnClickListener { dialog.dismiss() }
+            dialog.setCancelable(false)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.show()
+        }
 
         checkIfAdmin()
     }
@@ -229,18 +263,14 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                             binding.makeAdminButton.visibility = View.GONE
                         }else{
                             binding.removeAdminButton.visibility = View.VISIBLE
+                            binding.removeButton.visibility = View.VISIBLE
                             binding.makeAdminButton.visibility = View.GONE
                         }
                     }else {
                         binding.makeAdminButton.visibility = View.VISIBLE
                         binding.removeAdminButton.visibility = View.GONE
+                        binding.removeButton.visibility = View.VISIBLE
                     }
-                }
-                binding.removeAdminButton.setOnClickListener {
-                    updatedAdminStatus(false)
-                }
-                binding.makeAdminButton.setOnClickListener {
-                    updatedAdminStatus(true)
                 }
             }
     }
@@ -257,11 +287,13 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                 if (task.isSuccessful){
                     progressDialog.hide()
                     if (isAdmin == true){
-                        binding.removeAdminButton.visibility = View.GONE
-                        binding.makeAdminButton.visibility = View.VISIBLE
-                    }else {
-                        binding.makeAdminButton.visibility = View.GONE
                         binding.removeAdminButton.visibility = View.VISIBLE
+                        binding.removeButton.visibility = View.VISIBLE
+                        binding.makeAdminButton.visibility = View.GONE
+                    }else {
+                        binding.makeAdminButton.visibility = View.VISIBLE
+                        binding.removeAdminButton.visibility = View.GONE
+                        binding.removeButton.visibility = View.VISIBLE
                     }
                 }else{
                     progressDialog.hide()

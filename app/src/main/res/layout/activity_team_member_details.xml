@@ -33,14 +33,14 @@
         app:layout_constraintTop_toTopOf="@+id/backButton" />
 
     <LinearLayout
-        android:id="@+id/isAdminLayout"
+        android:id="@+id/bottomLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -53,30 +53,6 @@
             style="@style/OutlineButton"
             android:visibility="gone"
             android:text="@string/make_member_admin" />
-
-        <Button
-            android:id="@+id/removeAdminButton"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:backgroundTint="?attr/colorPrimary"
-            android:textColor="?attr/colorOnPrimary"
-            style="@style/OutlineButtonBlack"
-            android:visibility="gone"
-            android:text="@string/remove_member_admin" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/bottomLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/approveButton"
@@ -97,6 +73,16 @@
             style="@style/OutlineButtonBlack"
             android:visibility="visible"
             android:text="@string/decline_member" />
+
+        <Button
+            android:id="@+id/removeAdminButton"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
+            style="@style/OutlineButtonBlack"
+            android:visibility="gone"
+            android:text="@string/remove_member_admin" />
 
         <Button
             android:id="@+id/removeButton"

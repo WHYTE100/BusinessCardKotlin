@@ -411,8 +411,8 @@ class NewCardActivity : AppCompatActivity() {
                 }
                 progressDialog.hide()
                 binding.requestButton.isEnabled = false
-                binding.requestButton.text = "Request Sent"
-                Log.d(TAG, "DocumentSnapshot successfully written!")
+                binding.textView99.visibility = View.VISIBLE
+                binding.requestButton.visibility = View.GONE
             }
             .addOnFailureListener { e ->
                 progressDialog.hide()

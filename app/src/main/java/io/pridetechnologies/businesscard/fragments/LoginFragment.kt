@@ -1,9 +1,11 @@
 package io.pridetechnologies.businesscard.fragments
 
+import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -24,7 +27,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.CustomProgressDialog
 import io.pridetechnologies.businesscard.R
@@ -162,7 +167,17 @@ class LoginFragment : Fragment() {
     }
 
     private fun sendToHome(userId: String?) {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            if (!it.isSuccessful) {
+                return@addOnCompleteListener
+            }
+            val token = it.result
+            val map = mapOf(
+                "token" to token.toString()
+            )
+            constants.db.collection("users").document(userId.toString()).set(map, SetOptions.merge())
 
+        }
         constants.db.collection("users").document(userId.toString())
             .get()
             .addOnSuccessListener { document ->
@@ -175,6 +190,10 @@ class LoginFragment : Fragment() {
                     val encodedCode = document.get("encode_qr_code").toString()
                     constants.writeToSharedPreferences(requireContext(),"user_qr_code", encodedCode)
                     if (firstName.isEmpty() && surname.isEmpty()){
+                        progressDialog.hide()
+                        val action = LoginFragmentDirections.actionLoginFragmentToPermissionsFragment()
+                        findNavController().navigate(action)
+                    }else if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                         progressDialog.hide()
                         val action = LoginFragmentDirections.actionLoginFragmentToPermissionsFragment()
                         findNavController().navigate(action)

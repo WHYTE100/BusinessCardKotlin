@@ -279,6 +279,22 @@
             </LinearLayout>
         </ScrollView>
 
+        <TextView
+            android:id="@+id/textView99"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_24sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Request Sent"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView3"/>
+
         <Button
             android:id="@+id/requestButton"
             style="@style/OutlineButton"

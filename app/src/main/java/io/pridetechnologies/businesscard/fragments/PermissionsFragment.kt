@@ -1,12 +1,11 @@
 package io.pridetechnologies.businesscard.fragments
 
 import android.Manifest
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -15,8 +14,6 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.CustomProgressDialog
-import io.pridetechnologies.businesscard.R
-import io.pridetechnologies.businesscard.databinding.FragmentLoginBinding
 import io.pridetechnologies.businesscard.databinding.FragmentPermissionsBinding
 
 class PermissionsFragment : Fragment() {
@@ -24,7 +21,6 @@ class PermissionsFragment : Fragment() {
     private val progressDialog by lazy { CustomProgressDialog(requireContext()) }
     private lateinit var binding: FragmentPermissionsBinding
     private val constants = Constants()
-    private var isChecked = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
