@@ -108,23 +108,23 @@ class LoginFragment : Fragment() {
         binding = FragmentLoginBinding.inflate(layoutInflater, container, false)
 
 
-        val auth = FirebaseAuth.getInstance()
+        //val auth = FirebaseAuth.getInstance()
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        // Initialize sign in client
-        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-        binding.googleSignInButton.setOnClickListener {
-            val intent = googleSignInClient.signInIntent
-            // Start activity for result
-            googleSignInResultContract.launch(intent)
-        }
+//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(getString(R.string.default_web_client_id))
+//            .requestEmail()
+//            .build()
+//
+//        // Initialize sign in client
+//        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+//        binding.googleSignInButton.setOnClickListener {
+//            val intent = googleSignInClient.signInIntent
+//            // Start activity for result
+//            googleSignInResultContract.launch(intent)
+//        }
 
         binding.loginButton.setOnClickListener {
-            loginUser(auth)
+            loginUser()
         }
         binding.passwordResetButton.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToResetPasswordFragment()
@@ -137,7 +137,7 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-    private fun loginUser(auth: FirebaseAuth) {
+    private fun loginUser() {
         val email = binding.emailTextField.editText?.text.toString().trim()
         val password = binding.passwordTextField.editText?.text.toString().trim()
 
@@ -148,14 +148,14 @@ class LoginFragment : Fragment() {
         }else{
 
             progressDialog.show("Signing In...")
-            auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
+            constants.auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
                 if (it.user?.isEmailVerified == true){
                     val userId = it.user?.uid
                     sendToHome(userId)
                 }else{
                     progressDialog.hide()
                     it.user?.sendEmailVerification()
-                    auth.signOut()
+                    constants.auth.signOut()
                     constants.showToast(requireContext(), "Please verify your email address first")
                 }
 

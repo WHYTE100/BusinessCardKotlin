@@ -34,7 +34,7 @@ android {
         minSdk 26
         targetSdk 33
         versionCode 1
-        versionName "2.8"
+        versionName "3.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
@@ -71,6 +71,7 @@ dependencies {
     implementation 'io.github.glailton.expandabletextview:expandabletextview:1.0.3'
     implementation 'com.airbnb.android:paris:2.0.2'
     implementation 'io.github.gautamchibde:audiovisualizer:2.2.7'
+    implementation 'com.google.android.libraries.mapsplatform.transportation:transportation-consumer:2.1.0'
     //implementation 'com.airbnb.android:paris-processor:2.0.2'
     //implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1'
 

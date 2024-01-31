@@ -10,5 +10,8 @@ data class BusinessSearch(
     val business_name: String,
     val area_located: String,
     val district_name: String,
-    val country: String
+    val country: String,
+    val business_latitude: Double,
+    val business_longitude: Double,
+    val distance: Float = 0f
 )

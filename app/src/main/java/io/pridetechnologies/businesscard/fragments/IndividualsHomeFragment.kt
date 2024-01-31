@@ -254,7 +254,7 @@ class IndividualsHomeFragment : Fragment() {
                                         myCodeBitmap = constants.downloadCode(requireContext(), qrCode)
                                         myHandler?.post {
                                             if(myCodeBitmap!=null){
-                                                constants.saveMediaToStorage(requireContext(), myCodeBitmap, "${firstName}Code")
+                                                constants.saveMediaToStorage(requireContext(), myCodeBitmap, "${firstName}")
                                             }
                                         }
                                     }

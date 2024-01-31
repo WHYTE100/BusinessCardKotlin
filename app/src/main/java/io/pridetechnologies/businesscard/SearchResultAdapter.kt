@@ -44,12 +44,15 @@ class SearchResultAdapter(val context: Context) : PagingDataAdapter<BusinessSear
         private val businessLogo = view.findViewById<CircleImageView>(R.id.businessLogoView)
         private val businessName = view.findViewById<TextView>(R.id.businessNameView)
         private val businessLocation = view.findViewById<TextView>(R.id.businessAddressView)
+        private val businessDistance = view.findViewById<TextView>(R.id.distanceView)
         private val cardView = view.findViewById<MaterialCardView>(R.id.cardView)
 
         fun bind(businessSearch: BusinessSearch) {
             Picasso.get().load(businessSearch.business_logo).fit().centerCrop().placeholder(R.drawable.background_icon).into(businessLogo)
             businessName.text = businessSearch.business_name
             businessLocation.text = "${businessSearch.area_located}, ${businessSearch.district_name}, ${businessSearch.country}"
+            businessDistance.text = businessSearch.distance.toString()
+
 
             cardView.setOnClickListener {
                 val intent = Intent(context, NewBusinessCardActivity::class.java)

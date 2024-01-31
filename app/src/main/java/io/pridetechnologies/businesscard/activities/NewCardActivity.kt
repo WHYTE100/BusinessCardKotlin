@@ -281,6 +281,7 @@ class NewCardActivity : AppCompatActivity() {
 
             }
         getMultipleWorkPlace()
+        checkRequestSentAlready()
     }
 
     private fun startRecording() {
@@ -302,6 +303,7 @@ class NewCardActivity : AppCompatActivity() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+
     }
 
     private fun stopRecording() {
@@ -416,6 +418,7 @@ class NewCardActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 progressDialog.hide()
+                constants.showToast(this, "Error: ${e.message.toString()}")
                 Log.w(TAG, "Error writing document", e) }
 
     }
@@ -489,6 +492,27 @@ class NewCardActivity : AppCompatActivity() {
                 }else{
                     binding.invalidCodeView.visibility = View.VISIBLE
                     constants.showToast(this,"Invalid code")
+                }
+            }
+    }
+
+    private fun checkRequestSentAlready() {
+        constants.db.collection("users").document(deepLink.toString())
+            .collection("card_requests").document(constants.currentUserId.toString())
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    binding.requestButton.isEnabled = true
+                    binding.textView99.visibility = View.GONE
+                    binding.requestButton.visibility = View.VISIBLE
+                }else{
+                    binding.requestButton.isEnabled = false
+                    binding.textView99.visibility = View.VISIBLE
+                    binding.textView99.setText("Request Sent Already")
+                    binding.requestButton.visibility = View.GONE
                 }
             }
     }

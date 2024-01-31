@@ -9,6 +9,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.*
+import android.location.Location
+import android.location.LocationManager
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
@@ -17,8 +19,6 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -265,6 +265,20 @@ class Constants {
             //Log.e(TAG, e.toString())
         }
     }
+
+    fun calculateDistance(currentLatitude: Double, currentLongitude: Double, targetLatitude: Double, targetLongitude: Double): Float {
+        val currentLocation = Location("CurrentLocation")
+        currentLocation.latitude = currentLatitude
+        currentLocation.longitude = currentLongitude
+
+        val targetLocation = Location("TargetLocation")
+        targetLocation.latitude = targetLatitude
+        targetLocation.longitude = targetLongitude
+
+        return currentLocation.distanceTo(targetLocation)
+    }
+
+
 
     fun isValidPhoneNumber(phoneNumber: String): Boolean {
         val regex = "^\\+[1-9]\\d{1,14}$"
