@@ -46,6 +46,8 @@ class PermissionsFragment : Fragment() {
                         report?.let {
                             if(report.areAllPermissionsGranted()){
                                 storageCheckBox.isChecked = true
+                            }else{
+                                storageCheckBox.isChecked = false
                             }
                         }
                     }
@@ -73,6 +75,8 @@ class PermissionsFragment : Fragment() {
                         report?.let {
                             if(report.areAllPermissionsGranted()){
                                 cameraCheckBox.isChecked = true
+                            }else{
+                                cameraCheckBox.isChecked = false
                             }
                         }
                     }
@@ -99,6 +103,8 @@ class PermissionsFragment : Fragment() {
                         report?.let {
                             if(report.areAllPermissionsGranted()){
                                 audioCheckBox.isChecked = true
+                            }else{
+                                audioCheckBox.isChecked = false
                             }
                         }
                     }
@@ -125,6 +131,8 @@ class PermissionsFragment : Fragment() {
                         report?.let {
                             if(report.areAllPermissionsGranted()){
                                 phoneCheckBox.isChecked = true
+                            }else{
+                                phoneCheckBox.isChecked = false
                             }
                         }
                     }
@@ -151,6 +159,8 @@ class PermissionsFragment : Fragment() {
                         report?.let {
                             if(report.areAllPermissionsGranted()){
                                 locationCheckBox.isChecked = true
+                            }else{
+                                locationCheckBox.isChecked = false
                             }
                         }
                     }

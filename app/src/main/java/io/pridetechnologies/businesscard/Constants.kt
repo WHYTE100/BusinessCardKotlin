@@ -1,6 +1,5 @@
 package io.pridetechnologies.businesscard
 
-import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ContentValues
@@ -8,7 +7,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.media.MediaScannerConnection
@@ -16,9 +21,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,6 +37,7 @@ import io.pridetechnologies.businesscard.notifications.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -41,7 +47,8 @@ import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
-import java.util.*
+import java.net.URLEncoder
+import java.util.Hashtable
 
 
 class Constants {
@@ -283,5 +290,63 @@ class Constants {
     fun isValidPhoneNumber(phoneNumber: String): Boolean {
         val regex = "^\\+[1-9]\\d{1,14}$"
         return phoneNumber.matches(regex.toRegex())
+    }
+
+    fun getCurrentCountry(context: Context): String? {
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            return null
+        }
+
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val location: Location? = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+        location?.let {
+            val geocoder = Geocoder(context)
+            val addresses = geocoder.getFromLocation(it.latitude, it.longitude, 1)
+            if (addresses != null) {
+                if (addresses.isNotEmpty()) {
+                    return addresses[0].countryName
+                }
+            }
+        }
+
+        return null
+    }
+
+    fun getNavigationDistance(context: Context ,origin: Location, destination: Location, apiKey: String): Double {
+
+        val distanceUnit = getDistanceUnit(context)
+        val convertToUnit = when (distanceUnit) {
+            "miles" -> {
+                1609.34
+            }
+            "kilometers" -> {
+                1000.0
+            }
+            else -> {
+                1000.0
+            }
+        }
+
+        val originParam = "${origin.latitude},${origin.longitude}"
+        val destinationParam = "${destination.latitude},${destination.longitude}"
+        val urlString = "https://maps.googleapis.com/maps/api/directions/json?origin=${URLEncoder.encode(originParam, "UTF-8")}&destination=${URLEncoder.encode(destinationParam, "UTF-8")}&key=$apiKey"
+
+        val url = URL(urlString)
+        val response = url.readText()
+        val jsonResponse = JSONObject(response)
+
+        val routes = jsonResponse.getJSONArray("routes")
+        if (routes.length() > 0) {
+            val legs = routes.getJSONObject(0).getJSONArray("legs")
+            val distance = legs.getJSONObject(0).getJSONObject("distance").getInt("value")
+            return distance / convertToUnit // Convert meters to kilometers
+        }
+        return 0.0
+    }
+    fun getDistanceUnit(context: Context): String? {
+        val sharedPreferences = context.getSharedPreferences("BusinessCard", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("distance_unit", null)
     }
 }

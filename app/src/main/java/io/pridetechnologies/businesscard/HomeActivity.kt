@@ -63,6 +63,7 @@ class HomeActivity : AppCompatActivity() {
     private var indiText: TextView? = null
     private var bizText: TextView? = null
     private var mAuth: FirebaseAuth? = null
+    private val constants = Constants()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,6 +117,17 @@ class HomeActivity : AppCompatActivity() {
         progressDialog = ProgressDialog(this)
 
         mCompressor = FileCompressor(this)
+
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences("BusinessCard", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        val country = constants.getCurrentCountry(this)
+
+        val usesMiles = listOf("United States", "United Kingdom", "Liberia", "Myanmar").contains(country)
+        val unit = if (usesMiles) "miles" else "kilometers"
+
+        editor.putString("distance_unit", unit)
+        editor.apply()
     }
 
     private fun checkUserStatus() {

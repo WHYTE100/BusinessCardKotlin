@@ -1,12 +1,10 @@
 package io.pridetechnologies.businesscard
 
+import android.content.Context
 import android.location.Location
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
@@ -17,15 +15,12 @@ import com.algolia.instantsearch.core.connection.ConnectionHandler
 import com.algolia.instantsearch.searchbox.SearchBoxConnector
 import com.algolia.instantsearch.searcher.hits.HitsSearcher
 import com.algolia.instantsearch.stats.StatsConnector
-import com.algolia.search.helper.deserialize
 import com.algolia.search.model.APIKey
 import com.algolia.search.model.ApplicationID
 import com.algolia.search.model.IndexName
-import com.algolia.search.client.Index
-import com.algolia.search.model.search.Query
-import kotlinx.coroutines.flow.Flow
 
-class SearchViewModel : ViewModel(){
+class SearchViewModel() : ViewModel(){
+    val constants = Constants()
 
     private var searcher = HitsSearcher(
         applicationID = ApplicationID("0MC7C7BCYB"),
@@ -43,7 +38,7 @@ class SearchViewModel : ViewModel(){
 
     private val connection = ConnectionHandler(searchBox, stats)
 
-    fun searchResultsWithDistance(currentLatitude: Double, currentLongitude: Double): LiveData<PagingData<BusinessSearch>> {
+    fun searchResultsWithDistance(context: Context ,currentLatitude: Double, currentLongitude: Double): LiveData<PagingData<BusinessSearch>> {
         val currentLocation = Location("").apply {
             latitude = currentLatitude
             longitude = currentLongitude
@@ -56,25 +51,21 @@ class SearchViewModel : ViewModel(){
                     latitude = searchResultItem.business_latitude
                     longitude = searchResultItem.business_longitude
                 }
-                val distance = currentLocation.distanceTo(resultLocation)
+                val distance = constants.getNavigationDistance(context, currentLocation, resultLocation, "AIzaSyAxZClYe6QwPkY6tV0bK8egHX7g0yMx59I")
                 searchResultItem.copy(distance = distance)
             }
+
         }
     }
     fun search() {
-    connection += searchBox.connectPaginator(paginator)
-//        val query = Query(query = queryText)
-//        viewModelScope.launch {
-//            val response = searcher.search()
-//            _searchResults.value = response?.hits?.deserialize(BusinessSearch.serializer()).filterNotNull()
-//        }
+        connection += searchBox.connectPaginator(paginator)
     }
-
 
     override fun onCleared() {
         super.onCleared()
         searcher.cancel()
         connection.clear()
     }
+
 
 }

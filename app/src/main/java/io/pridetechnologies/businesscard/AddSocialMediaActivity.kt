@@ -1,18 +1,17 @@
 package io.pridetechnologies.businesscard
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.ContentValues
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.firebase.firestore.SetOptions
 import io.pridetechnologies.businesscard.databinding.ActivityAddSocialMediaBinding
-import io.pridetechnologies.businesscard.databinding.ActivityAdminBusinesProfileBinding
 import io.pridetechnologies.businesscard.databinding.CustomDialogBoxBinding
 
 class AddSocialMediaActivity : AppCompatActivity() {
@@ -45,6 +44,7 @@ class AddSocialMediaActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun saveLink() {
 
         val link = binding.linkTextField.editText?.text.toString().trim()
@@ -63,7 +63,7 @@ class AddSocialMediaActivity : AppCompatActivity() {
                 val linkDetails = hashMapOf(
                     linkValue to link
                 )
-                constants.db.collection("social_media").document(userId.toString())
+                constants.db.collection("social_media").document(userId)
                     .set(linkDetails, SetOptions.merge())
                     .addOnSuccessListener {
                         progressDialog.hide()

@@ -1,31 +1,13 @@
 package io.pridetechnologies.businesscard
 
-import android.app.Dialog
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.util.Base64
-import android.util.Log
-import android.view.View
 import android.widget.RemoteViews
-import androidx.core.net.toUri
-import com.google.firebase.firestore.SetOptions
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.common.BitMatrix
-import com.journeyapps.barcodescanner.BarcodeEncoder
-import com.squareup.picasso.Picasso
-import io.pridetechnologies.businesscard.databinding.CustomBioDialogBinding
-import io.pridetechnologies.businesscard.databinding.CustomQrCodeDialogBinding
-import java.io.ByteArrayOutputStream
 
 
 /**

@@ -1,16 +1,13 @@
 package io.pridetechnologies.businesscard
 
+import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,16 +30,11 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.squareup.picasso.Picasso
-import io.pridetechnologies.businesscard.activities.EditDepartmentActivity
 import io.pridetechnologies.businesscard.activities.NewCardActivity
-import io.pridetechnologies.businesscard.activities.TeamMemberDetailsActivity
-import io.pridetechnologies.businesscard.databinding.ActivityAdminBusinesProfileBinding
 import io.pridetechnologies.businesscard.databinding.ActivityBusinessDetailsBinding
-import io.pridetechnologies.businesscard.databinding.CustomBioDialogBinding
 import io.pridetechnologies.businesscard.databinding.CustomQrCodeDialogBinding
 import io.pridetechnologies.businesscard.databinding.DepartmentsCardBinding
 import io.pridetechnologies.businesscard.databinding.TeamCardBinding
-import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -84,6 +77,7 @@ class BusinessDetailsActivity : AppCompatActivity() {
         getDepartments()
         getTeam()
     }
+    @SuppressLint("SetTextI18n")
     private fun getBusinessProfile() {
         constants.db.collection("businesses").document(businessId.toString())
             .addSnapshotListener { snapshot, e ->
@@ -101,16 +95,16 @@ class BusinessDetailsActivity : AppCompatActivity() {
                 val businessCode = snapshot?.get("business_qr_code").toString()
                 val businessLink = snapshot?.get("business_link").toString()
 
-                if (businessMobile.equals("null") || businessMobile.isEmpty()){
+                if (businessMobile == "" || businessMobile.isEmpty()){
                     binding.callBtn.visibility = View.GONE
                 }
-                if (businessWebsite.equals("null") || businessWebsite.isEmpty()){
+                if (businessWebsite == "" || businessWebsite.isEmpty()){
                     binding.bioBtn.visibility = View.GONE
                 }
-                if (businessEmail.equals("null") || businessEmail.isEmpty()){
+                if (businessEmail == "" || businessEmail.isEmpty()){
                     binding.emailBtn.visibility = View.GONE
                 }
-                if (businessBio.equals("null") || businessBio.isEmpty()){
+                if (businessBio == "" || businessBio.isEmpty()){
                     binding.businessBioView.visibility = View.GONE
                 }
 
@@ -134,7 +128,7 @@ class BusinessDetailsActivity : AppCompatActivity() {
                 }
 
                 binding.callButton.setOnClickListener {
-                    if (!businessMobile.equals("null") || businessMobile.isNotEmpty()) {
+                    if (businessMobile != "" || businessMobile.isNotEmpty()) {
                         val number = String.format("tel: %s", businessMobile)
                         val callIntent = Intent(Intent.ACTION_CALL)
                         callIntent.setData(Uri.parse(number))
@@ -165,7 +159,7 @@ class BusinessDetailsActivity : AppCompatActivity() {
                     }
                 }
                 binding.whatsAppButton.setOnClickListener {
-                    if (!businessMobile.equals("null") || businessMobile.isNotEmpty()) {
+                    if (businessMobile != "" || businessMobile.isNotEmpty()) {
                         constants.openNumberInWhatsApp(this, "com.whatsapp", businessMobile)
                     }
                 }
@@ -177,7 +171,7 @@ class BusinessDetailsActivity : AppCompatActivity() {
                 }
                 binding.websiteButton.setOnClickListener {
 
-                    if (!businessBio.equals("null") || businessWebsite.isNotEmpty()){
+                    if (businessBio != "" || businessWebsite.isNotEmpty()){
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(businessWebsite))
                         startActivity(intent)
                     }else Toast.makeText(this, "No Website", Toast.LENGTH_SHORT).show()
@@ -218,7 +212,7 @@ class BusinessDetailsActivity : AppCompatActivity() {
                     val businessLatitude = snapshot.getDouble("business_latitude") ?: 0.0
                     val businessLongitude = snapshot.getDouble("business_longitude") ?: 0.0
 
-                    binding.businessAddressView.text = "${areaLocated}, ${districtName}, ${country} "
+                    binding.businessAddressView.text = "${areaLocated}, ${districtName}, $country "
                     binding.textView52.text = buildingNumber
                     binding.textView53.text = streetName
                     binding.textView54.text = areaLocated
@@ -248,28 +242,28 @@ class BusinessDetailsActivity : AppCompatActivity() {
                 val weChatLink = snapshot?.get("wechat_link").toString()
                 val tiktokLink = snapshot?.get("tiktok_link").toString()
 
-                if (facebookLink.equals("null")){
+                if (facebookLink == ""){
                     binding.facebookBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.facebookBtn.colorFilter = null
 //                    if (whatsAppLink.equals("null")){
 //                        binding.whatsAppBtn.setColorFilter(R.color.darkPrimaryColor)
 //                    }else binding.whatsAppBtn.colorFilter = null
-                if (linkedInLink.equals("null")){
+                if (linkedInLink == ""){
                     binding.linkedInBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.linkedInBtn.colorFilter = null
-                if (twitterLink.equals("null")){
+                if (twitterLink == ""){
                     binding.twitterBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.twitterBtn.colorFilter = null
-                if (youtubeLink.equals("null")){
+                if (youtubeLink == ""){
                     binding.youtubeBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.youtubeBtn.colorFilter = null
-                if (instagramLink.equals("null")){
+                if (instagramLink == ""){
                     binding.instagramBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.instagramBtn.colorFilter = null
-                if (weChatLink.equals("null")){
+                if (weChatLink == ""){
                     binding.wechatBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.wechatBtn.colorFilter = null
-                if (tiktokLink.equals("null")){
+                if (tiktokLink == ""){
                     binding.tiktokBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.tiktokBtn.colorFilter = null
 

@@ -10,7 +10,6 @@ import io.pridetechnologies.businesscard.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
     private lateinit var binding: FragmentSplashBinding
-    private val constants = Constants()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         binding = FragmentSplashBinding.inflate(layoutInflater, container, false)
