@@ -152,28 +152,37 @@ class NewCardActivity : AppCompatActivity() {
             }
             b.sendButton.setOnClickListener {
                 dialog.dismiss()
-                progressDialog.show("Sending Request...")
-                val audioRef = constants.storageRef.child("request_note_audios/${constants.currentUserId}/$deepLink/${outputFile?.name}")
-                val uploadTask = audioRef.putFile(outputUri!!)
+                if (constants.hasInternetConnection(this)) {
+                    progressDialog.show("Sending Request...")
+                    val audioRef = constants.storageRef.child("request_note_audios/${constants.currentUserId}/$deepLink/${outputFile?.name}")
+                    val uploadTask = audioRef.putFile(outputUri!!)
 
-                uploadTask.addOnSuccessListener {
-                    // Audio upload success
-                    // Get the download URL of the uploaded audio file
-                    audioRef.downloadUrl.addOnSuccessListener { downloadUrl ->
-                        val audioDownloadUrl = downloadUrl.toString()
-                        sendCardRequest(audioDownloadUrl)
+                    uploadTask.addOnSuccessListener {
+                        // Audio upload success
+                        // Get the download URL of the uploaded audio file
+                        audioRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                            val audioDownloadUrl = downloadUrl.toString()
+                            sendCardRequest(audioDownloadUrl)
+                        }.addOnFailureListener { exception ->
+                            Log.e(TAG, "Failed to retrieve download URL: ${exception.message}")
+                        }
                     }.addOnFailureListener { exception ->
-                        Log.e(TAG, "Failed to retrieve download URL: ${exception.message}")
+                        // Audio upload failed
+                        Log.e(TAG, "Audio upload failed: ${exception.message}")
                     }
-                }.addOnFailureListener { exception ->
-                    // Audio upload failed
-                    Log.e(TAG, "Audio upload failed: ${exception.message}")
+                } else {
+                    constants.showToast(this, "No Internet Connection")
                 }
             }
             b.skipButton.setOnClickListener {
                 dialog.dismiss()
-                progressDialog.show("Sending Request...")
-                sendCardRequest("") }
+                if (constants.hasInternetConnection(this)) {
+                    progressDialog.show("Sending Request...")
+                    sendCardRequest("")
+                } else {
+                    constants.showToast(this, "No Internet Connection")
+                }
+                 }
             dialog.setCancelable(true)
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.show()
@@ -509,10 +518,26 @@ class NewCardActivity : AppCompatActivity() {
                     binding.textView99.visibility = View.GONE
                     binding.requestButton.visibility = View.VISIBLE
                 }else{
-                    binding.requestButton.isEnabled = false
-                    binding.textView99.visibility = View.VISIBLE
-                    binding.textView99.setText("Request Sent Already")
-                    binding.requestButton.visibility = View.GONE
+                    constants.db.collection("users").document(constants.currentUserId.toString())
+                        .collection("individuals_cards").document(constants.currentUserId.toString())
+                        .addSnapshotListener { s, e2 ->
+                            if (e2 != null) {
+                                Log.w(TAG, "Listen failed.", e2)
+                                return@addSnapshotListener
+                            }
+                            if (s != null && s.exists()) {
+                                binding.requestButton.isEnabled = false
+                                binding.textView99.visibility = View.VISIBLE
+                                binding.textView99.setText("You already have this card")
+                                binding.requestButton.visibility = View.GONE
+                            }else{
+                                binding.requestButton.isEnabled = false
+                                binding.textView99.visibility = View.VISIBLE
+                                binding.textView99.setText("Request Sent Already")
+                                binding.requestButton.visibility = View.GONE
+                            }
+                        }
+
                 }
             }
     }

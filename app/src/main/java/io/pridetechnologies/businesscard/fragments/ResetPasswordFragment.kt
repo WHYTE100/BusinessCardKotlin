@@ -26,19 +26,22 @@ class ResetPasswordFragment : Fragment() {
             if (email.isEmpty()){
                 constants.showToast(requireContext(), "Enter Email.")
             }else{
+                if (!constants.hasInternetConnection(requireContext()))  {
+                    constants.showToast(requireContext(), "No Internet Connection")
+                }
 
                 progressDialog.show("Sending Reset Email...")
-            constants.auth.sendPasswordResetEmail(email)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        progressDialog.hide()
-                        constants.showToast(requireContext(), "Email Sent.")
-                    } else {
-                        progressDialog.hide()
-                        constants.showToast(requireContext(), "Failed to send email.")
+                constants.auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            progressDialog.hide()
+                            constants.showToast(requireContext(), "Email Sent.")
+                        } else {
+                            progressDialog.hide()
+                            constants.showToast(requireContext(), "Failed to send email.")
 
-                    }                    }
-                }
+                        }                    }
+                    }
         }
         binding.button30.setOnClickListener {
             val action = ResetPasswordFragmentDirections.actionResetPasswordFragmentToLoginFragment()

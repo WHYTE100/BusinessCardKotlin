@@ -21,6 +21,7 @@ class AddSocialMediaActivity : AppCompatActivity() {
     private var userId: String = ""
     private var message: String = ""
     private var linkValue: String = ""
+    private var currentText: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,9 @@ class AddSocialMediaActivity : AppCompatActivity() {
         userId = intent.getStringExtra("user_id").toString()
         message = intent.getStringExtra("message").toString()
         linkValue = intent.getStringExtra("link_value").toString()
+        currentText = intent.getStringExtra("current_text").toString()
         binding.textView12.text = message
+        binding.linkTextField.editText?.setText(currentText)
 
 
         binding.continueButton.setOnClickListener {
@@ -50,6 +53,8 @@ class AddSocialMediaActivity : AppCompatActivity() {
         val link = binding.linkTextField.editText?.text.toString().trim()
         if (link.isEmpty()){
             Toast.makeText(this, "No link Found", Toast.LENGTH_SHORT).show()
+        }else if (linkValue == "" && !constants.isValidPhoneNumber(link)){
+            constants.showToast(this, "Your Mobile number should be in this format +1XXXXXXXXXXX.")
         }else{
             val dialog = Dialog(this)
             val b = CustomDialogBoxBinding.inflate(layoutInflater)

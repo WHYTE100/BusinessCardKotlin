@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +29,6 @@ import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.SearchResultAdapter
 import io.pridetechnologies.businesscard.SearchViewModel
 import io.pridetechnologies.businesscard.databinding.FragmentSearchBinding
-import kotlin.properties.Delegates
 
 
 class SearchFragment : Fragment() {
@@ -40,8 +38,8 @@ class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by activityViewModels()
     private val connection = ConnectionHandler()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var latitude by Delegates.notNull<Double>()
-    private var longitude by Delegates.notNull<Double>()
+    private var latitude = 0.0
+    private var longitude = 0.0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,66 +51,54 @@ class SearchFragment : Fragment() {
             activity?.finish()
         }
         val adapter = SearchResultAdapter(requireContext())
-//        viewModel.paginator.liveData.observe(viewLifecycleOwner) { pagingData ->
-//            adapter.submitData(lifecycle, pagingData)
-//        }
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        Dexter.withContext(requireContext())
-            .withPermissions(
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            .withListener(object: MultiplePermissionsListener {
-                @SuppressLint("MissingPermission")
-                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                    report?.let {
-                        if(report.areAllPermissionsGranted()){
-                            fusedLocationClient.lastLocation
-                                .addOnSuccessListener { location ->
-                                    // Got last known location. In some rare situations, this can be null.
-                                    if (location != null) {
-                                        // Use the location object to get latitude and longitude
-                                        latitude = location.latitude
-                                        longitude = location.longitude
-                                    }
-                                }
-                                .addOnFailureListener { e ->
-                                    // Handle any errors that occurred while trying to get location
-                                    constants.showToast(requireContext(), "Error: ${e.message.toString()}")
-                                }
-                        }
-                    }
-                }
-                override fun onPermissionRationaleShouldBeShown(
-                    permissions: MutableList<PermissionRequest>?,
-                    token: PermissionToken?
-                ) {
-                    // Remember to invoke this method when the custom rationale is closed
-                    // or just by default if you don't want to use any custom rationale.
-                    token?.continuePermissionRequest()
-                }
-            })
-            .withErrorListener {
-            }
-            .check()
-
-        val searchBoxView = SearchBoxViewAppCompat(binding.searchView)
-        val statsView = StatsTextView(binding.stats)
-        searchBoxView.onQueryChanged = {
-            viewModel.search()
-            viewModel.searchResultsWithDistance(requireContext(),latitude, longitude)
-                .observe(viewLifecycleOwner) { pagingData ->
-                    adapter.submitData(lifecycle, pagingData)
-                }
-        }
-        connection += viewModel.searchBox.connectView(searchBoxView)
-        connection += viewModel.stats.connectView(statsView, DefaultStatsPresenter())
         binding.productList.let { view ->
             view.itemAnimator = null
             view.adapter = adapter
             view.layoutManager = LinearLayoutManager(requireContext())
             view.autoScrollToStart(adapter)
         }
+//        viewModel.paginator.liveData.observe(viewLifecycleOwner) { pagingData ->
+//            adapter.submitData(lifecycle, pagingData)
+//        }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+        }
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                // Got last known location. In some rare situations, this can be null.
+                if (location != null) {
+                    // Use the location object to get latitude and longitude
+                    latitude = location.latitude
+                    longitude = location.longitude
+                }
+            }
+            .addOnFailureListener { e ->
+                // Handle any errors that occurred while trying to get location
+                constants.showToast(requireContext(), "Error: ${e.message.toString()}")
+            }
+
+        viewModel.searchResultsWithDistance(requireContext(),latitude, longitude)
+            .observe(viewLifecycleOwner) { pagingData ->
+                adapter.submitData(lifecycle, pagingData)
+            }
+
+        val searchBoxView = SearchBoxViewAppCompat(binding.searchView)
+        val statsView = StatsTextView(binding.stats)
+        connection += viewModel.searchBox.connectView(searchBoxView)
+        connection += viewModel.stats.connectView(statsView, DefaultStatsPresenter())
+        searchBoxView.onQueryChanged = {
+            //viewModel.search()
+
+        }
+
         return binding.root
     }
     override fun onDestroyView() {

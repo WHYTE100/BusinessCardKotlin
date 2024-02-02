@@ -66,50 +66,51 @@ class SocialMediaActivity : AppCompatActivity() {
                         binding.tikTokTextView.text = tiktokLink
                     }
 
+                    binding.addFbButton.setOnClickListener {
+                        val message = "Type or paste your Facebook link below."
+                        addLink("facebook_link", message, facebookLink)
+                    }
+                    binding.addWhatsappButton.setOnClickListener{
+                        val message = "Type or paste your WhatsApp number below."
+                        addLink("whatsapp_link", message, whatsAppLink)
+                    }
+                    binding.addLinkedInButton.setOnClickListener{
+                        val message = "Type or paste your LinkedIn link below."
+                        addLink("linked_in_link", message, linkedInLink)
+                    }
+                    binding.addTwitterButton.setOnClickListener{
+                        val message = "Type or paste your Twitter link below."
+                        addLink("twitter_link", message, twitterLink)
+                    }
+                    binding.addTiktokButton.setOnClickListener{
+                        val message = "Type or paste your TikTok link below."
+                        addLink("tiktok_link", message, tiktokLink)
+                    }
+                    binding.addWechatButton.setOnClickListener{
+                        val message = "Type or paste your WeChat link below."
+                        addLink("wechat_link", message, weChatLink)
+                    }
+                    binding.addInstagramButton.setOnClickListener{
+                        val message = "Type or paste your Instagram link below."
+                        addLink("instagram_link", message, instagramLink)
+                    }
+                    binding.addYoutubeBtn.setOnClickListener{
+                        val message = "Type or paste your Youtube link below."
+                        addLink("youtube_link", message, youtubeLink)
+                    }
+
                 } else {
                     Log.d(TAG, "Current data: null")
                 }
             }
-
-        binding.addFbButton.setOnClickListener {
-            val message = "Type or paste your Facebook link below."
-            addLink("facebook_link", message)
-        }
-        binding.addWhatsappButton.setOnClickListener{
-            val message = "Type or paste your WhatsApp number below."
-            addLink("whatsapp_link", message)
-        }
-        binding.addLinkedInButton.setOnClickListener{
-            val message = "Type or paste your LinkedIn link below."
-            addLink("linked_in_link", message)
-        }
-        binding.addTwitterButton.setOnClickListener{
-            val message = "Type or paste your Twitter link below."
-            addLink("twitter_link", message)
-        }
-        binding.addTiktokButton.setOnClickListener{
-            val message = "Type or paste your TikTok link below."
-            addLink("tiktok_link", message)
-        }
-        binding.addWechatButton.setOnClickListener{
-            val message = "Type or paste your WeChat link below."
-            addLink("wechat_link", message)
-        }
-        binding.addInstagramButton.setOnClickListener{
-            val message = "Type or paste your Instagram link below."
-            addLink("instagram_link", message)
-        }
-        binding.addYoutubeBtn.setOnClickListener{
-            val message = "Type or paste your Youtube link below."
-            addLink("youtube_link", message)
-        }
     }
 
-    private fun addLink(linkValue: String, message: String) {
+    private fun addLink(linkValue: String, message: String, currentText: String) {
         val intent = Intent(this, AddSocialMediaActivity::class.java)
         intent.putExtra("link_value", linkValue)
         intent.putExtra("message", message)
         intent.putExtra("user_id", currentId)
+        intent.putExtra("current_text", currentText)
         startActivity(intent)
         Animatoo.animateFade(this)
     }

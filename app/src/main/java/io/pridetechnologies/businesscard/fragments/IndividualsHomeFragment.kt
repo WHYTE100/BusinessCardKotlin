@@ -250,14 +250,19 @@ class IndividualsHomeFragment : Fragment() {
                                 b.textView29.text = firstName + "'s" + " Card"
                                 Picasso.get().load(qrCode).fit().centerCrop().placeholder(R.drawable.qr_code_black).into(b.imageView9)
                                 b.downloadButton.setOnClickListener {
-                                    myExecutor?.execute {
-                                        myCodeBitmap = constants.downloadCode(requireContext(), qrCode)
-                                        myHandler?.post {
-                                            if(myCodeBitmap!=null){
-                                                constants.saveMediaToStorage(requireContext(), myCodeBitmap, "${firstName}")
+                                    if (constants.hasInternetConnection(requireContext())) {
+                                        myExecutor?.execute {
+                                            myCodeBitmap = constants.downloadCode(requireContext(), qrCode)
+                                            myHandler?.post {
+                                                if(myCodeBitmap!=null){
+                                                    constants.saveMediaToStorage(requireContext(), myCodeBitmap, "${firstName}")
+                                                }
                                             }
                                         }
+                                    } else {
+                                        constants.showToast(requireContext(), "No Internet Connection")
                                     }
+
                                 }
                                 b.copyLinkButton.setOnClickListener {
                                     constants.copyText(requireContext(), userLink)

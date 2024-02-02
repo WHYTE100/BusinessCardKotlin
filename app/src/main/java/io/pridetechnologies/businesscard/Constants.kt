@@ -17,6 +17,8 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.media.MediaScannerConnection
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -348,5 +350,12 @@ class Constants {
     fun getDistanceUnit(context: Context): String? {
         val sharedPreferences = context.getSharedPreferences("BusinessCard", Context.MODE_PRIVATE)
         return sharedPreferences.getString("distance_unit", null)
+    }
+
+    fun hasInternetConnection(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 }

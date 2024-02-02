@@ -34,7 +34,12 @@ class AddDepartmentActivity : AppCompatActivity() {
         }
         businessId = intent.getStringExtra("business_id")
         binding.saveButton.setOnClickListener {
-            saveDepartmentContacts()
+            if (constants.hasInternetConnection(this)) {
+                saveDepartmentContacts()
+            } else {
+                constants.showToast(this, "No Internet Connection")
+            }
+
         }
     }
 

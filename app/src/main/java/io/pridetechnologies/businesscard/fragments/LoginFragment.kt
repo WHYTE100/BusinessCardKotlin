@@ -146,6 +146,9 @@ class LoginFragment : Fragment() {
         }else if (password.isEmpty()){
             constants.showToast(requireContext(), "Enter Password.")
         }else{
+            if (!constants.hasInternetConnection(requireContext())) {
+                constants.showToast(requireContext(), "No Internet Connection")
+            }
 
             progressDialog.show("Signing In...")
             constants.auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {

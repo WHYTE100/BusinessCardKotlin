@@ -242,28 +242,25 @@ class BusinessDetailsActivity : AppCompatActivity() {
                 val weChatLink = snapshot?.get("wechat_link").toString()
                 val tiktokLink = snapshot?.get("tiktok_link").toString()
 
-                if (facebookLink == ""){
+                if (facebookLink.isEmpty()){
                     binding.facebookBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.facebookBtn.colorFilter = null
-//                    if (whatsAppLink.equals("null")){
-//                        binding.whatsAppBtn.setColorFilter(R.color.darkPrimaryColor)
-//                    }else binding.whatsAppBtn.colorFilter = null
-                if (linkedInLink == ""){
+                if (linkedInLink.isEmpty()){
                     binding.linkedInBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.linkedInBtn.colorFilter = null
-                if (twitterLink == ""){
+                if (twitterLink.isEmpty()){
                     binding.twitterBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.twitterBtn.colorFilter = null
-                if (youtubeLink == ""){
+                if (youtubeLink.isEmpty()){
                     binding.youtubeBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.youtubeBtn.colorFilter = null
-                if (instagramLink == ""){
+                if (instagramLink.isEmpty()){
                     binding.instagramBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.instagramBtn.colorFilter = null
-                if (weChatLink == ""){
+                if (weChatLink.isEmpty()){
                     binding.wechatBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.wechatBtn.colorFilter = null
-                if (tiktokLink == ""){
+                if (tiktokLink.isEmpty()){
                     binding.tiktokBtn.setColorFilter(R.color.darkPrimaryColor)
                 }else binding.tiktokBtn.colorFilter = null
 

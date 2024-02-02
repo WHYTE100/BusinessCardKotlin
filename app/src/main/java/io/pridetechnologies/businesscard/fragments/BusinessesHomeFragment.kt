@@ -244,13 +244,17 @@ class BusinessesHomeFragment : Fragment() {
                             b.textView29.text = "Business Card"
                             Picasso.get().load(businessCode).fit().centerCrop().placeholder(R.drawable.qr_code_black).into(b.imageView9)
                             b.downloadButton.setOnClickListener {
-                                myExecutor?.execute {
-                                    myCodeBitmap = constants.downloadCode(requireContext(), businessCode)
-                                    myHandler?.post {
-                                        if(myCodeBitmap!=null){
-                                            constants.saveMediaToStorage(requireContext(), myCodeBitmap, model.business_name.toString())
+                                if (constants.hasInternetConnection(requireContext())) {
+                                    myExecutor?.execute {
+                                        myCodeBitmap = constants.downloadCode(requireContext(), businessCode)
+                                        myHandler?.post {
+                                            if(myCodeBitmap!=null){
+                                                constants.saveMediaToStorage(requireContext(), myCodeBitmap, model.business_name.toString())
+                                            }
                                         }
                                     }
+                                } else {
+                                    constants.showToast(requireContext(), "No Internet Connection")
                                 }
                             }
                             b.copyLinkButton.setOnClickListener {

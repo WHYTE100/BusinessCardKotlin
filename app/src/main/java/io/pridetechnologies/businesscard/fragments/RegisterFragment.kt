@@ -60,6 +60,9 @@ class RegisterFragment : Fragment() {
             Toast.makeText(requireContext(), "Enter Confirmation Password.", Toast.LENGTH_SHORT)
                 .show()
         }else{
+            if (!constants.hasInternetConnection(requireContext())) {
+                constants.showToast(requireContext(), "No Internet Connection")
+            }
             progressDialog.show("Signing Up...")
             auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
                 val user = constants.auth.currentUser

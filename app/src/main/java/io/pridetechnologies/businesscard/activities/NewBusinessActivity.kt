@@ -106,8 +106,6 @@ class NewBusinessActivity : AppCompatActivity() {
         val mobile = binding.mobile.text.toString().trim()
         val myPosition = binding.myPosition.text.toString().trim()
 
-        //Log.d(ContentValues.TAG, "User: $email \n $password")
-
         if (businessName.isEmpty()){
             Toast.makeText(this, "Enter business name.", Toast.LENGTH_SHORT)
                 .show()
@@ -117,23 +115,25 @@ class NewBusinessActivity : AppCompatActivity() {
         }else if (mobile.isEmpty()){
             Toast.makeText(this, "Enter business number.", Toast.LENGTH_SHORT)
                 .show()
-        }else if (mobile.isNotEmpty() && !constants.isValidPhoneNumber(mobile)){
-            constants.showToast(this, "The Mobile number should be in this format +1XXXXXXXXXXX.")
         }else{
-            progressDialog.show("Saving Business Details...")
-            val businessId = constants.db.collection("businesses").document().id
-            if (imageUri != null){
-                saveImage(businessName, businessEmail, businessWebsite, businessBio, mobile, myPosition, businessId)
-            }else saveBusinessDetails(
-                null,
-                businessName,
-                businessEmail,
-                businessWebsite,
-                businessBio,
-                mobile,
-                myPosition,
-                businessId
-            )
+            if (constants.hasInternetConnection(this)) {
+                progressDialog.show("Saving Business Details...")
+                val businessId = constants.db.collection("businesses").document().id
+                if (imageUri != null){
+                    saveImage(businessName, businessEmail, businessWebsite, businessBio, mobile, myPosition, businessId)
+                }else saveBusinessDetails(
+                    null,
+                    businessName,
+                    businessEmail,
+                    businessWebsite,
+                    businessBio,
+                    mobile,
+                    myPosition,
+                    businessId
+                )
+            } else {
+                constants.showToast(this, "No Internet Connection")
+            }
         }
 
     }
