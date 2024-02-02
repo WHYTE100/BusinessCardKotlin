@@ -37,6 +37,9 @@ class SearchViewModel() : ViewModel(){
     val stats = StatsConnector(searcher)
 
     private val connection = ConnectionHandler(searchBox, stats)
+    init{
+        connection += searchBox.connectPaginator(paginator)
+    }
 
     fun searchResultsWithDistance(context: Context ,currentLatitude: Double, currentLongitude: Double): LiveData<PagingData<BusinessSearch>> {
         val currentLocation = Location("").apply {
@@ -58,7 +61,7 @@ class SearchViewModel() : ViewModel(){
         }
     }
     fun search() {
-        connection += searchBox.connectPaginator(paginator)
+
     }
 
     override fun onCleared() {
