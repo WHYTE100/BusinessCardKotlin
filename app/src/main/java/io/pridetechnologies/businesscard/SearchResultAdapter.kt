@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import io.pridetechnologies.businesscard.activities.NewBusinessCardActivity
 
-class SearchResultAdapter(val context: Context) : PagingDataAdapter<BusinessSearch, SearchResultAdapter.SearchResultViewHolder>(ProductDiffUtil) {
+class SearchResultAdapter(val context: Context) : PagingDataAdapter<BusinessSearch, SearchResultAdapter.SearchResultViewHolder>(SearchDiffUtil) {
 
     //var onItemClick: ((String) -> Unit)? = null
     private val constants = Constants()
@@ -32,7 +32,7 @@ class SearchResultAdapter(val context: Context) : PagingDataAdapter<BusinessSear
         }
     }
 
-    object ProductDiffUtil : DiffUtil.ItemCallback<BusinessSearch>() {
+    object SearchDiffUtil : DiffUtil.ItemCallback<BusinessSearch>() {
         override fun areItemsTheSame(oldItem: BusinessSearch, newItem: BusinessSearch) = oldItem.objectID == newItem.objectID
         override fun areContentsTheSame(oldItem: BusinessSearch, newItem: BusinessSearch) = oldItem == newItem
     }

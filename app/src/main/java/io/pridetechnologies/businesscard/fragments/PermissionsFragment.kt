@@ -44,7 +44,7 @@ class PermissionsFragment : Fragment() {
                 .withListener(object: MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         report?.let {
-                            if(report.areAllPermissionsGranted()){
+                            if(it.areAllPermissionsGranted()){
                                 storageCheckBox.isChecked = true
                             }else{
                                 storageCheckBox.isChecked = false
@@ -55,8 +55,6 @@ class PermissionsFragment : Fragment() {
                         permissions: MutableList<PermissionRequest>?,
                         token: PermissionToken?
                     ) {
-                        // Remember to invoke this method when the custom rationale is closed
-                        // or just by default if you don't want to use any custom rationale.
                         token?.continuePermissionRequest()
                     }
                 })
@@ -73,7 +71,7 @@ class PermissionsFragment : Fragment() {
                 .withListener(object: MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         report?.let {
-                            if(report.areAllPermissionsGranted()){
+                            if(it.areAllPermissionsGranted()){
                                 cameraCheckBox.isChecked = true
                             }else{
                                 cameraCheckBox.isChecked = false
@@ -84,8 +82,6 @@ class PermissionsFragment : Fragment() {
                         permissions: MutableList<PermissionRequest>?,
                         token: PermissionToken?
                     ) {
-                        // Remember to invoke this method when the custom rationale is closed
-                        // or just by default if you don't want to use any custom rationale.
                         token?.continuePermissionRequest()
                     }
                 })
@@ -101,7 +97,7 @@ class PermissionsFragment : Fragment() {
                 .withListener(object: MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         report?.let {
-                            if(report.areAllPermissionsGranted()){
+                            if(it.areAllPermissionsGranted()){
                                 audioCheckBox.isChecked = true
                             }else{
                                 audioCheckBox.isChecked = false
@@ -112,8 +108,6 @@ class PermissionsFragment : Fragment() {
                         permissions: MutableList<PermissionRequest>?,
                         token: PermissionToken?
                     ) {
-                        // Remember to invoke this method when the custom rationale is closed
-                        // or just by default if you don't want to use any custom rationale.
                         token?.continuePermissionRequest()
                     }
                 })
@@ -129,7 +123,7 @@ class PermissionsFragment : Fragment() {
                 .withListener(object: MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         report?.let {
-                            if(report.areAllPermissionsGranted()){
+                            if(it.areAllPermissionsGranted()){
                                 phoneCheckBox.isChecked = true
                             }else{
                                 phoneCheckBox.isChecked = false
@@ -140,8 +134,6 @@ class PermissionsFragment : Fragment() {
                         permissions: MutableList<PermissionRequest>?,
                         token: PermissionToken?
                     ) {
-                        // Remember to invoke this method when the custom rationale is closed
-                        // or just by default if you don't want to use any custom rationale.
                         token?.continuePermissionRequest()
                     }
                 })
@@ -158,7 +150,7 @@ class PermissionsFragment : Fragment() {
                 .withListener(object: MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         report?.let {
-                            if(report.areAllPermissionsGranted()){
+                            if(it.areAllPermissionsGranted()){
                                 locationCheckBox.isChecked = true
                             }else{
                                 locationCheckBox.isChecked = false

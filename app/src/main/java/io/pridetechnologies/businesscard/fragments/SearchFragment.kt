@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.algolia.instantsearch.android.list.autoScrollToStart
 import com.algolia.instantsearch.android.paging3.liveData
@@ -52,15 +53,16 @@ class SearchFragment : Fragment() {
             activity?.finish()
         }
         val adapter = SearchResultAdapter(requireContext())
+        viewModel.paginator.liveData.observe(viewLifecycleOwner) { pagingData ->
+            adapter.submitData(lifecycle, pagingData)
+        }
         binding.productList.let { view ->
             view.itemAnimator = null
             view.adapter = adapter
             view.layoutManager = LinearLayoutManager(requireContext())
             view.autoScrollToStart(adapter)
         }
-        viewModel.paginator.liveData.observe(viewLifecycleOwner) { pagingData ->
-            adapter.submitData(lifecycle, pagingData)
-        }
+
 
 //        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 //        if (ActivityCompat.checkSelfPermission(
@@ -101,10 +103,6 @@ class SearchFragment : Fragment() {
         }
 
         return binding.root
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        connection.clear()
     }
 
 }

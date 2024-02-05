@@ -1,15 +1,8 @@
 package io.pridetechnologies.businesscard
 
-import android.content.Context
-import android.location.Location
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
 import com.algolia.instantsearch.android.paging3.Paginator
-import com.algolia.instantsearch.android.paging3.liveData
 import com.algolia.instantsearch.android.paging3.searchbox.connectPaginator
 import com.algolia.instantsearch.core.connection.ConnectionHandler
 import com.algolia.instantsearch.searchbox.SearchBoxConnector
@@ -41,8 +34,11 @@ class SearchViewModel() : ViewModel() {
     init {
         connection += searchBox.connectPaginator(paginator)
     }
+//    viewModel.paginator.liveData.observe(viewLifecycleOwner) { pagingData ->
+//        adapter.submitData(lifecycle, pagingData)
+//    }
 
-//    fun searchResultsWithDistance(context: Context ,currentLatitude: Double, currentLongitude: Double): LiveData<PagingData<BusinessSearch>> {
+//    fun searchResultsWithDistance(context: Context ,currentLatitude: Double, currentLongitude: Double) {
 //        val currentLocation = Location("").apply {
 //            latitude = currentLatitude
 //            longitude = currentLongitude
@@ -62,7 +58,7 @@ class SearchViewModel() : ViewModel() {
 //        }
 //    }
     fun search() {
-
+        connection += searchBox.connectPaginator(paginator)
     }
 
     override fun onCleared() {
