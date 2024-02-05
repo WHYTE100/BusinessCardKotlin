@@ -186,11 +186,14 @@ class EditBusinessBasicsActivity : AppCompatActivity() {
     }
 
     private fun saveBusinessDetailsWithoutLogo(businessName: String, businessEmail: String, businessWebsite: String, businessBio: String, mobile: String, business_id: String) {
+
+        val shortLink = constants.createBusinessesDynamicLink(business_id, businessName)
         val businessDetails = hashMapOf(
             "business_name" to businessName,
             "business_email" to businessEmail,
             "business_website" to businessWebsite,
             "business_bio" to businessBio,
+            "business_link" to shortLink,
             "business_mobile" to mobile,
             "business_id" to business_id
         )

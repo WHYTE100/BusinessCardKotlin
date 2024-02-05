@@ -253,11 +253,13 @@ class EditUserDetailsActivity : AppCompatActivity() {
         bio: String
     ) {
 
+        val shortLink = constants.createIndividualsDynamicLink("$firstName$surname")
         val userDetails = hashMapOf(
             "first_name" to firstName,
             "surname" to surname,
             "other_names" to otherName,
             "user_bio" to bio,
+            "user_link" to shortLink.toString(),
             "profession" to profession,
             "mobile" to mobile
         )

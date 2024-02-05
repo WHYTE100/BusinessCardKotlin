@@ -23,11 +23,16 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.dynamiclinks.ktx.androidParameters
+import com.google.firebase.dynamiclinks.ktx.dynamicLink
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -363,5 +368,57 @@ class Constants {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
             else -> false
         }
+    }
+    fun createIndividualsDynamicLink(userName: String): Uri? {
+        var shortLink:Uri? = null
+        val deepLink = Uri.parse("https://businesscardmw.page.link/individuals")
+            .buildUpon()
+            .appendQueryParameter("key", currentUserId.toString())
+            .build()
+        val dynamicLink = Firebase.dynamicLinks.dynamicLink {
+            link = deepLink
+            domainUriPrefix = "https://businesscardmw.page.link"
+            androidParameters {}
+        }
+        val shortLinkTask = Firebase.dynamicLinks
+            .shortLinkAsync {
+                longLink = dynamicLink.uri
+                domainUriPrefix = "https://businesscardmw.page.link"
+                androidParameters {}
+            }
+        shortLinkTask.addOnSuccessListener { result ->
+            shortLink = result.shortLink
+            shortLink?.buildUpon()?.appendQueryParameter("username", userName)?.build()
+        }.addOnFailureListener { exception ->
+            Log.d(ContentValues.TAG, "Error creating short url", exception)
+        }
+        return shortLink
+    }
+
+    fun createBusinessesDynamicLink(businessId:String, businessName: String): Uri? {
+        var shortLink:Uri? = null
+        val deepLink = Uri.parse("https://businesscardmw.page.link/businesses")
+            .buildUpon()
+            .appendQueryParameter("key", businessId)
+            .build()
+        val dynamicLink = Firebase.dynamicLinks.dynamicLink {
+            link = deepLink
+            domainUriPrefix = "https://businesscardmw.page.link"
+            androidParameters {}
+        }
+        val shortLinkTask = Firebase.dynamicLinks
+            .shortLinkAsync {
+                longLink = dynamicLink.uri
+                domainUriPrefix = "https://businesscardmw.page.link"
+                androidParameters {}
+            }
+        shortLinkTask.addOnSuccessListener { result ->
+            shortLink = result.shortLink
+            shortLink?.buildUpon()?.appendQueryParameter("business_name", businessName)?.build()
+
+        }.addOnFailureListener { exception ->
+            Log.d(ContentValues.TAG, "Error creating short url", exception)
+        }
+        return shortLink
     }
 }

@@ -37,7 +37,7 @@ class AddUserDetailsFragment : Fragment() {
     private val progressDialog by lazy { CustomProgressDialog(requireContext()) }
     private lateinit var binding: FragmentAddUserDetailsBinding
     private val constants = Constants()
-    private var shortLink:Uri? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,26 +48,6 @@ class AddUserDetailsFragment : Fragment() {
 
         binding.nextButton.setOnClickListener {
             saveUserDetails()
-        }
-        val deepLink = Uri.parse("https://businesscardmw.page.link/individuals")
-            .buildUpon()
-            .appendQueryParameter("key", constants.currentUserId.toString())
-            .build()
-        val dynamicLink = Firebase.dynamicLinks.dynamicLink {
-            link = deepLink
-            domainUriPrefix = "https://businesscardmw.page.link"
-            androidParameters {}
-        }
-        val shortLinkTask = Firebase.dynamicLinks
-            .shortLinkAsync {
-                longLink = dynamicLink.uri
-                domainUriPrefix = "https://businesscardmw.page.link"
-                androidParameters {}
-            }
-        shortLinkTask.addOnSuccessListener { result ->
-            shortLink = result.shortLink
-        }.addOnFailureListener { exception ->
-            Log.d(ContentValues.TAG, "Error creating short url", exception)
         }
         binding.mobile.setText(binding.ccp3.defaultCountryCodeWithPlus.toString())
         // Set a click listener for the CountryCodePicker
@@ -135,9 +115,10 @@ class AddUserDetailsFragment : Fragment() {
                         val downloadUrl = uri?.toString()
                         val userId = constants.currentUserId.toString()
                         val userEmail = constants.currentUser?.email.toString()
+                        val shortLink = constants.createIndividualsDynamicLink("$firstName$surname")
                         val userDetails = hashMapOf(
                             "profile_image_url" to null,
-                                    "first_name" to firstName,
+                            "first_name" to firstName,
                             "surname" to surname,
                             "other_names" to otherName,
                             "profession" to profession,

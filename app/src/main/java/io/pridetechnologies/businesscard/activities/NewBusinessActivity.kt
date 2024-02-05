@@ -175,55 +175,35 @@ class NewBusinessActivity : AppCompatActivity() {
         myPosition: String,
         businessId: String
     ) {
-        val deepLink = Uri.parse("https://businesscardmw.page.link/businesses")
-            .buildUpon()
-            .appendQueryParameter("key", businessId)
-            .build()
-        val dynamicLink = Firebase.dynamicLinks.dynamicLink {
-            link = deepLink
-            domainUriPrefix = "https://businesscardmw.page.link"
-            androidParameters {}
-        }
-        val shortLinkTask = Firebase.dynamicLinks
-            .shortLinkAsync {
-                longLink = dynamicLink.uri
-                domainUriPrefix = "https://businesscardmw.page.link"
-                androidParameters {}
-            }
-        shortLinkTask.addOnSuccessListener { result ->
-            val shortLink = result.shortLink
-            //val shortLinkUrl = result.previewLink
-            val multiFormatWriter = MultiFormatWriter()
-            try {
-                val bitMatrix: BitMatrix = multiFormatWriter.encode(businessId, BarcodeFormat.QR_CODE, 300, 300)
-                val barcodeEncoder = BarcodeEncoder()
-                val bitmap = barcodeEncoder.createBitmap(bitMatrix)
-                val bytes = ByteArrayOutputStream()
-                bitmap?.compress(Bitmap.CompressFormat.PNG, 100, bytes)
-                val data = bytes.toByteArray()
+        val shortLink = constants.createBusinessesDynamicLink(businessId, businessName)
+        val multiFormatWriter = MultiFormatWriter()
+        try {
+            val bitMatrix: BitMatrix = multiFormatWriter.encode(businessId, BarcodeFormat.QR_CODE, 300, 300)
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.createBitmap(bitMatrix)
+            val bytes = ByteArrayOutputStream()
+            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, bytes)
+            val data = bytes.toByteArray()
 
-                val qrcodeRef = constants.storageRef.child("business_qr_code/${businessId}.jpg")
-                val uploadTask = qrcodeRef.putBytes(data)
-                uploadTask.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // Get the download URL of the uploaded image
-                        qrcodeRef.downloadUrl.addOnSuccessListener { uri: Uri? ->
-                            val qrCodeDownloadUrl = uri?.toString()
-                            updateUI(logoUrl!!, businessName, businessEmail, businessWebsite, businessBio, mobile, myPosition, businessId, qrCodeDownloadUrl, shortLink)
+            val qrcodeRef = constants.storageRef.child("business_qr_code/${businessId}.jpg")
+            val uploadTask = qrcodeRef.putBytes(data)
+            uploadTask.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Get the download URL of the uploaded image
+                    qrcodeRef.downloadUrl.addOnSuccessListener { uri: Uri? ->
+                        val qrCodeDownloadUrl = uri?.toString()
+                        updateUI(logoUrl!!, businessName, businessEmail, businessWebsite, businessBio, mobile, myPosition, businessId, qrCodeDownloadUrl, shortLink)
 
-                        }.addOnFailureListener {
-                            // Handle any error that occurs while getting the download URL
-                            Log.d(ContentValues.TAG, "Failed to get the url")
-                        }
-                    } else {
-                        // Handle any error that occurs during upload
-                        Log.d(ContentValues.TAG, "Failed to upload the code")
+                    }.addOnFailureListener {
+                        // Handle any error that occurs while getting the download URL
+                        Log.d(ContentValues.TAG, "Failed to get the url")
                     }
+                } else {
+                    // Handle any error that occurs during upload
+                    Log.d(ContentValues.TAG, "Failed to upload the code")
                 }
-            } catch (_: Exception) {
             }
-        }.addOnFailureListener { exception ->
-            Log.d(ContentValues.TAG, "Error creating short url", exception)
+        } catch (_: Exception) {
         }
     }
 
