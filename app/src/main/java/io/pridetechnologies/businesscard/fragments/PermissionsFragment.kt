@@ -169,8 +169,6 @@ class PermissionsFragment : Fragment() {
                         permissions: MutableList<PermissionRequest>?,
                         token: PermissionToken?
                     ) {
-                        // Remember to invoke this method when the custom rationale is closed
-                        // or just by default if you don't want to use any custom rationale.
                         token?.continuePermissionRequest()
                     }
                 })
