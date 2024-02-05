@@ -1,6 +1,8 @@
 package io.pridetechnologies.businesscard
 
 import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.Intent
@@ -71,7 +73,7 @@ class EditBusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED) {
+            ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location ->
                     // Got last known location. In some rare situations, this can be null.
@@ -79,16 +81,15 @@ class EditBusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                         // Use the location object to get latitude and longitude
                         latitude = location.latitude
                         longitude = location.longitude
-
-                        // Now you can use the latitude and longitude to update the map or perform other tasks
-                    }
+                    } else constants.showToast(this, "Failed to get last location")
                 }
                 .addOnFailureListener { e ->
                     // Handle any errors that occurred while trying to get location
+                    constants.showToast(this, "Failed to get last location")
                 }
         } else {
             // Location permission not granted, request again
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION), REQUEST_LOCATION_PERMISSION)
         }
         binding.addImageButton.setOnClickListener {
 
@@ -178,6 +179,7 @@ class EditBusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
         gMap.mapType = GoogleMap.MAP_TYPE_HYBRID
@@ -216,7 +218,6 @@ class EditBusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                     finalPosition = LatLng(lat,long)
                     binding.latTextView.text = "Latitude : $lat"
                     binding.longTextView.text = "Longitude : $long"
-                    //Log.w(ContentValues.TAG, "Marker Position: $finalPosition ")
                 }
 
                 override fun onMarkerDragStart(marker: Marker) {}

@@ -39,18 +39,13 @@ internal fun updateAppWidget(
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
-
     val constants = Constants()
-
-
-
     val individualIntent = Intent(context, ScanIndividualActivity::class.java)
     val individualPendingIntent = PendingIntent.getActivity(context, 0, individualIntent,
         PendingIntent.FLAG_IMMUTABLE)
     val businessIntent = Intent(context, ScanBusinessActivity::class.java)
     val businessPendingIntent = PendingIntent.getActivity(context, 0, businessIntent,
         PendingIntent.FLAG_IMMUTABLE)
-
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.business_card_widget)
     val userCode = constants.readFromSharedPreferences(context, "user_qr_code", "")
@@ -63,7 +58,6 @@ internal fun updateAppWidget(
     }
     views.setOnClickPendingIntent(R.id.openScanIndividualButton, individualPendingIntent)
     views.setOnClickPendingIntent(R.id.openScanBusinessButton, businessPendingIntent)
-
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
 }

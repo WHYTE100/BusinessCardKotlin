@@ -19,7 +19,7 @@ import com.algolia.search.model.APIKey
 import com.algolia.search.model.ApplicationID
 import com.algolia.search.model.IndexName
 
-class SearchViewModel() : ViewModel(){
+class SearchViewModel() : ViewModel() {
     val constants = Constants()
 
     private var searcher = HitsSearcher(
@@ -28,38 +28,39 @@ class SearchViewModel() : ViewModel(){
         indexName = IndexName("businesses")
     )
 
-    private var paginator = Paginator(
+    val paginator = Paginator(
         searcher = searcher,
-        pagingConfig = PagingConfig(pageSize = 20, enablePlaceholders = false),
+        pagingConfig = PagingConfig(pageSize = 50, enablePlaceholders = false),
         transformer = { hit -> hit.deserialize(BusinessSearch.serializer()) }
     )
     val searchBox = SearchBoxConnector(searcher)
     val stats = StatsConnector(searcher)
 
-    private val connection = ConnectionHandler(searchBox, stats)
-    init{
+    val connection = ConnectionHandler(searchBox, stats)
+
+    init {
         connection += searchBox.connectPaginator(paginator)
     }
 
-    fun searchResultsWithDistance(context: Context ,currentLatitude: Double, currentLongitude: Double): LiveData<PagingData<BusinessSearch>> {
-        val currentLocation = Location("").apply {
-            latitude = currentLatitude
-            longitude = currentLongitude
-        }
-
-        return paginator.liveData.map { pagingData ->
-            pagingData.map { searchResultItem ->
-                // Calculate the distance for each SearchResultItem
-                val resultLocation = Location("").apply {
-                    latitude = searchResultItem.business_latitude
-                    longitude = searchResultItem.business_longitude
-                }
-                val distance = constants.getNavigationDistance(context, currentLocation, resultLocation, "AIzaSyAxZClYe6QwPkY6tV0bK8egHX7g0yMx59I")
-                searchResultItem.copy(distance = distance)
-            }
-
-        }
-    }
+//    fun searchResultsWithDistance(context: Context ,currentLatitude: Double, currentLongitude: Double): LiveData<PagingData<BusinessSearch>> {
+//        val currentLocation = Location("").apply {
+//            latitude = currentLatitude
+//            longitude = currentLongitude
+//        }
+//
+//        return paginator.liveData.map { pagingData ->
+//            pagingData.map { searchResultItem ->
+//                // Calculate the distance for each SearchResultItem
+//                val resultLocation = Location("").apply {
+//                    latitude = searchResultItem.business_latitude
+//                    longitude = searchResultItem.business_longitude
+//                }
+//                val distance = constants.getNavigationDistance(context, currentLocation, resultLocation, "AIzaSyAxZClYe6QwPkY6tV0bK8egHX7g0yMx59I")
+//                searchResultItem.copy(distance = distance)
+//            }
+//
+//        }
+//    }
     fun search() {
 
     }

@@ -152,7 +152,8 @@ class PermissionsFragment : Fragment() {
         locationCheckBox.setOnClickListener{
             Dexter.withContext(requireContext())
                 .withPermissions(
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
                 )
                 .withListener(object: MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {

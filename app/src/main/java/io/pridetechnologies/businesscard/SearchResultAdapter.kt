@@ -50,21 +50,21 @@ class SearchResultAdapter(val context: Context) : PagingDataAdapter<BusinessSear
             Picasso.get().load(businessSearch.business_logo).fit().centerCrop().placeholder(R.drawable.background_icon).into(businessLogo)
             businessName.text = businessSearch.business_name
             businessLocation.text = "${businessSearch.area_located}, ${businessSearch.district_name}, ${businessSearch.country}"
-            val distanceUnit = constants.getDistanceUnit(context)
-            val convertToUnit = when (distanceUnit) {
-                "miles" -> {
-                    "miles"
-                }
-
-                "kilometers" -> {
-                    "km"
-                }
-
-                else -> {
-                    "km"
-                }
-            }
-            businessDistance.text = "${businessSearch.distance} $convertToUnit"
+            //val distanceUnit = constants.getDistanceUnit(context)
+//            val convertToUnit = when (distanceUnit) {
+//                "miles" -> {
+//                    "miles"
+//                }
+//
+//                "kilometers" -> {
+//                    "km"
+//                }
+//
+//                else -> {
+//                    "km"
+//                }
+//            }
+//            businessDistance.text = "${businessSearch.distance} $convertToUnit"
 
 
             cardView.setOnClickListener {

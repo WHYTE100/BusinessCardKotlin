@@ -28,9 +28,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
             "token" to token
         )
         constants.db.collection("users").document(constants.currentUserId.toString()).set(map, SetOptions.merge())
-        //Log.d(TAG, token)
     }
-
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 

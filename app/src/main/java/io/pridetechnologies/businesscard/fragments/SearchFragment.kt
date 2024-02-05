@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.algolia.instantsearch.android.list.autoScrollToStart
+import com.algolia.instantsearch.android.paging3.liveData
 import com.algolia.instantsearch.android.searchbox.SearchBoxViewAppCompat
 import com.algolia.instantsearch.android.stats.StatsTextView
 import com.algolia.instantsearch.core.connection.ConnectionHandler
@@ -57,38 +58,38 @@ class SearchFragment : Fragment() {
             view.layoutManager = LinearLayoutManager(requireContext())
             view.autoScrollToStart(adapter)
         }
-//        viewModel.paginator.liveData.observe(viewLifecycleOwner) { pagingData ->
-//            adapter.submitData(lifecycle, pagingData)
-//        }
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        viewModel.paginator.liveData.observe(viewLifecycleOwner) { pagingData ->
+            adapter.submitData(lifecycle, pagingData)
         }
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                // Got last known location. In some rare situations, this can be null.
-                if (location != null) {
-                    // Use the location object to get latitude and longitude
-                    latitude = location.latitude
-                    longitude = location.longitude
-                }
-            }
-            .addOnFailureListener { e ->
-                // Handle any errors that occurred while trying to get location
-                constants.showToast(requireContext(), "Error: ${e.message.toString()}")
-            }
 
-        viewModel.searchResultsWithDistance(requireContext(),latitude, longitude)
-            .observe(viewLifecycleOwner) { pagingData ->
-                adapter.submitData(lifecycle, pagingData)
-            }
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+//        if (ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//        }
+//        fusedLocationClient.lastLocation
+//            .addOnSuccessListener { location ->
+//                // Got last known location. In some rare situations, this can be null.
+//                if (location != null) {
+//                    // Use the location object to get latitude and longitude
+//                    latitude = location.latitude
+//                    longitude = location.longitude
+//                }
+//            }
+//            .addOnFailureListener { e ->
+//                // Handle any errors that occurred while trying to get location
+//                constants.showToast(requireContext(), "Error: ${e.message.toString()}")
+//            }
+//
+//        viewModel.searchResultsWithDistance(requireContext(),latitude, longitude)
+//            .observe(viewLifecycleOwner) { pagingData ->
+//                adapter.submitData(lifecycle, pagingData)
+//            }
 
         val searchBoxView = SearchBoxViewAppCompat(binding.searchView)
         val statsView = StatsTextView(binding.stats)
