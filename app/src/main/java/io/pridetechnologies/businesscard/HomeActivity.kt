@@ -72,6 +72,38 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        FirebaseDynamicLinks.getInstance().getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                    val path = deepLink?.path
+                    if (path != null) {
+                        // Determine the appropriate activity based on the deep link path
+                        when {
+                            path.contains("/individuals") -> {
+                                val uid = deepLink?.getQueryParameter("key")
+                                val intent1 = Intent(this, NewCardActivity::class.java)
+                                intent1.putExtra("deepLink", uid.toString())
+                                startActivity(intent1)
+                            }
+                            path.contains("/businesses") -> {
+                                val uid = deepLink?.getQueryParameter("key")
+                                val intent2 = Intent(this, NewBusinessCardActivity::class.java)
+                                intent2.putExtra("business_id", uid.toString())
+                                startActivity(intent2)
+                            }
+                            // Add more cases for different paths if needed
+                            else -> {
+                                // Handle unknown paths or default behavior
+                            }
+                        }
+                    }
+                }
+            }
+            .addOnFailureListener(this) {
+                // Handle any errors here.
+            }
 
         mAuth = FirebaseAuth.getInstance()
         checkUserStatus()
@@ -194,10 +226,29 @@ class HomeActivity : AppCompatActivity() {
                 //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 cardKey = result!!.contents.toString().trim { it <= ' ' }
-                val intent = Intent(this@HomeActivity, NewCardActivity::class.java)
-                intent.putExtra("deepLink", cardKey)
-                startActivity(intent)
-                Animatoo.animateFade(this@HomeActivity)
+                val uri = Uri.parse(cardKey)
+                val path = uri?.path
+                if (path != null) {
+                    // Determine the appropriate activity based on the deep link path
+                    when {
+                        path.contains("/individuals") -> {
+                            val uid = uri.getQueryParameter("key")
+                            val intent1 = Intent(this, NewCardActivity::class.java)
+                            intent1.putExtra("deepLink", uid.toString())
+                            startActivity(intent1)
+                        }
+                        path.contains("/businesses") -> {
+                            val uid = uri.getQueryParameter("key")
+                            val intent2 = Intent(this, NewBusinessCardActivity::class.java)
+                            intent2.putExtra("business_id", uid.toString())
+                            startActivity(intent2)
+                        }
+                        // Add more cases for different paths if needed
+                        else -> {
+                            constants.showToast(this, "This code is invalid")
+                        }
+                    }
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -223,16 +274,34 @@ class HomeActivity : AppCompatActivity() {
                 try {
                     val result: Result = reader.decode(bBitmap)
                     cardKey = result.text.toString().trim { it <= ' ' }
-                    val intent = Intent(this@HomeActivity, NewCardActivity::class.java)
-                    intent.putExtra("deepLink", cardKey)
-                    startActivity(intent)
-                    Animatoo.animateFade(this@HomeActivity)
+                    val uri = Uri.parse(cardKey)
+                    val path = uri?.path
+                    if (path != null) {
+                        // Determine the appropriate activity based on the deep link path
+                        when {
+                            path.contains("/individuals") -> {
+                                val uid = uri.getQueryParameter("key")
+                                val intent1 = Intent(this, NewCardActivity::class.java)
+                                intent1.putExtra("deepLink", uid.toString())
+                                startActivity(intent1)
+                            }
+                            path.contains("/businesses") -> {
+                                val uid = uri.getQueryParameter("key")
+                                val intent2 = Intent(this, NewBusinessCardActivity::class.java)
+                                intent2.putExtra("business_id", uid.toString())
+                                startActivity(intent2)
+                            }
+                            // Add more cases for different paths if needed
+                            else -> {
+                                constants.showToast(this, "This code is invalid")
+                            }
+                        }
+                    }
                 } catch (e: NotFoundException) {
-                    // Toast.makeText(this, "This Code is NOT VALID", Toast.LENGTH_SHORT).show();
-                    Log.e("TAG", "decode exception", e)
+                    Firebase.crashlytics.recordException(e)
                 }
             } catch (e: FileNotFoundException) {
-                //Log.e("TAG", "can not open file" + selectedImage.toString(), e);
+                Firebase.crashlytics.recordException(e)
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -259,10 +328,28 @@ class HomeActivity : AppCompatActivity() {
                 try {
                     val result: Result = reader.decode(bBitmap)
                     cardKey2 = result.text.toString().trim { it <= ' ' }
-                    val intent = Intent(this@HomeActivity, NewBusinessCardActivity::class.java)
-                    intent.putExtra("business_id", cardKey2)
-                    startActivity(intent)
-                    Animatoo.animateFade(this@HomeActivity)
+                    val uri = Uri.parse(cardKey2)
+                    val path = uri?.path
+                    if (path != null) {
+                        // Determine the appropriate activity based on the deep link path
+                        when {
+                            path.contains("/individuals") -> {
+                                val uid = uri.getQueryParameter("key")
+                                val intent1 = Intent(this, NewCardActivity::class.java)
+                                intent1.putExtra("deepLink", uid.toString())
+                                startActivity(intent1)
+                            }
+                            path.contains("/businesses") -> {
+                                val uid = uri.getQueryParameter("key")
+                                val intent2 = Intent(this, NewBusinessCardActivity::class.java)
+                                intent2.putExtra("business_id", uid.toString())
+                                startActivity(intent2)
+                            }
+                            else -> {
+                                constants.showToast(this, "This code is invalid")
+                            }
+                        }
+                    }
                 } catch (e: NotFoundException) {
                     Firebase.crashlytics.recordException(e)
                 }

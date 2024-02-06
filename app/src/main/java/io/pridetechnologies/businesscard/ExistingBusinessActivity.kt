@@ -97,6 +97,7 @@ class ExistingBusinessActivity : AppCompatActivity() {
                 "business_name" to businessName,
                 "business_logo" to businessLogo,
                 "admin" to false,
+                "super_admin" to false,
                 "is_accepted" to false,
                 "user_position" to memberPosition,
                 "approve_on" to FieldValue.serverTimestamp(),
@@ -114,6 +115,7 @@ class ExistingBusinessActivity : AppCompatActivity() {
                         .document(constants.currentUserId.toString())
                         .set(teamMemberDetails, SetOptions.merge())
                         .addOnSuccessListener {
+                            constants.showToast(this, "Your request to be linked to this business has been sent.")
                             progressDialog.hide()
                             finish()
                             Animatoo.animateFade(this)

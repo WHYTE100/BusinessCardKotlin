@@ -179,7 +179,7 @@ class NewBusinessActivity : AppCompatActivity() {
         val shortLink = constants.createBusinessesDynamicLink(businessId, businessName)
         val multiFormatWriter = MultiFormatWriter()
         try {
-            val bitMatrix: BitMatrix = multiFormatWriter.encode(businessId, BarcodeFormat.QR_CODE, 300, 300)
+            val bitMatrix: BitMatrix = multiFormatWriter.encode(shortLink.toString(), BarcodeFormat.QR_CODE, 300, 300)
             val barcodeEncoder = BarcodeEncoder()
             val bitmap = barcodeEncoder.createBitmap(bitMatrix)
             val bytes = ByteArrayOutputStream()
@@ -196,7 +196,7 @@ class NewBusinessActivity : AppCompatActivity() {
                         updateUI(logoUrl!!, businessName, businessEmail, businessWebsite, businessBio, mobile, myPosition, businessId, qrCodeDownloadUrl, shortLink)
 
                     }.addOnFailureListener {
-                        /Firebase.crashlytics.recordException(it)
+                        Firebase.crashlytics.recordException(it)
                     }
                 } else {
                     // Handle any error that occurs during upload

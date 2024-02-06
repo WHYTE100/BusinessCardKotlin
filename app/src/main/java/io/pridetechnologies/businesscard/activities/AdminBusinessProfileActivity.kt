@@ -211,9 +211,12 @@ class AdminBusinessProfileActivity : AppCompatActivity() {
                     }
                     b.resetButton.setOnClickListener {
                         progressDialog.show("Resetting code...")
+                        val shortLink = constants.createBusinessesDynamicLink(businessId.toString(),
+                            businessName.toString()
+                        )
                         val multiFormatWriter = MultiFormatWriter()
                         try {
-                            val bitMatrix: BitMatrix = multiFormatWriter.encode(businessId.toString(), BarcodeFormat.QR_CODE, 300, 300)
+                            val bitMatrix: BitMatrix = multiFormatWriter.encode(shortLink.toString(), BarcodeFormat.QR_CODE, 300, 300)
                             val barcodeEncoder = BarcodeEncoder()
                             val bitmap = barcodeEncoder.createBitmap(bitMatrix)
                             val bytes = ByteArrayOutputStream()

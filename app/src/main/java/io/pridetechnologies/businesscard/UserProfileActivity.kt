@@ -2,11 +2,7 @@ package io.pridetechnologies.businesscard
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.ContentValues
-import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -23,7 +19,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,8 +46,9 @@ import com.squareup.picasso.Picasso
 import io.pridetechnologies.businesscard.activities.AddAnotherBusinessActivity
 import io.pridetechnologies.businesscard.activities.AdminBusinessProfileActivity
 import io.pridetechnologies.businesscard.activities.NewBusinessActivity
+import io.pridetechnologies.businesscard.activities.NewBusinessCardActivity
+import io.pridetechnologies.businesscard.activities.NewCardActivity
 import io.pridetechnologies.businesscard.databinding.ActivityUserProfileBinding
-import io.pridetechnologies.businesscard.databinding.CustomAddCardBinding
 import io.pridetechnologies.businesscard.databinding.CustomBioDialogBinding
 import io.pridetechnologies.businesscard.databinding.CustomDialogBoxBinding
 import io.pridetechnologies.businesscard.databinding.CustomLinkBusinessCardBinding
@@ -60,7 +56,6 @@ import io.pridetechnologies.businesscard.databinding.CustomQrCodeDialogBinding
 import io.pridetechnologies.businesscard.databinding.RequestCardBinding
 import io.pridetechnologies.businesscard.databinding.WorkCardBinding
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.util.concurrent.ExecutorService
@@ -74,6 +69,8 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var workPlaceRecycler: RecyclerView
 
     private var businessId: String? = null
+    private var firstName: String? = null
+    private var surname: String? = null
     private var qrScan: IntentIntegrator? = null
     private var result: IntentResult? = null
     private var myExecutor:ExecutorService? = null
@@ -106,12 +103,6 @@ class UserProfileActivity : AppCompatActivity() {
             val userName = it.displayName
             Picasso.get().load(photoUrl).fit().centerCrop().placeholder(R.mipmap.user_gold).into(binding.userImageView)
             binding.userNameView.text = userName
-        }
-
-        binding.shareButton.setOnClickListener {
-            //val intent = Intent(this, SocialMediaActivity::class.java)
-            //startActivity(intent)
-            //Animatoo.animateFade(this)
         }
         binding.editButton.setOnClickListener {
             val intent = Intent(this, EditUserDetailsActivity::class.java)
@@ -203,6 +194,8 @@ class UserProfileActivity : AppCompatActivity() {
             .addSnapshotListener { value, _ ->
                 val userProfession = value?.get("profession").toString()
                 val userLink = value?.get("user_link").toString()
+                firstName = value?.get("first_name").toString()
+                surname = value?.get("surname").toString()
 
                 val code = constants.readFromSharedPreferences(this,"user_qr_code", "")
                 if (code.equals("null") || code.isEmpty()){
@@ -234,11 +227,13 @@ class UserProfileActivity : AppCompatActivity() {
                     b.resetLayout.visibility = View.VISIBLE
                     Picasso.get().load(userCode).fit().centerCrop().placeholder(R.drawable.qr_code_black).into(b.imageView9)
                     b.downloadButton.setOnClickListener {
-                        myExecutor?.execute {
-                            myCodeBitmap = constants.downloadCode(this, userCode)
-                            myHandler?.post {
-                                if(myCodeBitmap!=null){
-                                    constants.saveMediaToStorage(this, myCodeBitmap, "MyCode")
+                        if (constants.hasInternetConnection(this)) {
+                            myExecutor?.execute {
+                                myCodeBitmap = constants.downloadCode(this, userCode)
+                                myHandler?.post {
+                                    if (myCodeBitmap != null) {
+                                        constants.saveMediaToStorage(this, myCodeBitmap, "MyCode")
+                                    }
                                 }
                             }
                         }
@@ -247,9 +242,10 @@ class UserProfileActivity : AppCompatActivity() {
                         constants.copyText(this, userLink)
                     }
                     b.resetButton.setOnClickListener {
+                        val shortLink = constants.createIndividualsDynamicLink("$firstName$surname")
                         val multiFormatWriter = MultiFormatWriter()
                         try {
-                            val bitMatrix: BitMatrix = multiFormatWriter.encode(constants.currentUserId.toString(), BarcodeFormat.QR_CODE, 300, 300)
+                            val bitMatrix: BitMatrix = multiFormatWriter.encode(shortLink.toString(), BarcodeFormat.QR_CODE, 300, 300)
                             val barcodeEncoder = BarcodeEncoder()
                             val bitmap = barcodeEncoder.createBitmap(bitMatrix)
                             val bytes = ByteArrayOutputStream()
@@ -500,10 +496,25 @@ class UserProfileActivity : AppCompatActivity() {
                 //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 businessId = result!!.contents.toString().trim { it <= ' ' }
-                val intent = Intent(this, ExistingBusinessActivity::class.java)
-                intent.putExtra("business_id", businessId)
-                startActivity(intent)
-                Animatoo.animateFade(this)
+                val uri = Uri.parse(businessId)
+                val path = uri?.path
+                if (path != null) {
+                    // Determine the appropriate activity based on the deep link path
+                    when {
+                        path.contains("/businesses") -> {
+                            val key = uri.getQueryParameter("key")
+                            val intent = Intent(this, ExistingBusinessActivity::class.java)
+                            intent.putExtra("business_id", key.toString())
+                            startActivity(intent)
+                            Animatoo.animateFade(this)
+                        }
+                        // Add more cases for different paths if needed
+                        else -> {
+                            constants.showToast(this, "This code is invalid")
+                        }
+                    }
+                }
+
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -513,7 +524,7 @@ class UserProfileActivity : AppCompatActivity() {
             val selectedImage: Uri? = data.data
             try {
                 val inputStream: InputStream? = contentResolver.openInputStream(selectedImage!!)
-                var bitmap: Bitmap? = BitmapFactory.decodeStream(inputStream)
+                val bitmap: Bitmap? = BitmapFactory.decodeStream(inputStream)
                 if (bitmap == null) {
                     Log.e("TAG", "uri is not a bitmap,$selectedImage")
                     return
@@ -523,20 +534,32 @@ class UserProfileActivity : AppCompatActivity() {
                 val pixels = IntArray(width * height)
                 bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
                 bitmap.recycle()
-                bitmap = null
                 val source = RGBLuminanceSource(width, height, pixels)
                 val bBitmap = BinaryBitmap(HybridBinarizer(source))
                 val reader = MultiFormatReader()
                 try {
                     val result: Result = reader.decode(bBitmap)
                     businessId = result.text.toString().trim { it <= ' ' }
-                    val intent = Intent(this, ExistingBusinessActivity::class.java)
-                    intent.putExtra("business_id", businessId)
-                    startActivity(intent)
-                    //Animatoo.animateFade(this@HomeActivity2)
+                    val uri = Uri.parse(businessId)
+                    val path = uri?.path
+                    if (path != null) {
+                        // Determine the appropriate activity based on the deep link path
+                        when {
+                            path.contains("/businesses") -> {
+                                val key = uri.getQueryParameter("key")
+                                val intent = Intent(this, ExistingBusinessActivity::class.java)
+                                intent.putExtra("business_id", key.toString())
+                                startActivity(intent)
+                                Animatoo.animateFade(this)
+                            }
+                            // Add more cases for different paths if needed
+                            else -> {
+                                constants.showToast(this, "This code is invalid")
+                            }
+                        }
+                    }
                 } catch (e: NotFoundException) {
-                    // Toast.makeText(this, "This Code is NOT VALID", Toast.LENGTH_SHORT).show();
-                    Log.e("TAG", "decode exception", e)
+                    Firebase.crashlytics.recordException(e)
                 }
             } catch (e: FileNotFoundException) {
                 Firebase.crashlytics.recordException(e)            }
@@ -547,7 +570,6 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val REQUEST_GALLERY_PHOTO = 8
         const val BUSINESS_REQUEST_GALLERY_PHOTO = 20
     }
 }

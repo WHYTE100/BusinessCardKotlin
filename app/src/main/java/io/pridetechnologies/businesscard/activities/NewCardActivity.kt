@@ -162,8 +162,6 @@ class NewCardActivity : AppCompatActivity() {
                     val uploadTask = audioRef.putFile(outputUri!!)
 
                     uploadTask.addOnSuccessListener {
-                        // Audio upload success
-                        // Get the download URL of the uploaded audio file
                         audioRef.downloadUrl.addOnSuccessListener { downloadUrl ->
                             val audioDownloadUrl = downloadUrl.toString()
                             sendCardRequest(audioDownloadUrl)
@@ -223,7 +221,6 @@ class NewCardActivity : AppCompatActivity() {
 
         constants.db.collection("social_media").document(deepLink.toString())
             .addSnapshotListener { snapshot, e ->
-
                 if (e != null) {
                     Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
@@ -371,7 +368,7 @@ class NewCardActivity : AppCompatActivity() {
             }
 
             override fun onBindViewHolder(holder: MyWorkPlaceViewHolder, position: Int, model: WorkCard) {
-                if (!model.business_logo.equals(null)){
+                if (!model.business_logo.equals("")){
                     Picasso.get().load(model.business_logo).fit().centerCrop().placeholder(R.drawable.background_icon).into(holder.binding.logoImageView)
                 }
                 holder.binding.positionTextView.text = model.user_position
@@ -446,6 +443,8 @@ class NewCardActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
+        // Stop recording and release resources
         try {
             stopRecording()
             mediaPlayer.release()
@@ -453,8 +452,6 @@ class NewCardActivity : AppCompatActivity() {
         } catch (e: Exception){
             Firebase.crashlytics.recordException(e)
         }
-        super.onDestroy()
-        // Stop recording and release resources
     }
 
     override fun onStop() {

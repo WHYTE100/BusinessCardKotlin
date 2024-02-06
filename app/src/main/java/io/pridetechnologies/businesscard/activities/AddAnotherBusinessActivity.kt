@@ -23,6 +23,7 @@ import com.google.zxing.Result
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
+import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.ExistingBusinessActivity
 import io.pridetechnologies.businesscard.HomeActivity
 import io.pridetechnologies.businesscard.databinding.ActivityAddAnotherBusinessBinding
@@ -35,6 +36,7 @@ class AddAnotherBusinessActivity : AppCompatActivity() {
     private var businessId: String? = null
     private var qrScan: IntentIntegrator? = null
     private var result: IntentResult? = null
+    private val constants = Constants()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddAnotherBusinessBinding.inflate(layoutInflater)
@@ -86,10 +88,24 @@ class AddAnotherBusinessActivity : AppCompatActivity() {
                 //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 businessId = result!!.contents.toString().trim { it <= ' ' }
-                val intent = Intent(this, ExistingBusinessActivity::class.java)
-                intent.putExtra("business_id", businessId)
-                startActivity(intent)
-                Animatoo.animateFade(this)
+                val uri = Uri.parse(businessId)
+                val path = uri?.path
+                if (path != null) {
+                    // Determine the appropriate activity based on the deep link path
+                    when {
+                        path.contains("/businesses") -> {
+                            val key = uri.getQueryParameter("key")
+                            val intent = Intent(this, ExistingBusinessActivity::class.java)
+                            intent.putExtra("business_id", key.toString())
+                            startActivity(intent)
+                            Animatoo.animateFade(this)
+                        }
+                        // Add more cases for different paths if needed
+                        else -> {
+                            constants.showToast(this, "This code is invalid")
+                        }
+                    }
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -116,10 +132,24 @@ class AddAnotherBusinessActivity : AppCompatActivity() {
                 try {
                     val result: Result = reader.decode(bBitmap)
                     businessId = result.text.toString().trim { it <= ' ' }
-                    val intent = Intent(this, ExistingBusinessActivity::class.java)
-                    intent.putExtra("business_id", businessId)
-                    startActivity(intent)
-                    //Animatoo.animateFade(this@HomeActivity2)
+                    val uri = Uri.parse(businessId)
+                    val path = uri?.path
+                    if (path != null) {
+                        // Determine the appropriate activity based on the deep link path
+                        when {
+                            path.contains("/businesses") -> {
+                                val key = uri.getQueryParameter("key")
+                                val intent = Intent(this, ExistingBusinessActivity::class.java)
+                                intent.putExtra("business_id", key.toString())
+                                startActivity(intent)
+                                Animatoo.animateFade(this)
+                            }
+                            // Add more cases for different paths if needed
+                            else -> {
+                                constants.showToast(this, "This code is invalid")
+                            }
+                        }
+                    }
                 } catch (e: NotFoundException) {
                     Firebase.crashlytics.recordException(e)
                 }

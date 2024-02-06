@@ -95,10 +95,10 @@ class AddUserDetailsFragment : Fragment() {
     }
 
     private fun updateUI(firstName: String, otherName: String, surname: String, profession: String, mobile: String) {
-
+        val shortLink = constants.createIndividualsDynamicLink("$firstName$surname")
         val multiFormatWriter = MultiFormatWriter()
         try {
-            val bitMatrix: BitMatrix = multiFormatWriter.encode(constants.currentUserId.toString(), BarcodeFormat.QR_CODE, 300, 300)
+            val bitMatrix: BitMatrix = multiFormatWriter.encode(shortLink.toString(), BarcodeFormat.QR_CODE, 300, 300)
             val barcodeEncoder = BarcodeEncoder()
             val bitmap = barcodeEncoder.createBitmap(bitMatrix)
             val bytes = ByteArrayOutputStream()
@@ -116,7 +116,6 @@ class AddUserDetailsFragment : Fragment() {
                         val downloadUrl = uri?.toString()
                         val userId = constants.currentUserId.toString()
                         val userEmail = constants.currentUser?.email.toString()
-                        val shortLink = constants.createIndividualsDynamicLink("$firstName$surname")
                         val userDetails = hashMapOf(
                             "profile_image_url" to null,
                             "first_name" to firstName,

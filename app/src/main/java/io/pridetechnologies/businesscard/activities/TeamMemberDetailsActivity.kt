@@ -72,7 +72,6 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
 
         constants.db.collection("social_media").document(memberId.toString())
             .addSnapshotListener { snapshot, e ->
-
                 if (e != null) {
                     Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
