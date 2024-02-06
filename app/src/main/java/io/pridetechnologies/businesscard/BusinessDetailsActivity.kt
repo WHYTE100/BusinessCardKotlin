@@ -23,7 +23,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.Query
+import com.google.firebase.ktx.Firebase
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -83,7 +85,7 @@ class BusinessDetailsActivity : AppCompatActivity() {
             .addSnapshotListener { snapshot, e ->
 
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 businessLogo = snapshot?.get("business_logo").toString()
@@ -184,14 +186,21 @@ class BusinessDetailsActivity : AppCompatActivity() {
                     b.textView29.text = "Business Card"
                     Picasso.get().load(businessCode).fit().centerCrop().placeholder(R.drawable.qr_code_black).into(b.imageView9)
                     b.downloadButton.setOnClickListener {
-                        //val destinationPath = File(this.filesDir, "${businessName}.jpg")
-                        myExecutor?.execute {
-                            myCodeBitmap = constants.downloadCode(this, businessCode)
-                            myHandler?.post {
-                                if(myCodeBitmap!=null){
-                                    constants.saveMediaToStorage(this, myCodeBitmap, businessName.toString())
+                        if (constants.hasInternetConnection(this)) {
+                            myExecutor?.execute {
+                                myCodeBitmap = constants.downloadCode(this, businessCode)
+                                myHandler?.post {
+                                    if (myCodeBitmap != null) {
+                                        constants.saveMediaToStorage(
+                                            this,
+                                            myCodeBitmap,
+                                            businessName.toString()
+                                        )
+                                    }
                                 }
                             }
+                        }else {
+                           constants.showToast(this, "No internet connection")
                         }
                     }
                     b.copyLinkButton.setOnClickListener {
@@ -230,7 +239,7 @@ class BusinessDetailsActivity : AppCompatActivity() {
         constants.db.collection("social_media").document(businessId.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 //val whatsAppLink = snapshot?.get("whatsapp_link").toString()

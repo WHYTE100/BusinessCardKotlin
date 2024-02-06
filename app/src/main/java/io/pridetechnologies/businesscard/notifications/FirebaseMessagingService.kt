@@ -61,26 +61,6 @@ class FirebaseMessagingService : FirebaseMessagingService() {
                     .build()
                 notificationManager.notify(notificationId, notification)
             }
-            "accepted_user_request" -> {
-                val intent = Intent(this, HomeActivity::class.java)
-                val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                val notificationId = Random.nextInt()
-
-                createNotificationChannel(notificationManager)
-
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
-                val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-                val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle(nTitle)
-                    .setContentText(nBody)
-                    .setSmallIcon(R.drawable.card_round)
-                    .setAutoCancel(true)
-                    .setSound(defaultSoundUri)
-                    .setContentIntent(pendingIntent)
-                    .build()
-                notificationManager.notify(notificationId, notification)
-            }
             "user_request" -> {
                 val intent = Intent(this, UserRequestDetailsActivity::class.java)
                 intent.putExtra("user_id", uid)
@@ -101,6 +81,25 @@ class FirebaseMessagingService : FirebaseMessagingService() {
                     .setContentIntent(pendingIntent)
                     .build()
                 notificationManager.notify(notificationId, notification)
+            }else -> {
+            val intent = Intent(this, HomeActivity::class.java)
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationId = Random.nextInt()
+
+            createNotificationChannel(notificationManager)
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
+            val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(nTitle)
+                .setContentText(nBody)
+                .setSmallIcon(R.drawable.card_round)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent)
+                .build()
+            notificationManager.notify(notificationId, notification)
             }
         }
     }

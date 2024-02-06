@@ -30,7 +30,9 @@ import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -84,7 +86,7 @@ class EditBusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                     } else constants.showToast(this, "Failed to get last location")
                 }
                 .addOnFailureListener { e ->
-                    // Handle any errors that occurred while trying to get location
+                    Firebase.crashlytics.recordException(e)
                     constants.showToast(this, "Failed to get last location")
                 }
         } else {
@@ -115,7 +117,7 @@ class EditBusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
             .addSnapshotListener { snapshot, e ->
 
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -172,7 +174,7 @@ class EditBusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                 .addOnFailureListener { e ->
                     progressDialog.hide()
                     constants.showToast(this, "Failed to save details")
-                    Log.w(ContentValues.TAG, "Error writing document", e) }
+                    Firebase.crashlytics.recordException(e) }
         }
 
 

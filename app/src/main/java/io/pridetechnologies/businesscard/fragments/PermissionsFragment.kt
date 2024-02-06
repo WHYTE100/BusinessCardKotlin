@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -195,6 +197,7 @@ class PermissionsFragment : Fragment() {
                         }
                     }
                     .addOnFailureListener {
+                        Firebase.crashlytics.recordException(it)
                         progressDialog.hide()
                         val action = PermissionsFragmentDirections.actionPermissionsFragmentToAddUserDetailsFragment()
                         findNavController().navigate(action)

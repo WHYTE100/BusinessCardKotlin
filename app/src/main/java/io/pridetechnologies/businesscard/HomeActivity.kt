@@ -32,7 +32,9 @@ import com.airbnb.paris.Paris
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.integration.android.IntentIntegrator
@@ -69,38 +71,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        FirebaseDynamicLinks.getInstance().getDynamicLink(intent)
-            .addOnSuccessListener(this) { pendingDynamicLinkData ->
-                var deepLink: Uri? = null
-                if (pendingDynamicLinkData != null) {
-                    deepLink = pendingDynamicLinkData.link
-                    val path = deepLink?.path
-                    if (path != null) {
-                        // Determine the appropriate activity based on the deep link path
-                        when {
-                            path.contains("/individuals") -> {
-                                val uid = deepLink?.getQueryParameter("key")
-                                val intent1 = Intent(this, NewCardActivity::class.java)
-                                intent1.putExtra("deepLink", uid.toString())
-                                startActivity(intent1)
-                            }
-                            path.contains("/businesses") -> {
-                                val uid = deepLink?.getQueryParameter("key")
-                                val intent2 = Intent(this, NewBusinessCardActivity::class.java)
-                                intent2.putExtra("business_id", uid.toString())
-                                startActivity(intent2)
-                            }
-                            // Add more cases for different paths if needed
-                            else -> {
-                                // Handle unknown paths or default behavior
-                            }
-                        }
-                    }
-                }
-            }
-            .addOnFailureListener(this) {
-                // Handle any errors here.
-            }
 
 
         mAuth = FirebaseAuth.getInstance()
@@ -294,12 +264,10 @@ class HomeActivity : AppCompatActivity() {
                     startActivity(intent)
                     Animatoo.animateFade(this@HomeActivity)
                 } catch (e: NotFoundException) {
-                    // Toast.makeText(this, "This Code is NOT VALID", Toast.LENGTH_SHORT).show();
-                    Log.e("TAG", "decode exception", e)
+                    Firebase.crashlytics.recordException(e)
                 }
             } catch (e: FileNotFoundException) {
-                //Log.e("TAG", "can not open file" + selectedImage.toString(), e);
-            }
+                Firebase.crashlytics.recordException(e)            }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
             //Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();

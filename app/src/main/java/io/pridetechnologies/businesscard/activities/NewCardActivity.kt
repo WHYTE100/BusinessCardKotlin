@@ -26,9 +26,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -165,12 +167,11 @@ class NewCardActivity : AppCompatActivity() {
                         audioRef.downloadUrl.addOnSuccessListener { downloadUrl ->
                             val audioDownloadUrl = downloadUrl.toString()
                             sendCardRequest(audioDownloadUrl)
-                        }.addOnFailureListener { exception ->
-                            Log.e(TAG, "Failed to retrieve download URL: ${exception.message}")
+                        }.addOnFailureListener { e ->
+                            Firebase.crashlytics.recordException(e)
                         }
-                    }.addOnFailureListener { exception ->
-                        // Audio upload failed
-                        Log.e(TAG, "Audio upload failed: ${exception.message}")
+                    }.addOnFailureListener { e ->
+                        Firebase.crashlytics.recordException(e)
                     }
                 } else {
                     constants.showToast(this, "No Internet Connection")
@@ -196,7 +197,7 @@ class NewCardActivity : AppCompatActivity() {
         constants.db.collection("users").document(deepLink.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -224,7 +225,7 @@ class NewCardActivity : AppCompatActivity() {
             .addSnapshotListener { snapshot, e ->
 
                 if (e != null) {
-                    Log.w(TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -312,7 +313,7 @@ class NewCardActivity : AppCompatActivity() {
             startCounter()
 
         } catch (e: IOException) {
-            e.printStackTrace()
+            Firebase.crashlytics.recordException(e)
         }
 
     }
@@ -428,6 +429,7 @@ class NewCardActivity : AppCompatActivity() {
                             binding.textView99.visibility = View.VISIBLE
                             binding.requestButton.visibility = View.GONE
                         }.onFailure {
+                            Firebase.crashlytics.recordException(it)
                             progressDialog.hide()
                             binding.requestButton.isEnabled = false
                             binding.textView99.visibility = View.VISIBLE
@@ -439,8 +441,7 @@ class NewCardActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 progressDialog.hide()
-                constants.showToast(this, "Error: ${e.message.toString()}")
-                Log.w(TAG, "Error writing document", e) }
+                Firebase.crashlytics.recordException(e) }
 
     }
 
@@ -450,7 +451,7 @@ class NewCardActivity : AppCompatActivity() {
             mediaPlayer.release()
             mediaRecorder.release()
         } catch (e: Exception){
-            e.printStackTrace()
+            Firebase.crashlytics.recordException(e)
         }
         super.onDestroy()
         // Stop recording and release resources
@@ -462,7 +463,7 @@ class NewCardActivity : AppCompatActivity() {
             mediaPlayer.release()
             mediaRecorder.release()
         } catch (e: Exception){
-            e.printStackTrace()
+            Firebase.crashlytics.recordException(e)
         }
 
         super.onStop()
@@ -501,7 +502,7 @@ class NewCardActivity : AppCompatActivity() {
         constants.db.collection("businesses").document(deepLink.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -522,7 +523,7 @@ class NewCardActivity : AppCompatActivity() {
             .collection("card_requests").document(constants.currentUserId.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -534,7 +535,7 @@ class NewCardActivity : AppCompatActivity() {
                         .collection("individuals_cards").document(constants.currentUserId.toString())
                         .addSnapshotListener { s, e2 ->
                             if (e2 != null) {
-                                Log.w(TAG, "Listen failed.", e2)
+                                Firebase.crashlytics.recordException(e2)
                                 return@addSnapshotListener
                             }
                             if (s != null && s.exists()) {

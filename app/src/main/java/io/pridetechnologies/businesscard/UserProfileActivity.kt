@@ -30,9 +30,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.BinaryBitmap
 import com.google.zxing.MultiFormatReader
@@ -149,14 +151,13 @@ class UserProfileActivity : AppCompatActivity() {
                 try {
                     dialog.dismiss()
                     constants.auth.signOut()
-                    //constants.db.terminate()
-                    //constants.writeToSharedPreferences(this,"user_qr_code", "")
+                    constants.writeToSharedPreferences(this,"user_qr_code", "")
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finishAffinity()
                     Animatoo.animateFade(this)
                 } catch (e:Exception){
-                    Log.e("TAG", e.message.toString())
+                    Firebase.crashlytics.recordException(e)
                 }
 
             }
@@ -276,12 +277,14 @@ class UserProfileActivity : AppCompatActivity() {
                                                 //constants.setSnackBar(this, "Reset Successful")
                                             }
                                             .addOnFailureListener { e ->
-                                                Toast.makeText(this, "Error: $e", Toast.LENGTH_SHORT).show()
+                                                Firebase.crashlytics.recordException(e)
+                                                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                                                 dialog.dismiss()
                                                 //constants.setSnackBar(this, "Reset Unsuccessful")
                                             }
 
                                     }.addOnFailureListener {
+                                        Firebase.crashlytics.recordException(it)
                                         Toast.makeText(this, "Error: $it", Toast.LENGTH_SHORT).show()
                                         // Handle any error that occurs while getting the download URL
                                         //constants.setSnackBar(this, "Failed to get the url")
@@ -292,7 +295,8 @@ class UserProfileActivity : AppCompatActivity() {
                                     Toast.makeText(this, "Failed to upload qr code", Toast.LENGTH_SHORT).show()
                                 }
                             }
-                        } catch (_: Exception) {
+                        } catch (e: Exception) {
+                            Firebase.crashlytics.recordException(e)
                             dialog.dismiss()
                             //constants.setSnackBar(this, "Failed to create qr code")
                         }
@@ -307,7 +311,7 @@ class UserProfileActivity : AppCompatActivity() {
             .addSnapshotListener { snapshot, e ->
 
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -535,8 +539,7 @@ class UserProfileActivity : AppCompatActivity() {
                     Log.e("TAG", "decode exception", e)
                 }
             } catch (e: FileNotFoundException) {
-                //Log.e("TAG", "can not open file" + selectedImage.toString(), e);
-            }
+                Firebase.crashlytics.recordException(e)            }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
             //Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();

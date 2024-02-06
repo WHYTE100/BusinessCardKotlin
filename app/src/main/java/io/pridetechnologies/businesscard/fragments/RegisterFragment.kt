@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.CustomProgressDialog
 import io.pridetechnologies.businesscard.databinding.CustomDialogBoxBinding
@@ -47,8 +49,6 @@ class RegisterFragment : Fragment() {
         val email = binding.emailTextField.editText?.text.toString().trim()
         val password = binding.passwordTextField.editText?.text.toString().trim()
         val confirmPassword = binding.password2TextField.editText?.text.toString().trim()
-
-        //Log.d(ContentValues.TAG, "User: $email \n $password")
 
         if (email.isEmpty()){
             Toast.makeText(requireContext(), "Enter Email.", Toast.LENGTH_SHORT)
@@ -86,15 +86,17 @@ class RegisterFragment : Fragment() {
                             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                             dialog.show()
 
-                        }.addOnFailureListener {
+                        }.addOnFailureListener { e ->
+                            Firebase.crashlytics.recordException(e)
                             progressDialog.hide()
                             constants.showToast(requireContext(), "Error sending verification email ")
                         }
                 }
 
-            }.addOnFailureListener {
+            }.addOnFailureListener { e ->
+                Firebase.crashlytics.recordException(e)
                 progressDialog.hide()
-                constants.showToast(requireContext(), it.message.toString())
+                constants.showToast(requireContext(), e.message.toString())
             }
         }
     }

@@ -27,7 +27,9 @@ import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.CustomProgressDialog
 import io.pridetechnologies.businesscard.R
@@ -64,10 +66,9 @@ class BusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
                 .addOnFailureListener { e ->
-                    // Handle any errors that occurred while trying to get location
+                    Firebase.crashlytics.recordException(e)
                 }
         } else {
-            // Location permission not granted, request again
             ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION), REQUEST_LOCATION_PERMISSION)
         }
         binding.addImageButton.setOnClickListener {
@@ -120,7 +121,7 @@ class BusinessAddressActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
                 .addOnFailureListener { e ->
                     progressDialog.hide()
-                    Log.w(ContentValues.TAG, "Error writing document", e) }
+                    Firebase.crashlytics.recordException(e) }
         }
 
 

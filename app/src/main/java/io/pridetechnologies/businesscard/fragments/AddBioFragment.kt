@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -70,6 +71,7 @@ class AddBioFragment : Fragment() {
                 findNavController().navigate(action)
             }
             .addOnFailureListener { e: Exception ->
+                Firebase.crashlytics.recordException(e)
                 progressDialog.hide()
                 constants.showToast(requireContext(), e.message.toString())}
 

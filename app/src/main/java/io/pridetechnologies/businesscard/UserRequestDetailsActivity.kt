@@ -25,9 +25,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import io.ktor.http.Url
 import io.pridetechnologies.businesscard.databinding.ActivityUserRequestDetailsBinding
@@ -89,14 +91,14 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                 binding.textView6.text = userName
                 binding.textView7.text = profession
             }
-            .addOnFailureListener { e -> Log.w(ContentValues.TAG, "Error writing document", e)
+            .addOnFailureListener { e -> Firebase.crashlytics.recordException(e)
             }
 
         constants.db.collection("users").document(constants.currentUserId.toString())
             .collection("card_requests").document(userId.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -104,7 +106,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                     if (noteUrl != ""){
                         binding.noteLayout.visibility = View.VISIBLE
                         AudioWife.getInstance()
-                            .init(this, Uri.parse(noteUrl))
+                            .init(this@UserRequestDetailsActivity, Uri.parse(noteUrl))
                             .setPlayView(binding.play)
                             .setPauseView(binding.pause)
                             .setSeekBar(binding.mediaSeekbar)
@@ -120,7 +122,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
             .addSnapshotListener { snapshot, e ->
 
                 if (e != null) {
-                    Log.w(TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -211,6 +213,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                                 dialog.dismiss()
                                 finish()
                             }.onFailure {
+                                Firebase.crashlytics.recordException(it)
                                 progressDialog.hide()
                                 dialog.dismiss()
                                 finish()
@@ -219,6 +222,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener { e ->
+                    Firebase.crashlytics.recordException(e)
                     progressDialog.hide()
                     dialog.dismiss()
                     Log.w(ContentValues.TAG, "Error writing document", e) }
@@ -272,6 +276,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                                 dialog.dismiss()
                                 finish()
                             }.onFailure {
+                                Firebase.crashlytics.recordException(it)
                                 progressDialog.hide()
                                 dialog.dismiss()
                                 finish()
@@ -280,6 +285,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener { e ->
+                    Firebase.crashlytics.recordException(e)
                     progressDialog.hide()
                     dialog.dismiss()
                     Log.w(ContentValues.TAG, "Error writing document", e)
@@ -337,8 +343,8 @@ class UserRequestDetailsActivity : AppCompatActivity() {
 
     class MyWorkPlaceViewHolder(val binding: WorkCardBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         AudioWife.getInstance().release()
     }
 

@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
@@ -47,8 +48,6 @@ class LoginFragment : Fragment() {
         Log.e(ContentValues.TAG, "data1: ${result.data?.clipData}")
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
-//            Log.e(ContentValues.TAG, "data2: ${data.toString()}")
-//            Log.e(ContentValues.TAG, result.resultCode.toString())
             val signInAccountTask: Task<GoogleSignInAccount> =
                 GoogleSignIn.getSignedInAccountFromIntent(data)
             // check condition
@@ -78,7 +77,6 @@ class LoginFragment : Fragment() {
                                         constants.showToast(requireContext(), "Please verify your email address first")
                                     }
                                 } else {
-                                    // When task is unsuccessful display Toast
                                     constants.showToast(requireContext(),
                                         "Authentication Failed : ${task.exception?.message}"
                                     )
@@ -87,7 +85,7 @@ class LoginFragment : Fragment() {
                     }
                 } catch (e: FirebaseAuthException) {
                     constants.showToast(requireContext(), e.message.toString())
-                    Log.e(ContentValues.TAG, e.message.toString())
+                    Firebase.crashlytics.recordException(e)
                 }
             }else{
                 Log.e(ContentValues.TAG, result.data.toString())
@@ -163,6 +161,7 @@ class LoginFragment : Fragment() {
                 }
 
             }.addOnFailureListener { exception ->
+                Firebase.crashlytics.recordException(exception)
                 progressDialog.hide()
                 constants.showToast(requireContext(), "Error: ${exception.message.toString()}")
             }
@@ -220,6 +219,7 @@ class LoginFragment : Fragment() {
                 }
             }
             .addOnFailureListener {
+                Firebase.crashlytics.recordException(it)
                 progressDialog.hide()
                 val action = LoginFragmentDirections.actionLoginFragmentToHomeActivity()
                 findNavController().navigate(action)

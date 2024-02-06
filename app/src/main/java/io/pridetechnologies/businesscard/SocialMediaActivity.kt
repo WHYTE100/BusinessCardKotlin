@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import io.pridetechnologies.businesscard.databinding.ActivitySocialMediaBinding
 
 
@@ -28,7 +30,7 @@ class SocialMediaActivity : AppCompatActivity() {
         constants.db.collection("social_media").document(currentId)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {

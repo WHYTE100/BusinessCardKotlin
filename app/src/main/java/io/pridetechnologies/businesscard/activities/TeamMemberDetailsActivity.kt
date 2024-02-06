@@ -10,8 +10,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.CustomProgressDialog
@@ -65,14 +67,14 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                 binding.textView6.text = "$userFirstName $userLastName"
                 binding.textView7.text = profession
             }
-            .addOnFailureListener { e -> Log.w(ContentValues.TAG, "Error writing document", e)
+            .addOnFailureListener { e -> Firebase.crashlytics.recordException(e)
             }
 
         constants.db.collection("social_media").document(memberId.toString())
             .addSnapshotListener { snapshot, e ->
 
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -159,7 +161,7 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                 }
 
             }
-            .addOnFailureListener { e -> Log.w(ContentValues.TAG, "Error writing document", e)
+            .addOnFailureListener { e -> Firebase.crashlytics.recordException(e)
             }
 
         binding.approveButton.setOnClickListener {
@@ -254,7 +256,7 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
             .document(memberId.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -352,6 +354,7 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                                     finish()
                                     Animatoo.animateFade(this@TeamMemberDetailsActivity)
                                 }.onFailure {
+                                    Firebase.crashlytics.recordException(it)
                                     progressDialog.hide()
                                     finish()
                                     Animatoo.animateFade(this@TeamMemberDetailsActivity)
@@ -362,11 +365,12 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                     }
                     .addOnFailureListener { e ->
                         progressDialog.hide()
-                        Log.w(ContentValues.TAG, "Error writing document", e) }
+                        Firebase.crashlytics.recordException(e) }
             }
             .addOnFailureListener { e ->
                 progressDialog.hide()
-                Log.w(ContentValues.TAG, "Error writing document", e) }
+                Firebase.crashlytics.recordException(e)
+            }
 
     }
 
@@ -391,7 +395,8 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                                     progressDialog.hide()
                                     finish()
                                     Animatoo.animateFade(this@TeamMemberDetailsActivity)
-                                }.onFailure { exception ->
+                                }.onFailure { e ->
+                                    Firebase.crashlytics.recordException(e)
                                     progressDialog.hide()
                                     finish()
                                     Animatoo.animateFade(this@TeamMemberDetailsActivity)
@@ -402,11 +407,11 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                     }
                     .addOnFailureListener { e ->
                         progressDialog.hide()
-                        Log.w(ContentValues.TAG, "Error writing document", e) }
+                        Firebase.crashlytics.recordException(e) }
             }
             .addOnFailureListener { e ->
                 progressDialog.hide()
-                Log.w(ContentValues.TAG, "Error writing document", e) }
+                Firebase.crashlytics.recordException(e) }
     }
 
     private fun removeMember() {
@@ -429,11 +434,13 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                         Animatoo.animateFade(this)
                     }
                     .addOnFailureListener { e ->
+                        Firebase.crashlytics.recordException(e)
                         progressDialog.hide()
-                        Log.w(ContentValues.TAG, "Error writing document", e) }
+                    }
             }
             .addOnFailureListener { e ->
                 progressDialog.hide()
-                Log.w(ContentValues.TAG, "Error writing document", e) }
+                Firebase.crashlytics.recordException(e)
+            }
     }
 }

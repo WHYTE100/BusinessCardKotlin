@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.dynamiclinks.ktx.androidParameters
 import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -145,20 +146,21 @@ class AddUserDetailsFragment : Fragment() {
                                 findNavController().navigate(action)
                             }
                             .addOnFailureListener { e ->
+                                Firebase.crashlytics.recordException(e)
                                 progressDialog.hide()
                                 constants.showToast(requireContext(), e.message.toString())
                             }
 
                     }.addOnFailureListener {
-                        // Handle any error that occurs while getting the download URL
-                        Log.d(ContentValues.TAG, "Failed to get the url")
+                        Firebase.crashlytics.recordException(it)
                     }
                 } else {
                     // Handle any error that occurs during upload
                     Log.d(ContentValues.TAG, "Failed to upload the code")
                 }
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            Firebase.crashlytics.recordException(e)
         }
 
 

@@ -13,6 +13,8 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.BinaryBitmap
 import com.google.zxing.MultiFormatReader
 import com.google.zxing.NotFoundException
@@ -119,12 +121,10 @@ class AddAnotherBusinessActivity : AppCompatActivity() {
                     startActivity(intent)
                     //Animatoo.animateFade(this@HomeActivity2)
                 } catch (e: NotFoundException) {
-                    // Toast.makeText(this, "This Code is NOT VALID", Toast.LENGTH_SHORT).show();
-                    Log.e("TAG", "decode exception", e)
+                    Firebase.crashlytics.recordException(e)
                 }
             } catch (e: FileNotFoundException) {
-                //Log.e("TAG", "can not open file" + selectedImage.toString(), e);
-            }
+                Firebase.crashlytics.recordException(e)            }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
             //Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();

@@ -17,8 +17,10 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -122,6 +124,7 @@ class NewBusinessCardActivity : AppCompatActivity() {
                 //Log.d(ContentValues.TAG, "DocumentSnapshot successfully written!")
             }
             .addOnFailureListener { e ->
+                Firebase.crashlytics.recordException(e)
                 progressDialog.hide()
                 Log.w(ContentValues.TAG, "Error writing document", e) }
     }
@@ -131,7 +134,7 @@ class NewBusinessCardActivity : AppCompatActivity() {
             .addSnapshotListener { snapshot, e ->
 
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
 
@@ -253,7 +256,7 @@ class NewBusinessCardActivity : AppCompatActivity() {
         constants.db.collection("social_media").document(businessId.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 val whatsAppLink = snapshot?.get("whatsapp_link").toString()
@@ -322,7 +325,7 @@ class NewBusinessCardActivity : AppCompatActivity() {
         constants.db.collection("users").document(businessId.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {

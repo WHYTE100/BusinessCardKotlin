@@ -22,8 +22,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
@@ -236,6 +238,7 @@ class AdminBusinessProfileActivity : AppCompatActivity() {
                                                 constants.showToast(this, "Code Reset Successful")
                                             }
                                             .addOnFailureListener { e ->
+                                                Firebase.crashlytics.recordException(e)
                                                 dialog.dismiss()
                                                 progressDialog.hide()
                                                 constants.showToast(this, "Code Reset Unsuccessful")
@@ -252,7 +255,8 @@ class AdminBusinessProfileActivity : AppCompatActivity() {
                                     constants.showToast(this, "Failed to upload qr code")
                                 }
                             }
-                        } catch (_: Exception) {
+                        } catch (e: Exception) {
+                            Firebase.crashlytics.recordException(e)
                             dialog.dismiss()
                             progressDialog.hide()
                             constants.showToast(this, "Failed to create qr code")
@@ -267,7 +271,7 @@ class AdminBusinessProfileActivity : AppCompatActivity() {
         constants.db.collection("social_media").document(businessId.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {

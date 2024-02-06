@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.dynamiclinks.ktx.androidParameters
 import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -195,15 +196,15 @@ class NewBusinessActivity : AppCompatActivity() {
                         updateUI(logoUrl!!, businessName, businessEmail, businessWebsite, businessBio, mobile, myPosition, businessId, qrCodeDownloadUrl, shortLink)
 
                     }.addOnFailureListener {
-                        // Handle any error that occurs while getting the download URL
-                        Log.d(ContentValues.TAG, "Failed to get the url")
+                        /Firebase.crashlytics.recordException(it)
                     }
                 } else {
                     // Handle any error that occurs during upload
                     Log.d(ContentValues.TAG, "Failed to upload the code")
                 }
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            Firebase.crashlytics.recordException(e)
         }
     }
 
@@ -273,6 +274,7 @@ class NewBusinessActivity : AppCompatActivity() {
                 Animatoo.animateFade(this)
             }
             .addOnFailureListener { e ->
+                Firebase.crashlytics.recordException(e)
                 progressDialog.hide()
                 Toast.makeText(this, "Failed to save Changed: $e.", Toast.LENGTH_SHORT)
                     .show()

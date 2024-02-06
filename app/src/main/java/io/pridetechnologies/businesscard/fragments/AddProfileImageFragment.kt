@@ -20,7 +20,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -130,6 +132,7 @@ class AddProfileImageFragment : Fragment() {
                             findNavController().navigate(action)
                         }
                         .addOnFailureListener { e ->
+                            Firebase.crashlytics.recordException(e)
                             progressDialog.hide()
                             constants.showToast(requireContext(), e.message.toString())
                         }

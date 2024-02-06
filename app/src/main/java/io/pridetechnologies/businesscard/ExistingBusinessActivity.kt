@@ -9,8 +9,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import io.pridetechnologies.businesscard.databinding.ActivityExistingBusinessBinding
 import io.pridetechnologies.businesscard.databinding.ActivityNewBusinessCardBinding
@@ -117,10 +119,12 @@ class ExistingBusinessActivity : AppCompatActivity() {
                             Animatoo.animateFade(this)
                         }
                         .addOnFailureListener { e ->
+                            Firebase.crashlytics.recordException(e)
                             progressDialog.hide()
                             Log.w(ContentValues.TAG, "Error writing document", e) }
                 }
                 .addOnFailureListener { e ->
+                    Firebase.crashlytics.recordException(e)
                     progressDialog.hide()
                     Log.w(ContentValues.TAG, "Error writing document", e) }
         }

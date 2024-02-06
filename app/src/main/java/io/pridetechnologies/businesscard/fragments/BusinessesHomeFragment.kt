@@ -24,7 +24,9 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.Query
+import com.google.firebase.ktx.Firebase
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -285,7 +287,7 @@ class BusinessesHomeFragment : Fragment() {
                 constants.db.collection("social_media").document(model.business_id.toString())
                     .addSnapshotListener { snapshot, e ->
                         if (e != null) {
-                            Log.w(ContentValues.TAG, "Listen failed.", e)
+                            Firebase.crashlytics.recordException(e)
                             return@addSnapshotListener
                         }
                         val whatsAppLink = snapshot?.get("whatsapp_link").toString()

@@ -9,7 +9,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.CustomProgressDialog
 import io.pridetechnologies.businesscard.R
@@ -43,7 +45,7 @@ class EditDepartmentActivity : AppCompatActivity() {
             .collection("departments").document(departmentId.toString())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    Firebase.crashlytics.recordException(e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
@@ -114,6 +116,7 @@ class EditDepartmentActivity : AppCompatActivity() {
                             .show()
                     }
                     .addOnFailureListener { e ->
+                        Firebase.crashlytics.recordException(e)
                         progressDialog.hide()
                         Toast.makeText(this, "Failed to save department: ${e}.", Toast.LENGTH_SHORT)
                         .show() }

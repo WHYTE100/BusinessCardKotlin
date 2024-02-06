@@ -16,6 +16,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.dynamiclinks.ktx.androidParameters
 import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -182,6 +183,8 @@ class EditBusinessBasicsActivity : AppCompatActivity() {
                 progressDialog.hide()
                 Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
             }
+        }.addOnFailureListener{e ->
+            Firebase.crashlytics.recordException(e)
         }
     }
 
@@ -205,6 +208,7 @@ class EditBusinessBasicsActivity : AppCompatActivity() {
                 Toast.makeText(this, "Changes save successfully.", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
+                Firebase.crashlytics.recordException(e)
                 progressDialog.hide()
                 Toast.makeText(this, "Failed to save Changed: $e.", Toast.LENGTH_SHORT)
                     .show()
@@ -228,6 +232,7 @@ class EditBusinessBasicsActivity : AppCompatActivity() {
                 Toast.makeText(this, "Changes save successfully.", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
+                Firebase.crashlytics.recordException(e)
                 progressDialog.hide()
                 Toast.makeText(this, "Failed to save Changed: $e.", Toast.LENGTH_SHORT)
                     .show()

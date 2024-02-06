@@ -8,8 +8,10 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import io.pridetechnologies.businesscard.Constants
 import io.pridetechnologies.businesscard.CustomProgressDialog
 import io.pridetechnologies.businesscard.R
@@ -86,6 +88,7 @@ class AddDepartmentActivity : AppCompatActivity() {
                 }
                 .addOnFailureListener { e ->
                     progressDialog.hide()
+                    Firebase.crashlytics.recordException(e)
                     Toast.makeText(this, "Failed to add department: ${e}.", Toast.LENGTH_SHORT)
                         .show()
                 }

@@ -10,7 +10,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import io.pridetechnologies.businesscard.databinding.ActivityAddSocialMediaBinding
 import io.pridetechnologies.businesscard.databinding.CustomDialogBoxBinding
 
@@ -75,6 +77,7 @@ class AddSocialMediaActivity : AppCompatActivity() {
                         constants.showToast(this, "Link saved successfully ")
                         finish()
                     }.addOnFailureListener { e ->
+                        Firebase.crashlytics.recordException(e)
                         progressDialog.hide()
                         constants.showToast(this, "Error saving link ")
                         Log.w(ContentValues.TAG, "Error writing document", e) }

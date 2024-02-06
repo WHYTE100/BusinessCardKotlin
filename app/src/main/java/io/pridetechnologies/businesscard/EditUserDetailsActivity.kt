@@ -15,7 +15,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -272,11 +274,13 @@ class EditUserDetailsActivity : AppCompatActivity() {
         constants.db.collection("users").document(constants.currentUserId.toString())
             .set(userDetails, SetOptions.merge())
             .addOnSuccessListener {
+
                 progressDialog.hide()
                 Toast.makeText(this, "Changes Saved.", Toast.LENGTH_SHORT)
                     .show()
             }
             .addOnFailureListener { e ->
+                Firebase.crashlytics.recordException(e)
                 progressDialog.hide()
                 Toast.makeText(this, "Failed to save Changed: $e.", Toast.LENGTH_SHORT)
                     .show()

@@ -27,8 +27,11 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ktx.androidParameters
 import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -39,6 +42,8 @@ import com.google.firebase.storage.ktx.storage
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
+import io.pridetechnologies.businesscard.activities.NewBusinessCardActivity
+import io.pridetechnologies.businesscard.activities.NewCardActivity
 import io.pridetechnologies.businesscard.notifications.PushNotification
 import io.pridetechnologies.businesscard.notifications.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
@@ -120,6 +125,7 @@ class Constants {
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
             true
         } catch (e: PackageManager.NameNotFoundException){
+            Firebase.crashlytics.recordException(e)
             false
         }
         if (profileLink.equals("null")){
@@ -133,6 +139,7 @@ class Constants {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     context.startActivity(intent)
                 } catch (e: Exception){
+                    Firebase.crashlytics.recordException(e)
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(profileLink))
                     context.startActivity(intent)
                 }
@@ -149,6 +156,7 @@ class Constants {
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
             true
         } catch (e: PackageManager.NameNotFoundException){
+            Firebase.crashlytics.recordException(e)
             false
         }
         if (whatsAppNumber.equals("null")){
@@ -174,6 +182,7 @@ class Constants {
             pm.getPackageInfo("com.facebook.katana", 0)
             Intent(Intent.ACTION_VIEW, Uri.parse(facebookLink))
         } catch (e: Exception){
+            Firebase.crashlytics.recordException(e)
             Intent(Intent.ACTION_VIEW, Uri.parse(facebookLink))
         }
     }
@@ -203,6 +212,7 @@ class Constants {
             return BitmapFactory.decodeStream(bufferedInputStream)
         } catch (e: IOException) {
             e.printStackTrace()
+            Firebase.crashlytics.recordException(e)
             showToast(context, "Error")
         }
         return null
@@ -211,6 +221,7 @@ class Constants {
         try {
             return URL(string)
         } catch (e: MalformedURLException) {
+            Firebase.crashlytics.recordException(e)
             e.printStackTrace()
         }
         return null
@@ -275,6 +286,7 @@ class Constants {
             val response = RetrofitInstance.api.postNotification(notification)
             Result.success(response) // Successfully return the response wrapped in Result
         } catch (e: Exception) {
+            Firebase.crashlytics.recordException(e)
             Result.failure(e) // Return the exception wrapped in Result
         }
     }
@@ -389,6 +401,7 @@ class Constants {
             shortLink = result.shortLink
             shortLink?.buildUpon()?.appendQueryParameter("username", userName)?.build()
         }.addOnFailureListener { exception ->
+            Firebase.crashlytics.recordException(exception)
             Log.d(ContentValues.TAG, "Error creating short url", exception)
         }
         return shortLink
@@ -416,6 +429,7 @@ class Constants {
             shortLink?.buildUpon()?.appendQueryParameter("business_name", businessName)?.build()
 
         }.addOnFailureListener { exception ->
+            Firebase.crashlytics.recordException(exception)
             Log.d(ContentValues.TAG, "Error creating short url", exception)
         }
         return shortLink
