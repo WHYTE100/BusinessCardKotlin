@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.isGone
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
@@ -32,6 +33,9 @@ import io.ktor.http.Url
 import io.pridetechnologies.businesscard.databinding.ActivityUserRequestDetailsBinding
 import io.pridetechnologies.businesscard.databinding.CustomDialogBoxBinding
 import io.pridetechnologies.businesscard.databinding.WorkCardBinding
+import io.pridetechnologies.businesscard.notifications.NotificationData
+import io.pridetechnologies.businesscard.notifications.PushNotification
+import kotlinx.coroutines.launch
 import nl.changer.audiowife.AudioWife
 import java.io.IOException
 import java.net.URL
@@ -49,6 +53,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
     private var userId: String? = ""
     private var userFirstName: String? = ""
     private lateinit var noteUrl:String
+    private var token: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +81,7 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                 val userLastName = document.getString("surname")
                 val profession = document.getString("profession")
                 photoUrl  = document.getString("profile_image_url")
+                token = document.getString("token")
 
                 userName = "$userFirstName $userLastName"
 
@@ -197,9 +203,20 @@ class UserRequestDetailsActivity : AppCompatActivity() {
             constants.db.collection("users").document(constants.currentUserId.toString())
                 .collection("card_requests").document(userId.toString()).delete()
                 .addOnSuccessListener {
-                    progressDialog.hide()
-                    dialog.dismiss()
-                    finish()
+                    lifecycleScope.launch {
+                        PushNotification(NotificationData("Business Card Request", "$myName has declined your card request.", "declined_user_request",constants.currentUserId.toString()), token.toString()).also { notification ->
+                            val result = constants.sendNotification(notification)
+                            result.onSuccess {
+                                progressDialog.hide()
+                                dialog.dismiss()
+                                finish()
+                            }.onFailure {
+                                progressDialog.hide()
+                                dialog.dismiss()
+                                finish()
+                            }
+                        }
+                    }
                 }
                 .addOnFailureListener { e ->
                     progressDialog.hide()
@@ -247,9 +264,20 @@ class UserRequestDetailsActivity : AppCompatActivity() {
                 .addOnSuccessListener {
                     constants.db.collection("users").document(constants.currentUserId.toString())
                         .collection("card_requests").document(userId.toString()).delete()
-                    progressDialog.hide()
-                    dialog.dismiss()
-                    finish()
+                    lifecycleScope.launch {
+                        PushNotification(NotificationData("Business Card Request", "$myName has accepted your card request.", "accepted_user_request",constants.currentUserId.toString()), token.toString()).also { notification ->
+                            val result = constants.sendNotification(notification)
+                            result.onSuccess {
+                                progressDialog.hide()
+                                dialog.dismiss()
+                                finish()
+                            }.onFailure {
+                                progressDialog.hide()
+                                dialog.dismiss()
+                                finish()
+                            }
+                        }
+                    }
                 }
                 .addOnFailureListener { e ->
                     progressDialog.hide()

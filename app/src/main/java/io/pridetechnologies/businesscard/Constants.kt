@@ -56,6 +56,9 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.net.URLEncoder
 import java.util.Hashtable
+import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 
 class Constants {
@@ -267,16 +270,12 @@ class Constants {
             context.startActivity(browserIntent)
         }
     }
-    fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+    suspend fun sendNotification(notification: PushNotification): Result<Response<ResponseBody>> = withContext(Dispatchers.IO) {
         try {
             val response = RetrofitInstance.api.postNotification(notification)
-            if (response.isSuccessful){
-                //Log.d(TAG, "Response: ${response}")
-            }else{
-                //Log.e(TAG, response.errorBody().toString())
-            }
-        }catch (e: Exception){
-            //Log.e(TAG, e.toString())
+            Result.success(response) // Successfully return the response wrapped in Result
+        } catch (e: Exception) {
+            Result.failure(e) // Return the exception wrapped in Result
         }
     }
 

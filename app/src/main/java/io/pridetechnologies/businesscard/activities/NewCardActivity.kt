@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
@@ -44,6 +45,7 @@ import io.pridetechnologies.businesscard.databinding.CustomRequestDialogBinding
 import io.pridetechnologies.businesscard.databinding.WorkCardBinding
 import io.pridetechnologies.businesscard.notifications.NotificationData
 import io.pridetechnologies.businesscard.notifications.PushNotification
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 
@@ -417,13 +419,23 @@ class NewCardActivity : AppCompatActivity() {
             .collection("card_requests").document(constants.currentUserId.toString())
             .set(requestDetails, SetOptions.merge())
             .addOnSuccessListener {
-                PushNotification(NotificationData("Card Request", "Share your contacts with $userName.",constants.currentUserId.toString()), token.toString()).also { notification ->
-                    constants.sendNotification(notification)
+                lifecycleScope.launch {
+                    PushNotification(NotificationData("Business Card Request", "$userName has send a card request.", "user_request",constants.currentUserId.toString()), token.toString()).also { notification ->
+                        val result = constants.sendNotification(notification)
+                        result.onSuccess {
+                            progressDialog.hide()
+                            binding.requestButton.isEnabled = false
+                            binding.textView99.visibility = View.VISIBLE
+                            binding.requestButton.visibility = View.GONE
+                        }.onFailure {
+                            progressDialog.hide()
+                            binding.requestButton.isEnabled = false
+                            binding.textView99.visibility = View.VISIBLE
+                            binding.requestButton.visibility = View.GONE
+                        }
+                    }
+
                 }
-                progressDialog.hide()
-                binding.requestButton.isEnabled = false
-                binding.textView99.visibility = View.VISIBLE
-                binding.requestButton.visibility = View.GONE
             }
             .addOnFailureListener { e ->
                 progressDialog.hide()

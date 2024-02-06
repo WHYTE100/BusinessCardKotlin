@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
@@ -17,6 +18,9 @@ import io.pridetechnologies.businesscard.CustomProgressDialog
 import io.pridetechnologies.businesscard.R
 import io.pridetechnologies.businesscard.databinding.ActivityTeamMemberDetailsBinding
 import io.pridetechnologies.businesscard.databinding.CustomDialogBoxBinding
+import io.pridetechnologies.businesscard.notifications.NotificationData
+import io.pridetechnologies.businesscard.notifications.PushNotification
+import kotlinx.coroutines.launch
 
 class TeamMemberDetailsActivity : AppCompatActivity() {
     private val progressDialog by lazy { CustomProgressDialog(this) }
@@ -31,6 +35,7 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
     private var userImage: String? = ""
     private var businessLogo: String? = ""
     private var businessName: String? = ""
+    private var token: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +59,7 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                 userLastName = document.getString("surname")
                 profession = document.getString("profession")
                 userImage = document.getString("profile_image_url")
+                token = document.getString("token")
 
                 Picasso.get().load(userImage).fit().centerCrop().placeholder(R.mipmap.user_gold).into(binding.imageView2)
                 binding.textView6.text = "$userFirstName $userLastName"
@@ -338,9 +344,21 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                     .document(memberId.toString())
                     .set(teamMemberDetails, SetOptions.merge())
                     .addOnSuccessListener {
-                        progressDialog.hide()
-                        finish()
-                        Animatoo.animateFade(this)
+                        lifecycleScope.launch {
+                            PushNotification(NotificationData("Join Team Request", "Your profile has been linked to $businessName business profile.", "accepted_team_request",businessId.toString()), token.toString()).also { notification ->
+                                val result = constants.sendNotification(notification)
+                                result.onSuccess {
+                                    progressDialog.hide()
+                                    finish()
+                                    Animatoo.animateFade(this@TeamMemberDetailsActivity)
+                                }.onFailure {
+                                    progressDialog.hide()
+                                    finish()
+                                    Animatoo.animateFade(this@TeamMemberDetailsActivity)
+                                }
+                            }
+
+                        }
                     }
                     .addOnFailureListener { e ->
                         progressDialog.hide()
@@ -366,9 +384,21 @@ class TeamMemberDetailsActivity : AppCompatActivity() {
                     .document(memberId.toString())
                     .delete()
                     .addOnSuccessListener {
-                        progressDialog.hide()
-                        finish()
-                        Animatoo.animateFade(this)
+                        lifecycleScope.launch {
+                            PushNotification(NotificationData("Join Team Request", "Your profile hasn't been linked to $businessName business profile. The admin has declined your request. Contact the admin to solve this issue.", "declined_team_request",businessId.toString()), token.toString()).also { notification ->
+                                val result = constants.sendNotification(notification)
+                                result.onSuccess { response ->
+                                    progressDialog.hide()
+                                    finish()
+                                    Animatoo.animateFade(this@TeamMemberDetailsActivity)
+                                }.onFailure { exception ->
+                                    progressDialog.hide()
+                                    finish()
+                                    Animatoo.animateFade(this@TeamMemberDetailsActivity)
+                                }
+                            }
+
+                        }
                     }
                     .addOnFailureListener { e ->
                         progressDialog.hide()
