@@ -191,19 +191,17 @@ class AdminBusinessProfileActivity : AppCompatActivity() {
                     b.resetLayout.visibility = View.VISIBLE
                     Picasso.get().load(businessCode).fit().centerCrop().placeholder(R.drawable.qr_code_black).into(b.imageView9)
                     b.downloadButton.setOnClickListener {
-                        myExecutor?.execute {
-                            if (constants.hasInternetConnection(this)) {
-                                myExecutor?.execute {
-                                    myCodeBitmap = constants.downloadCode(this, businessCode)
-                                    myHandler?.post {
-                                        if(myCodeBitmap!=null){
-                                            constants.saveMediaToStorage(this, myCodeBitmap, businessName.toString())
-                                        }
+                        if (constants.hasInternetConnection(this)) {
+                            myExecutor?.execute {
+                                myCodeBitmap = constants.downloadCode(this, businessCode)
+                                myHandler?.post {
+                                    if(myCodeBitmap!=null){
+                                        constants.saveMediaToStorage(this, myCodeBitmap, businessName.toString())
                                     }
                                 }
-                            } else {
-                                constants.showToast(this, "No Internet Connection")
                             }
+                        } else {
+                            constants.showToast(this, "No Internet Connection")
                         }
                     }
                     b.copyLinkButton.setOnClickListener {

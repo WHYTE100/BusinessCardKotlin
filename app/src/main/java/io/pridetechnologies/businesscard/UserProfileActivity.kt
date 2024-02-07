@@ -198,7 +198,7 @@ class UserProfileActivity : AppCompatActivity() {
                 surname = value?.get("surname").toString()
 
                 val code = constants.readFromSharedPreferences(this,"user_qr_code", "")
-                if (code.equals("null") || code.isEmpty()){
+                if (code.isEmpty()){
                     val encodedCode = value?.get("encode_qr_code").toString()
                     constants.writeToSharedPreferences(this,"user_qr_code", encodedCode)
                 }

@@ -197,8 +197,13 @@ class UserRequestDetailsActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         val b = CustomDialogBoxBinding.inflate(layoutInflater)
         dialog.setContentView(b.root)
-        b.titleTextView.text = "Decline Request"
-        b.descTextView.text = "Are you sure you don't want to share your contacts with $userFirstName?"
+        b.titleTextView.text = buildString {
+        append("Decline Request")
+        }
+        b.descTextView.text = buildString{
+            append("Are you sure you don't want to share your contacts with")
+            append(userFirstName)
+        }
         b.positiveTextView.text = "Decline"
         b.positiveTextView.setOnClickListener {
             progressDialog.show("Declining Request...")

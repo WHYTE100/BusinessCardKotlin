@@ -61,7 +61,6 @@ import kotlin.math.abs
 class IndividualsHomeFragment : Fragment() {
 
 
-    private val progressDialog by lazy { CustomProgressDialog(requireContext()) }
     private lateinit var binding: FragmentIndividualsHomeBinding
     private val constants = Constants()
     private var myExecutor: ExecutorService? = null

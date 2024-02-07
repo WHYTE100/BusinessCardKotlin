@@ -146,7 +146,7 @@ class AddAnotherBusinessActivity : AppCompatActivity() {
                             }
                             // Add more cases for different paths if needed
                             else -> {
-                                constants.showToast(this, "This code is invalid")
+                                constants.showToast(this, "This code is invalid Business Card app code")
                             }
                         }
                     }

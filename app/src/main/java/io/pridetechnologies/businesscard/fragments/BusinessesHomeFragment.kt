@@ -11,13 +11,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -37,27 +36,18 @@ import io.pridetechnologies.businesscard.BusinessDetailsActivity
 import io.pridetechnologies.businesscard.BusinessSearchActivity
 import io.pridetechnologies.businesscard.Businesses
 import io.pridetechnologies.businesscard.Constants
-import io.pridetechnologies.businesscard.CustomProgressDialog
-import io.pridetechnologies.businesscard.Individuals
 import io.pridetechnologies.businesscard.MyBusinessesActivity
 import io.pridetechnologies.businesscard.R
-import io.pridetechnologies.businesscard.UserProfileActivity
-import io.pridetechnologies.businesscard.activities.TeamMemberDetailsActivity
 import io.pridetechnologies.businesscard.databinding.BusinessesSlidePageBinding
 import io.pridetechnologies.businesscard.databinding.CustomDialogBoxBinding
 import io.pridetechnologies.businesscard.databinding.CustomQrCodeDialogBinding
 import io.pridetechnologies.businesscard.databinding.FragmentBusinessesHomeBinding
-import io.pridetechnologies.businesscard.databinding.FragmentIndividualsHomeBinding
-import io.pridetechnologies.businesscard.databinding.IndividualsSlidePageBinding
-import kotlinx.coroutines.delay
-import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.math.abs
 
 
 class BusinessesHomeFragment : Fragment() {
-    private val progressDialog by lazy { CustomProgressDialog(requireContext()) }
     private lateinit var binding: FragmentBusinessesHomeBinding
     private val constants = Constants()
     private var myExecutor: ExecutorService? = null

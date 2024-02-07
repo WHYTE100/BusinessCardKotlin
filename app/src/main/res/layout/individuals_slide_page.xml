@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_marginLeft="5dp"
@@ -270,7 +269,6 @@
                                 android:backgroundTint="?attr/colorOnPrimary"
                                 android:src="@drawable/round_person_pin_24"
                                 app:tint="?attr/colorPrimary" />
-
                         </com.google.android.material.card.MaterialCardView>
 
                         <com.google.android.material.textview.MaterialTextView
@@ -283,7 +281,6 @@
                             android:textColor="?attr/colorOnPrimary"
                             android:textSize="@dimen/_10ssp"
                             android:textStyle="bold"/>
-
                     </LinearLayout>
 
                     <LinearLayout
